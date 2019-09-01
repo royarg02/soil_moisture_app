@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:soil_moisture_app/ui/build_theme.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:soil_moisture_app/ui/plant_card.dart';
+
+import 'dart:math' as math; //! Remove this when refresh implemented
+
+var rnd = math.Random(69); //! Remove this when refresh implemented
 
 void main() {
   String title = 'Soil App';
@@ -22,11 +27,18 @@ class HomeApp extends StatefulWidget {
 }
 
 class _HomeAppState extends State<HomeApp> {
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
   int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
+// * Dummy pull to refresh implemented, remove when done
+  Future<void> dummyWait() {
+    return Future.delayed(Duration(seconds: 5), null);
+  }
+
+  Future<Null> _refresh() {
+    return dummyWait().then((_) {
+      setState(() => _counter = rnd.nextInt(101));
     });
   }
 
@@ -37,79 +49,116 @@ class _HomeAppState extends State<HomeApp> {
         title: Text(widget.title),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: ListView(
-          physics: BouncingScrollPhysics(),
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+      body: RefreshIndicator(
+        key: _refreshIndicatorKey,
+        onRefresh: _refresh,
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+            child: ListView(
+              physics: BouncingScrollPhysics(),
               children: <Widget>[
-                CircularPercentIndicator(
-                  animationDuration: 600,
-                  radius: 300.0,
-                  animation: true,
-                  percent: _counter / 100,
-                  circularStrokeCap: CircularStrokeCap.round,
-                  backgroundColor: Colors.grey[300],
-                  progressColor: (_counter < 15) ? Colors.red : Colors.green,
-                  lineWidth: 10.0,
-                  center: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        '$_counter%',
-                        style: Theme.of(context).textTheme.display4.copyWith(
-                              fontSize: 130.0,
-                            ),
+                SizedBox(
+                  height: 5.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    CircularPercentIndicator(
+                      animationDuration: 600,
+                      radius: 300.0,
+                      animation: true,
+                      percent: _counter / 100,
+                      circularStrokeCap: CircularStrokeCap.round,
+                      backgroundColor: Colors.grey[300],
+                      progressColor:
+                          (_counter < 15) ? Colors.red : Colors.green,
+                      lineWidth: 10.0,
+                      center: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            '$_counter%',
+                            style:
+                                Theme.of(context).textTheme.display4.copyWith(
+                                      fontSize: 130.0,
+                                    ),
+                          ),
+                          Text(
+                            'Current Moisture',
+                            style:
+                                Theme.of(context).textTheme.display1.copyWith(
+                                      fontSize: 24.0,
+                                    ),
+                          )
+                        ],
                       ),
-                      Text(
-                        'Current Moisture',
-                        style: Theme.of(context).textTheme.display1.copyWith(
-                              fontSize: 24.0,
-                            ),
-                      )
-                    ],
+                    ),
+                    Container(
+                      height: 150.0,
+                      width: 150.0,
+                      child: Placeholder(),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
+                Card(
+                  child: ListTile(
+                    title: Text(
+                      'You have pushed the button this many times:(Some Info Here)',
+                    ),
+                    subtitle: Text(
+                      '$_counter',
+                      style: Theme.of(context).textTheme.display1,
+                    ),
                   ),
                 ),
-                Container(
-                  height: 150.0,
-                  width: 150.0,
-                  child: Placeholder(),
+                SizedBox(
+                  height: 20.0,
                 ),
+                Wrap(
+                  runSpacing: 5.0,
+                  children: <Widget>[
+                    PlantCard(
+                      title: 'Plant 1',
+                      img: '',
+                      ontap: () => print('Plant1'),
+                    ),
+                    PlantCard(
+                      title: 'Plant 2',
+                      img: '',
+                    ),
+                    PlantCard(
+                      title: 'Plant 3',
+                      img: '',
+                    ),
+                    PlantCard(
+                      title: 'Plant 4',
+                      img: '',
+                    ),
+                    PlantCard(
+                      title: 'Plant 5',
+                      img: '',
+                    ),
+                    PlantCard(
+                      title: 'Plant 6',
+                      img: '',
+                    ),
+                    PlantCard(
+                      title: 'Plant 7',
+                      img: '',
+                    ),
+                    PlantCard(
+                      title: 'Plant 8',
+                      img: '',
+                    ),
+                  ],
+                )
               ],
             ),
-            SizedBox(
-              height: 20.0,
-            ),
-            Card(
-              child: ListTile(
-                title: Text(
-                  'You have pushed the button this many times:(Some Info Here)',
-                ),
-                subtitle: Text(
-                  '$_counter',
-                  style: Theme.of(context).textTheme.display1,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.start,
-            //   children: <Widget>[
-            //     Card(
-            //       shape: RoundedRectangleBorder(
-            //         borderRadius: BorderRadius.circular(14.0),
-            //       ),
-            //       child: ListTile(
-            //         title: Text('Plant 1'),
-            //       ),
-            //     ),
-            //   ],
-            // ),
-          ],
+          ),
         ),
       ),
       bottomNavigationBar: new BottomNavigationBar(
@@ -139,11 +188,6 @@ class _HomeAppState extends State<HomeApp> {
             ),
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
       ),
     );
   }
