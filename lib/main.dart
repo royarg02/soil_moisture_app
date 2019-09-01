@@ -125,9 +125,7 @@ class _HomeAppState extends State<HomeApp> {
                     PlantCard(
                       title: 'Plant 1',
                       img: '',
-                      onTap: () => print('Plant1'),
-                      crit: 0.15,
-                      percent: _counter/100,
+                      percent: _counter / 100,
                     ),
                     PlantCard(
                       title: 'Plant 2',
