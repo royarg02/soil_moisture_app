@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:soil_moisture_app/ui/colors.dart';
+import 'package:soil_moisture_app/ui/build_theme.dart';
 import 'package:flutter_circular_chart/flutter_circular_chart.dart';
 
 void main() => runApp(MaterialApp(
       title: "Soli App",
       debugShowCheckedModeBanner: false,
       home: new HomeApp(),
+      theme: buildLightTheme(),
     ));
 
 class HomeApp extends StatefulWidget {
