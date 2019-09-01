@@ -119,12 +119,15 @@ class _HomeAppState extends State<HomeApp> {
                   height: 20.0,
                 ),
                 Wrap(
+                  alignment: WrapAlignment.center,
                   runSpacing: 5.0,
                   children: <Widget>[
                     PlantCard(
                       title: 'Plant 1',
                       img: '',
-                      ontap: () => print('Plant1'),
+                      onTap: () => print('Plant1'),
+                      crit: 0.15,
+                      percent: _counter/100,
                     ),
                     PlantCard(
                       title: 'Plant 2',
