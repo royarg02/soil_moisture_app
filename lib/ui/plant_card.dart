@@ -16,7 +16,7 @@ class PlantCard extends StatelessWidget {
       this.percent = 0.15,
       this.crit = 0.15}) {
     if (this.onTap == null) {
-      this.onTap = () => print(this.title); //*debug print
+      this.onTap = () => print(this.title);
     }
   }
   @override
