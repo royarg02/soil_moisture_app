@@ -26,11 +26,12 @@ class PlantCard extends StatelessWidget {
       width: 150.0,
       child: Theme(
         data: Theme.of(context).copyWith(
-            cardTheme: Theme.of(context).cardTheme.copyWith(
-                  color: (percent <= crit)
-                      ? Colors.red[200]
-                      : appSecondaryLightColor,
-                )),
+          cardTheme: Theme.of(context).cardTheme.copyWith(
+                color: (percent <= crit)
+                    ? Colors.red[200]
+                    : appSecondaryLightColor,
+              ),
+        ),
         child: Card(
           child: InkWell(
             child: Column(
