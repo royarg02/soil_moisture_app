@@ -38,13 +38,16 @@ class _HomeAppState extends State<HomeApp> {
   ];
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.black, //top bar color
-      systemNavigationBarColor: Colors.black, //bottom bar color
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Colors.black, //top bar color
+        systemNavigationBarColor: Colors.black, //bottom bar color
 
-      statusBarIconBrightness: Brightness.light, //top icon color
-      systemNavigationBarIconBrightness: Brightness.light, //bottom icons color
-    ));
+        statusBarIconBrightness: Brightness.light, //top icon color
+        systemNavigationBarIconBrightness:
+            Brightness.light, //bottom icons color
+      ),
+    );
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -59,26 +62,34 @@ class _HomeAppState extends State<HomeApp> {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.remove_red_eye,
-              color: _currentIndex == 0 ? appSecondaryDarkColor : appPrimaryDarkColor,
+              color: _currentIndex == 0
+                  ? appSecondaryDarkColor
+                  : appPrimaryDarkColor,
             ),
             title: new Text(
               "Overview",
               style: TextStyle(
                 fontFamily: 'Ocrb',
-                color: _currentIndex == 0 ? appSecondaryDarkColor : appPrimaryDarkColor,
+                color: _currentIndex == 0
+                    ? appSecondaryDarkColor
+                    : appPrimaryDarkColor,
               ),
             ),
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.linear_scale,
-              color: _currentIndex == 1 ? appSecondaryDarkColor : appPrimaryDarkColor,
+              color: _currentIndex == 1
+                  ? appSecondaryDarkColor
+                  : appPrimaryDarkColor,
             ),
             title: new Text(
               "Analysis",
               style: TextStyle(
                 fontFamily: 'Ocrb',
-                color: _currentIndex == 1 ? appSecondaryDarkColor : appPrimaryDarkColor,
+                color: _currentIndex == 1
+                    ? appSecondaryDarkColor
+                    : appPrimaryDarkColor,
               ),
             ),
           ),

@@ -18,7 +18,7 @@ class _OverviewState extends State<Overview> {
 
 // * Dummy pull to refresh implemented, remove when done
   Future<void> dummyWait() {
-    return Future.delayed(Duration(seconds: 5), null);
+    return Future.delayed(Duration(seconds: 4), null);
   }
 
   Future<Null> _refresh() {
@@ -40,57 +40,45 @@ class _OverviewState extends State<Overview> {
               physics: BouncingScrollPhysics(),
               children: <Widget>[
                 SizedBox(
-                  height: 5.0,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    CircularPercentIndicator(
-                      animationDuration: 600,
-                      radius: MediaQuery.of(context).size.width * 0.6,
-                      animation: true,
-                      percent: _counter / 100,
-                      circularStrokeCap: CircularStrokeCap.round,
-                      backgroundColor: Colors.grey[300],
-                      progressColor:
-                          (_counter < 15) ? Colors.red : Colors.green,
-                      lineWidth: 10.0,
-                      center: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            '$_counter%',
-                            style: Theme.of(context)
-                                .textTheme
-                                .display4
-                                .copyWith(
-                                  fontFamily: 'Ocrb',
-                                  fontSize:
-                                      MediaQuery.of(context).size.width * 0.15,
-                                ),
-                          ),
-                          Text(
-                            'Current Moisture',
-                            style: Theme.of(context)
-                                .textTheme
-                                .display1
-                                .copyWith(
-                                  fontFamily: 'Ocrb',
-                                  fontSize:
-                                      MediaQuery.of(context).size.width * 0.045,
-                                ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
                   height: 20.0,
                 ),
-                //
-                // Enter the weather Shit here!!
-                //
+                CircularPercentIndicator(
+                  animationDuration: 600,
+                  radius: MediaQuery.of(context).size.width * 0.6,
+                  animation: true,
+                  percent: _counter / 100,
+                  circularStrokeCap: CircularStrokeCap.round,
+                  backgroundColor: Colors.grey[300],
+                  progressColor: (_counter < 15) ? Colors.red : Colors.green,
+                  lineWidth: 10.0,
+                  center: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        '$_counter%',
+                        style: Theme.of(context).textTheme.display4.copyWith(
+                              fontFamily: 'Ocrb',
+                              fontSize:
+                                  MediaQuery.of(context).size.width * 0.25,
+                            ),
+                      ),
+                      Text(
+                        'Current Moisture',
+                        style: Theme.of(context).textTheme.display1.copyWith(
+                              fontFamily: 'Ocrb',
+                              fontSize:
+                                  MediaQuery.of(context).size.width * 0.035,
+                            ),
+                      ),
+                      Text(
+                        'Weather',
+                        style: Theme.of(context).textTheme.body2.copyWith(
+                            fontFamily: 'Ocrb',
+                            fontSize: MediaQuery.of(context).size.width * 0.05),
+                      )
+                    ],
+                  ),
+                ),
                 SizedBox(
                   height: 20.0,
                 ),
