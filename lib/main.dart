@@ -122,38 +122,27 @@ class _HomeAppState extends State<HomeApp> {
           ),
         ],
       ),
-      bottomNavigationBar: new Theme(
-        data: Theme.of(context).copyWith(
-            // sets the background color of the `BottomNavigationBar`
-            canvasColor: appPrimaryLightColor,
-            // sets the active color of the `BottomNavigationBar` if `Brightness` is light
-            primaryColor: appSecondaryLightColor,
-            textTheme: Theme.of(context).textTheme.copyWith(
-                caption: new TextStyle(
-                    color:
-                        appSecondaryDarkColor))), // sets the inactive color of the `BottomNavigationBar`
-        child: new BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          currentIndex: 0,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.remove_red_eye,
-              ),
-              title: new Text(
-                "Overview",
-              ),
+      bottomNavigationBar: new BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        currentIndex: 0,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.remove_red_eye,
             ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.linear_scale,
-              ),
-              title: new Text(
-                "Analysis",
-              ),
+            title: new Text(
+              "Overview",
             ),
-          ],
-        ),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.linear_scale,
+            ),
+            title: new Text(
+              "Analysis",
+            ),
+          ),
+        ],
       ),
     );
   }
