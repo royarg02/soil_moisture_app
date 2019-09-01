@@ -1,104 +1,58 @@
 import 'package:flutter/material.dart';
-import 'ui/colors.dart';
+import 'package:soil_moisture_app/ui/colors.dart';
 
-void main() {
-  final String title = 'Soil Moisture control';
-  runApp(
-    MaterialApp(
-      title: title,
-      home: Home(
-        title: title,
-      ),
-      theme: _lightTheme,
-    ),
-  );
-}
+void main() => runApp(MaterialApp(
+      title: "Soli App",
+      debugShowCheckedModeBanner: false,
+      home: new HomeApp(),
+    ));
 
-final ThemeData _lightTheme = _buildLightTheme();
-
-ThemeData _buildLightTheme() {
-  ThemeData base = ThemeData.light();
-  return base.copyWith(
-    accentColor: appComplementaryLightColor,
-    primaryColor: appPrimaryColor,
-    buttonTheme: ThemeData.light().buttonTheme.copyWith(
-          buttonColor: appPrimaryColor,
-          textTheme: ButtonTextTheme.normal,
-        ),
-    scaffoldBackgroundColor: appBackgroundColor,
-    textTheme: _buildTextThemeLight(base.textTheme),
-    primaryTextTheme: _buildTextThemeLight(base.primaryTextTheme),
-    accentTextTheme: _buildTextThemeLight(base.accentTextTheme),
-    primaryIconTheme: base.iconTheme.copyWith(
-      color: appComplementaryLightColor,
-    ) 
-  );
-}
-
-TextTheme _buildTextThemeLight(TextTheme base) {
-  return base
-      .copyWith(
-        headline: base.headline.copyWith(fontWeight: FontWeight.w500),
-        title: base.title.copyWith(fontSize: 18.0),
-        caption: base.caption.copyWith(
-          fontWeight: FontWeight.w400,
-          fontSize: 14.0,
-        ),
-      )
-      .apply(
-        displayColor: appComplementaryLightColor,
-        bodyColor: appComplementaryLightColor,
-      );
-}
-
-class Home extends StatefulWidget {
-  Home({Key key, this.title}) : super(key: key);
-
-  final String title;
-
+class HomeApp extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _HomeAppState createState() => _HomeAppState();
 }
 
-class _HomeState extends State<Home> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
+class _HomeAppState extends State<HomeApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.cake),
-            onPressed: () => print('Test'),
-          )
-        ],
+      appBar: new AppBar(
+        backgroundColor: appPrimaryDarkColor,
+        title: new Text("Soli App"),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+      body: Container(),
+      bottomNavigationBar: new Theme(
+        data: Theme.of(context).copyWith(
+            // sets the background color of the `BottomNavigationBar`
+            canvasColor: appPrimaryLightColor,
+            // sets the active color of the `BottomNavigationBar` if `Brightness` is light
+            primaryColor: appSecondaryLightColor,
+            textTheme: Theme.of(context).textTheme.copyWith(
+                caption: new TextStyle(
+                    color:
+                        appSecondaryDarkColor))), // sets the inactive color of the `BottomNavigationBar`
+        child: new BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          currentIndex: 0,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.remove_red_eye,
+              ),
+              title: new Text(
+                "Overview",
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.linear_scale,
+              ),
+              title: new Text(
+                "Analysis",
+              ),
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
       ),
     );
   }
