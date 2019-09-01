@@ -43,12 +43,13 @@ class _HomeAppState extends State<HomeApp> {
           physics: BouncingScrollPhysics(),
           children: <Widget>[
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 CircularPercentIndicator(
                   animationDuration: 600,
                   radius: 300.0,
                   animation: true,
-                  percent: _counter.toDouble() / 100,
+                  percent: _counter / 100,
                   circularStrokeCap: CircularStrokeCap.round,
                   backgroundColor: Colors.grey[300],
                   progressColor: (_counter < 15) ? Colors.red : Colors.green,
@@ -70,16 +71,44 @@ class _HomeAppState extends State<HomeApp> {
                       )
                     ],
                   ),
-                )
+                ),
+                Container(
+                  height: 150.0,
+                  width: 150.0,
+                  child: Placeholder(),
+                ),
               ],
             ),
-            Text(
-              'You have pushed the button this many times:',
+            SizedBox(
+              height: 20.0,
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
+            Card(
+              child: ListTile(
+                title: Text(
+                  'You have pushed the button this many times:(Some Info Here)',
+                ),
+                subtitle: Text(
+                  '$_counter',
+                  style: Theme.of(context).textTheme.display1,
+                ),
+              ),
             ),
+            SizedBox(
+              height: 20.0,
+            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.start,
+            //   children: <Widget>[
+            //     Card(
+            //       shape: RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.circular(14.0),
+            //       ),
+            //       child: ListTile(
+            //         title: Text('Plant 1'),
+            //       ),
+            //     ),
+            //   ],
+            // ),
           ],
         ),
       ),
@@ -93,6 +122,9 @@ class _HomeAppState extends State<HomeApp> {
             ),
             title: new Text(
               "Overview",
+              style: TextStyle(
+                fontFamily: 'Ocrb',
+              ),
             ),
           ),
           BottomNavigationBarItem(
@@ -101,6 +133,9 @@ class _HomeAppState extends State<HomeApp> {
             ),
             title: new Text(
               "Analysis",
+              style: TextStyle(
+                fontFamily: 'Ocrb',
+              ),
             ),
           ),
         ],
