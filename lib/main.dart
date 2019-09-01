@@ -2,14 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:soil_moisture_app/ui/build_theme.dart';
 import 'package:flutter_circular_chart/flutter_circular_chart.dart';
 
-void main() => runApp(MaterialApp(
-      title: "Soli App",
+void main() {
+  String title = 'Soil App';
+  runApp(
+    MaterialApp(
+      title: title,
       debugShowCheckedModeBanner: false,
-      home: new HomeApp(),
+      home: new HomeApp(title),
       theme: buildLightTheme(),
-    ));
+    ),
+  );
+}
 
 class HomeApp extends StatefulWidget {
+  final String title;
+  HomeApp(this.title);
   @override
   _HomeAppState createState() => _HomeAppState();
 }
@@ -85,8 +92,7 @@ class _HomeAppState extends State<HomeApp> {
 
     return Scaffold(
       appBar: new AppBar(
-        backgroundColor: appPrimaryDarkColor,
-        title: new Text("Soli App"),
+        title: new Text(widget.title),
       ),
       body: new Column(
         children: <Widget>[

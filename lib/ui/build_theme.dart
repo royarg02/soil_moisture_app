@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 ThemeData buildLightTheme() {
   ThemeData base = ThemeData.light();
   return base.copyWith(
+    appBarTheme: base.appBarTheme.copyWith(
+      color: appPrimaryDarkColor,
+    ),
     // sets the background color of the `BottomNavigationBar`
     canvasColor: appPrimaryLightColor,
     // sets the active color of the `BottomNavigationBar` if `Brightness` is light
@@ -12,9 +15,7 @@ ThemeData buildLightTheme() {
       caption: new TextStyle(color: appSecondaryDarkColor),
     ),
     accentColor: appSecondaryColor,
-    buttonTheme: base.buttonTheme.copyWith(
-      buttonColor: appSecondaryColor
-    ),
+    buttonTheme: base.buttonTheme.copyWith(buttonColor: appSecondaryColor),
     primaryIconTheme: base.iconTheme.copyWith(
       color: appSecondaryDarkColor,
     ),
