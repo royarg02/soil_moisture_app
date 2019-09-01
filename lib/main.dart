@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soil_moisture_app/ui/build_theme.dart';
-import 'package:flutter_circular_chart/flutter_circular_chart.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
 void main() {
   String title = 'Soil App';
@@ -22,112 +22,66 @@ class HomeApp extends StatefulWidget {
 }
 
 class _HomeAppState extends State<HomeApp> {
-  final GlobalKey<AnimatedCircularChartState> _chartKey =
-      new GlobalKey<AnimatedCircularChartState>();
-  final _chartSize = const Size(300.0, 300.0);
-  double value = 50.0;
-  Color labelColor = Colors.blue[200];
-  void _increment() {
+  int _counter = 0;
+
+  void _incrementCounter() {
     setState(() {
-      value += 10;
-      List<CircularStackEntry> data = _generateChartData(value);
-      _chartKey.currentState.updateData(data);
+      _counter++;
     });
-  }
-
-  void _decrement() {
-    setState(() {
-      value -= 10;
-      List<CircularStackEntry> data = _generateChartData(value);
-      _chartKey.currentState.updateData(data);
-    });
-  }
-
-  List<CircularStackEntry> _generateChartData(double value) {
-    Color dialColor = Colors.blue[200];
-    if (value < 0) {
-      dialColor = Colors.red[200];
-    } else if (value < 50) {
-      dialColor = Colors.yellow[200];
-    }
-    labelColor = dialColor;
-
-    List<CircularStackEntry> data = <CircularStackEntry>[
-      new CircularStackEntry(
-        <CircularSegmentEntry>[
-          new CircularSegmentEntry(
-            value,
-            dialColor,
-            rankKey: 'percentage',
-          )
-        ],
-        rankKey: 'percentage',
-      ),
-    ];
-
-    if (value > 100) {
-      labelColor = Colors.green[200];
-
-      data.add(new CircularStackEntry(
-        <CircularSegmentEntry>[
-          new CircularSegmentEntry(
-            value - 100,
-            Colors.green[200],
-            rankKey: 'percentage',
-          ),
-        ],
-        rankKey: 'percentage2',
-      ));
-    }
-
-    return data;
   }
 
   @override
   Widget build(BuildContext context) {
-    TextStyle _labelStyle = Theme.of(context)
-        .textTheme
-        .title
-        .merge(new TextStyle(color: labelColor));
-
     return Scaffold(
-      appBar: new AppBar(
-        title: new Text(widget.title),
+      appBar: AppBar(
+        title: Text(widget.title),
+        centerTitle: true,
       ),
-      body: new Column(
-        children: <Widget>[
-          new Container(
-            child: new AnimatedCircularChart(
-              key: _chartKey,
-              size: _chartSize,
-              initialChartData: _generateChartData(value),
-              chartType: CircularChartType.Radial,
-              edgeStyle: SegmentEdgeStyle.round,
-              percentageValues: true,
-              holeLabel: '$value%',
-              labelStyle: _labelStyle,
+      body: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: ListView(
+          physics: BouncingScrollPhysics(),
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                CircularPercentIndicator(
+                  animationDuration: 600,
+                  radius: 300.0,
+                  animation: true,
+                  percent: _counter.toDouble() / 100,
+                  circularStrokeCap: CircularStrokeCap.round,
+                  backgroundColor: Colors.grey[300],
+                  progressColor: (_counter < 15) ? Colors.red : Colors.green,
+                  lineWidth: 10.0,
+                  center: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        '$_counter%',
+                        style: Theme.of(context).textTheme.display4.copyWith(
+                              fontSize: 130.0,
+                            ),
+                      ),
+                      Text(
+                        'Current Moisture',
+                        style: Theme.of(context).textTheme.display1.copyWith(
+                              fontSize: 24.0,
+                            ),
+                      )
+                    ],
+                  ),
+                )
+              ],
             ),
-          ),
-          new Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              new RaisedButton(
-                onPressed: _decrement,
-                child: const Icon(Icons.remove),
-                shape: const CircleBorder(),
-                color: Colors.red[200],
-                textColor: Colors.white,
-              ),
-              new RaisedButton(
-                onPressed: _increment,
-                child: const Icon(Icons.add),
-                shape: const CircleBorder(),
-                color: Colors.blue[200],
-                textColor: Colors.white,
-              ),
-            ],
-          ),
-        ],
+            Text(
+              'You have pushed the button this many times:',
+            ),
+            Text(
+              '$_counter',
+              style: Theme.of(context).textTheme.display1,
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: new BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
@@ -150,6 +104,11 @@ class _HomeAppState extends State<HomeApp> {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: Icon(Icons.add),
       ),
     );
   }

@@ -6,13 +6,22 @@ ThemeData buildLightTheme() {
   return base.copyWith(
     appBarTheme: base.appBarTheme.copyWith(
       color: appPrimaryDarkColor,
+      textTheme: TextTheme(
+        title: TextStyle(
+          fontSize: 28.0,
+          color: Colors.black,
+          fontFamily: 'Ocrb',
+        ),
+      ),
     ),
     // sets the background color of the `BottomNavigationBar`
     canvasColor: appPrimaryLightColor,
     // sets the active color of the `BottomNavigationBar` if `Brightness` is light
     primaryColor: appSecondaryLightColor,
     textTheme: base.textTheme.copyWith(
-      caption: new TextStyle(color: appSecondaryDarkColor),
+      caption: new TextStyle(
+        color: appSecondaryDarkColor,
+      ),
     ),
     accentColor: appSecondaryColor,
     buttonTheme: base.buttonTheme.copyWith(buttonColor: appSecondaryColor),
