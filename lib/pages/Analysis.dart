@@ -108,7 +108,10 @@ class _AnalysisState extends State<Analysis> {
                 } else {
                   return PlantTile(
                     label: 'Plant ${count - 1}',
-                    percent: rnd.nextInt(_counter )/_counter, //* dummy values, remove when implemented
+                    percent: (_counter == 0)
+                        ? 0.15
+                        : rnd.nextInt(_counter) /
+                            _counter, //* dummy values, remove when implemented
                   );
                 }
               },
