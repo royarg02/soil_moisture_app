@@ -49,15 +49,31 @@ class PlantCard extends StatelessWidget {
                   width: MediaQuery.of(context).size.height * 0.05,
                   child: Placeholder(), //* Place Image Asset Here
                 ),
-                LinearPercentIndicator(
-                  percent: this.percent,
-                  animateFromLastPercent: true,
-                  animationDuration: 600,
-                  animation: true,
-                  progressColor:
-                      (percent <= crit) ? Colors.red : Colors.green[900],
-                  backgroundColor: Colors.blueGrey[200],
-                )
+                percent < 0.35
+                    ? LinearPercentIndicator(
+                        percent: this.percent,
+                        progressColor: Colors.red,
+                        backgroundColor: Colors.blueGrey[200],
+                      )
+                    : percent < 0.75
+                        ? LinearPercentIndicator(
+                            percent: this.percent,
+                            linearGradient: LinearGradient(
+                              tileMode: TileMode.clamp,
+                              colors: [Colors.red, Colors.green],
+                              stops: [0.25, 1.0],
+                            ),
+                            backgroundColor: Colors.blueGrey[200],
+                          )
+                        : LinearPercentIndicator(
+                            percent: this.percent,
+                            linearGradient: LinearGradient(
+                              tileMode: TileMode.clamp,
+                              colors: [Colors.red, Colors.green, Colors.blue],
+                              stops: [0.25, 0.75, 1.0],
+                            ),
+                            backgroundColor: Colors.blueGrey[200],
+                          ),
               ],
             ),
             onTap: this.onTap,

@@ -52,7 +52,9 @@ class _OverviewState extends State<Overview> {
                   percent: _counter / 100,
                   circularStrokeCap: CircularStrokeCap.round,
                   backgroundColor: Colors.grey[300],
-                  progressColor: (_counter < 15) ? Colors.red : Colors.green,
+                  progressColor: (_counter < 15)
+                      ? Colors.red
+                      : (_counter < 75 ? Colors.green : Colors.blue),
                   lineWidth: 10.0,
                   center: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
