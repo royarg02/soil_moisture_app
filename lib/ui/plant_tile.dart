@@ -10,7 +10,7 @@ class PlantTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.12,
+      height: MediaQuery.of(context).size.height * 0.14,
       child: Theme(
         data: Theme.of(context).copyWith(
           cardTheme: Theme.of(context).cardTheme.copyWith(
