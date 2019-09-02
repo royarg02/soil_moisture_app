@@ -53,11 +53,17 @@ class PlantCard extends StatelessWidget {
                     ? LinearPercentIndicator(
                         percent: this.percent,
                         progressColor: Colors.red,
+                        animateFromLastPercent: true,
+                        animationDuration: 600,
+                        animation: true,
                         backgroundColor: Colors.blueGrey[200],
                       )
                     : percent < 0.75
                         ? LinearPercentIndicator(
                             percent: this.percent,
+                            animateFromLastPercent: true,
+                            animationDuration: 600,
+                            animation: true,
                             linearGradient: LinearGradient(
                               tileMode: TileMode.clamp,
                               colors: [Colors.red, Colors.green],
@@ -67,6 +73,9 @@ class PlantCard extends StatelessWidget {
                           )
                         : LinearPercentIndicator(
                             percent: this.percent,
+                            animateFromLastPercent: true,
+                            animationDuration: 600,
+                            animation: true,
                             linearGradient: LinearGradient(
                               tileMode: TileMode.clamp,
                               colors: [Colors.red, Colors.green, Colors.blue],
