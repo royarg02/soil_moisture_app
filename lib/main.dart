@@ -80,7 +80,7 @@ class _SplashAppState extends State<SplashApp> {
                         backgroundColor: appSecondaryDarkColor,
                         radius: MediaQuery.of(context).size.width * 0.2,
                         child: Image.asset(
-                          "assets/plant.png",
+                          "assets/images/plant.png",
                           width: MediaQuery.of(context).size.width * 0.2,
                           color: Colors.white,
                         ),
@@ -89,7 +89,7 @@ class _SplashAppState extends State<SplashApp> {
                         padding: EdgeInsets.only(top: 10.0),
                       ),
                       Text(
-                        "Soil App",
+                        widget.title,
                       )
                     ],
                   ),
