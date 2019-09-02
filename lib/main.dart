@@ -19,29 +19,28 @@ void main() {
     MaterialApp(
       title: title,
       debugShowCheckedModeBanner: false,
-      home: new HomeApp(title),
+      home: new SplashApp(title),
       theme: buildLightTheme(),
     ),
   );
 }
 
-class HomeApp extends StatefulWidget {
+class SplashApp extends StatefulWidget {
   final String title;
-  HomeApp(this.title);
+  SplashApp(this.title);
   @override
-  _HomeAppState createState() => _HomeAppState();
+  _SplashAppState createState() => _SplashAppState();
 }
 
-class _HomeAppState extends State<HomeApp> {
+class _SplashAppState extends State<SplashApp> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Timer(
-        Duration(seconds: 5),
-        () => Navigator.push(
+        Duration(seconds: 2),
+        () => Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => OriginalHome()),
+              MaterialPageRoute(builder: (context) => Home()),
             ));
   }
 
@@ -58,10 +57,6 @@ class _HomeAppState extends State<HomeApp> {
       ),
     );
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(widget.title),
-      //   centerTitle: true,
-      // ),
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
@@ -74,19 +69,18 @@ class _HomeAppState extends State<HomeApp> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Expanded(
-                flex: 2,
                 child: Container(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       CircleAvatar(
-                        backgroundColor: appSecondaryDarkColor,
-                        radius: 50.0,
-                        child: Icon(
-                          Icons.ac_unit,
-                          color: Colors.white,
-                        ),
-                      ),
+                          backgroundColor: appSecondaryDarkColor,
+                          radius: MediaQuery.of(context).size.width * 0.2,
+                          child: Image.asset(
+                            "assets/plant.png",
+                            width: MediaQuery.of(context).size.width * 0.2,
+                            color: Colors.white,
+                          )),
                       Padding(
                         padding: EdgeInsets.only(top: 10.0),
                       ),
@@ -99,64 +93,18 @@ class _HomeAppState extends State<HomeApp> {
               )
             ],
           ),
-          // _children[_currentIndex],
         ],
       ),
-      // bottomNavigationBar: new BottomNavigationBar(
-      //   onTap: onTabTapped,
-      //   type: BottomNavigationBarType.fixed,
-      //   currentIndex: 0,
-      //   items: [
-      //     BottomNavigationBarItem(
-      //       icon: Icon(
-      //         Icons.remove_red_eye,
-      //         color: _currentIndex == 0
-      //             ? appSecondaryDarkColor
-      //             : appPrimaryDarkColor,
-      //       ),
-      //       title: new Text(
-      //         "Overview",
-      //         style: TextStyle(
-      //           color: _currentIndex == 0
-      //               ? appSecondaryDarkColor
-      //               : appPrimaryDarkColor,
-      //         ),
-      //       ),
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(
-      //         Icons.linear_scale,
-      //         color: _currentIndex == 1
-      //             ? appSecondaryDarkColor
-      //             : appPrimaryDarkColor,
-      //       ),
-      //       title: new Text(
-      //         "Analysis",
-      //         style: TextStyle(
-      //           color: _currentIndex == 1
-      //               ? appSecondaryDarkColor
-      //               : appPrimaryDarkColor,
-      //         ),
-      //       ),
-      //     ),
-      //   ],
-      // ),
     );
   }
-
-  // void onTabTapped(int index) {
-  //   setState(() {
-  //     _currentIndex = index;
-  //   });
-  // }
 }
 
-class OriginalHome extends StatefulWidget {
+class Home extends StatefulWidget {
   @override
-  _OriginalHomeState createState() => _OriginalHomeState();
+  _HomeState createState() => _HomeState();
 }
 
-class _OriginalHomeState extends State<OriginalHome> {
+class _HomeState extends State<Home> {
   int _currentIndex = 0;
   final List<Widget> _children = [
     Overview(),
@@ -165,7 +113,7 @@ class _OriginalHomeState extends State<OriginalHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       appBar: AppBar(
+      appBar: AppBar(
         title: Text("Soli App"),
         centerTitle: true,
       ),

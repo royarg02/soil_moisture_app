@@ -144,12 +144,13 @@ class _OverviewState extends State<Overview> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.arrow_downward),
-        onPressed: (){
-          fetchTotalData().then((onValue){
+        onPressed: () {
+          fetchTotalData().then((onValue) {
             // The way to get the data
             // onValue['records'][index of the list]['moisutre']
             // onValue['records'][index of the list]['timestamp']
-            print(onValue['records'][0]['moisture']);    // remove after implementation.
+            print(onValue['records'][0]
+                ['moisture']); // remove after implementation.
           });
         },
       ),
