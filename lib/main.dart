@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:soil_moisture_app/ui/build_theme.dart';
 import 'package:soil_moisture_app/ui/colors.dart';
@@ -17,25 +19,31 @@ void main() {
     MaterialApp(
       title: title,
       debugShowCheckedModeBanner: false,
-      home: new HomeApp(title),
+      home: new SplashApp(title),
       theme: buildLightTheme(),
     ),
   );
 }
 
-class HomeApp extends StatefulWidget {
+class SplashApp extends StatefulWidget {
   final String title;
-  HomeApp(this.title);
+  SplashApp(this.title);
   @override
-  _HomeAppState createState() => _HomeAppState();
+  _SplashAppState createState() => _SplashAppState();
 }
 
-class _HomeAppState extends State<HomeApp> {
-  int _currentIndex = 0;
-  final List<Widget> _children = [
-    Overview(),
-    Analysis(),
-  ];
+class _SplashAppState extends State<SplashApp> {
+  @override
+  void initState() {
+    super.initState();
+    Timer(
+        Duration(seconds: 2),
+        () => Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => Home()),
+            ));
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
@@ -49,8 +57,64 @@ class _HomeAppState extends State<HomeApp> {
       ),
     );
     return Scaffold(
+      body: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+              color: appPrimaryColor,
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Expanded(
+                child: Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      CircleAvatar(
+                          backgroundColor: appSecondaryDarkColor,
+                          radius: MediaQuery.of(context).size.width * 0.2,
+                          child: Image.asset(
+                            "assets/plant.png",
+                            width: MediaQuery.of(context).size.width * 0.2,
+                            color: Colors.white,
+                          )),
+                      Padding(
+                        padding: EdgeInsets.only(top: 10.0),
+                      ),
+                      Text(
+                        "Soil App",
+                      )
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  int _currentIndex = 0;
+  final List<Widget> _children = [
+    Overview(),
+    Analysis(),
+  ];
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text("Soli App"),
         centerTitle: true,
       ),
       body: _children[_currentIndex],

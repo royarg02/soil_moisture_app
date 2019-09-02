@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:soil_moisture_app/ui/plant_card.dart';
 
+import 'package:soil_moisture_app/utils/gettingJson.dart';
+
 import 'dart:math' as math; //! Remove this when refresh implemented
 
 var rnd = math.Random(69); //! Remove this when refresh implemented
@@ -139,6 +141,18 @@ class _OverviewState extends State<Overview> {
             ),
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.arrow_downward),
+        onPressed: () {
+          fetchTotalData().then((onValue) {
+            // The way to get the data
+            // onValue['records'][index of the list]['moisutre']
+            // onValue['records'][index of the list]['timestamp']
+            print(onValue['records'][0]
+                ['moisture']); // remove after implementation.
+          });
+        },
       ),
     );
   }
