@@ -65,7 +65,7 @@ class _AnalysisState extends State<Analysis> {
                         ],
                       ),
                       Container(
-                        height: 275.0,
+                        height: MediaQuery.of(context).size.height * 0.3,
                         padding: EdgeInsets.symmetric(vertical: 3.0),
                         child: Theme(
                           data: Theme.of(context).copyWith(

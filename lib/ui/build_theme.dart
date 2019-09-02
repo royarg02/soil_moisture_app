@@ -11,7 +11,6 @@ ThemeData buildLightTheme() {
       color: appPrimaryDarkColor,
       textTheme: TextTheme(
         title: TextStyle(
-          fontSize: 28.0,
           color: appSecondaryDarkColor,
           fontFamily: 'Ocrb',
         ),

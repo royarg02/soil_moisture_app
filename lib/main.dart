@@ -37,11 +37,12 @@ class _SplashAppState extends State<SplashApp> {
   void initState() {
     super.initState();
     Timer(
-        Duration(seconds: 2),
-        () => Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => Home()),
-            ));
+      Duration(seconds: 2),
+      () => Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Home(widget.title)),
+      ),
+    );
   }
 
   @override
@@ -56,6 +57,8 @@ class _SplashAppState extends State<SplashApp> {
             Brightness.light, //bottom icons color
       ),
     );
+    print(
+        MediaQuery.of(context).size); //* Debug MediaQuery print, first is width
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -74,13 +77,14 @@ class _SplashAppState extends State<SplashApp> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       CircleAvatar(
-                          backgroundColor: appSecondaryDarkColor,
-                          radius: MediaQuery.of(context).size.width * 0.2,
-                          child: Image.asset(
-                            "assets/plant.png",
-                            width: MediaQuery.of(context).size.width * 0.2,
-                            color: Colors.white,
-                          )),
+                        backgroundColor: appSecondaryDarkColor,
+                        radius: MediaQuery.of(context).size.width * 0.2,
+                        child: Image.asset(
+                          "assets/plant.png",
+                          width: MediaQuery.of(context).size.width * 0.2,
+                          color: Colors.white,
+                        ),
+                      ),
                       Padding(
                         padding: EdgeInsets.only(top: 10.0),
                       ),
@@ -100,6 +104,8 @@ class _SplashAppState extends State<SplashApp> {
 }
 
 class Home extends StatefulWidget {
+  final String title;
+  Home(this.title);
   @override
   _HomeState createState() => _HomeState();
 }
@@ -114,7 +120,14 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Soli App"),
+        title: Text(
+          widget.title,
+          style: Theme.of(context)
+              .appBarTheme
+              .textTheme
+              .title
+              .copyWith(fontSize: MediaQuery.of(context).size.height * 0.03),
+        ),
         centerTitle: true,
       ),
       body: _children[_currentIndex],

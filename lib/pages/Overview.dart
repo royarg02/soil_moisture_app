@@ -43,7 +43,7 @@ class _OverviewState extends State<Overview> {
                   parent: BouncingScrollPhysics()),
               children: <Widget>[
                 SizedBox(
-                  height: 20.0,
+                  height: MediaQuery.of(context).size.height * 0.02,
                 ),
                 CircularPercentIndicator(
                   animationDuration: 600,
@@ -80,7 +80,7 @@ class _OverviewState extends State<Overview> {
                   ),
                 ),
                 SizedBox(
-                  height: 20.0,
+                  height: MediaQuery.of(context).size.height * 0.02,
                 ),
                 Card(
                   child: ListTile(
@@ -94,11 +94,11 @@ class _OverviewState extends State<Overview> {
                   ),
                 ),
                 SizedBox(
-                  height: 20.0,
+                  height: MediaQuery.of(context).size.height * 0.02,
                 ),
                 Wrap(
                   alignment: WrapAlignment.center,
-                  runSpacing: 5.0,
+                  runSpacing: MediaQuery.of(context).size.height * 0.005,
                   children: <Widget>[
                     PlantCard(
                       title: 'Plant 1',
@@ -145,13 +145,15 @@ class _OverviewState extends State<Overview> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.arrow_downward),
         onPressed: () {
-          fetchTotalData().then((onValue) {
-            // The way to get the data
-            // onValue['records'][index of the list]['moisutre']
-            // onValue['records'][index of the list]['timestamp']
-            print(onValue['records'][0]
-                ['moisture']); // remove after implementation.
-          });
+          fetchTotalData().then(
+            (onValue) {
+              // The way to get the data
+              // onValue['records'][index of the list]['moisutre']
+              // onValue['records'][index of the list]['timestamp']
+              print(onValue['records'][0]
+                  ['moisture']); // remove after implementation.
+            },
+          );
         },
       ),
     );

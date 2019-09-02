@@ -29,16 +29,19 @@ class PlantTile extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Column(
                       children: <Widget>[
-                        Text(
-                          this.label,
-                          style: Theme.of(context).textTheme.body2.copyWith(
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.03,
-                              ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 6.0, bottom: 8.0),
+                          child: Text(
+                            this.label,
+                            style: Theme.of(context).textTheme.body2.copyWith(
+                                  fontSize:
+                                      MediaQuery.of(context).size.width * 0.035,
+                                ),
+                          ),
                         ),
                         Container(
-                          height: 50.0,
-                          width: 50.0,
+                          height: MediaQuery.of(context).size.height * 0.04,
+                          width: MediaQuery.of(context).size.height * 0.04,
                           child: Placeholder(), //*- Image Asset here
                         ),
                       ],
@@ -49,33 +52,32 @@ class PlantTile extends StatelessWidget {
                     child: Text(
                       'Info here',
                       style: Theme.of(context).textTheme.caption.copyWith(
-                            fontSize: MediaQuery.of(context).size.width * 0.04,
+                            fontSize: MediaQuery.of(context).size.width * 0.045,
                           ),
                     ),
                   ),
                 ],
               ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: LinearPercentIndicator(
-                      percent: this.percent,
-                      progressColor:
-                          (percent <= crit) ? Colors.red : Colors.green[900],
-                      backgroundColor: Colors.blueGrey[200],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              Expanded(
+                child: LinearPercentIndicator(
+                  animateFromLastPercent: true,
+                  animationDuration: 600,
+                  animation: true,
+                  trailing: Padding(
+                    padding: const EdgeInsets.only(right: 6.0),
                     child: Text(
                       '${(this.percent * 100).toInt()}%',
                       style: Theme.of(context).textTheme.button.copyWith(
-                            fontSize: MediaQuery.of(context).size.width * 0.03,
+                            fontSize: MediaQuery.of(context).size.width * 0.035,
                           ),
                     ),
-                  )
-                ],
-              )
+                  ),
+                  percent: this.percent,
+                  progressColor:
+                      (percent <= crit) ? Colors.red : Colors.green[900],
+                  backgroundColor: Colors.blueGrey[200],
+                ),
+              ),
             ],
           ),
         ),
