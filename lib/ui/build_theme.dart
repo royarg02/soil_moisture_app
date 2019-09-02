@@ -24,6 +24,7 @@ ThemeData buildLightTheme() {
     textTheme: base.textTheme.copyWith(
       caption: TextStyle(
         color: appSecondaryDarkColor,
+        fontFamily: 'Ocrb',
       ),
     ),
     cardTheme: base.cardTheme.copyWith(
