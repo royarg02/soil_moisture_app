@@ -22,8 +22,8 @@ class PlantCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 150.0,
-      width: 150.0,
+      height: MediaQuery.of(context).size.height * 0.16,
+      width: MediaQuery.of(context).size.height * 0.16,
       child: Theme(
         data: Theme.of(context).copyWith(
           cardTheme: Theme.of(context).cardTheme.copyWith(
@@ -41,12 +41,12 @@ class PlantCard extends StatelessWidget {
                 Text(
                   this.title,
                   style: Theme.of(context).textTheme.body2.copyWith(
-                        fontSize: 18.0,
+                        fontSize: MediaQuery.of(context).size.width * 0.035,
                       ),
                 ),
                 Container(
-                  height: 50.0,
-                  width: 50.0,
+                  height: MediaQuery.of(context).size.height * 0.05,
+                  width: MediaQuery.of(context).size.height * 0.05,
                   child: Placeholder(), //* Place Image Asset Here
                 ),
                 percent < 0.35
