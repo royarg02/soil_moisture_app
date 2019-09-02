@@ -37,7 +37,8 @@ class _OverviewState extends State<Overview> {
           child: Padding(
             padding: const EdgeInsets.only(left: 15.0, right: 15.0),
             child: ListView(
-              physics: BouncingScrollPhysics(),
+              physics: AlwaysScrollableScrollPhysics(
+                  parent: BouncingScrollPhysics()),
               children: <Widget>[
                 SizedBox(
                   height: 20.0,
@@ -57,7 +58,6 @@ class _OverviewState extends State<Overview> {
                       Text(
                         '$_counter%',
                         style: Theme.of(context).textTheme.display4.copyWith(
-                              fontFamily: 'Ocrb',
                               fontSize:
                                   MediaQuery.of(context).size.width * 0.25,
                             ),
@@ -65,7 +65,6 @@ class _OverviewState extends State<Overview> {
                       Text(
                         'Current Moisture',
                         style: Theme.of(context).textTheme.display1.copyWith(
-                              fontFamily: 'Ocrb',
                               fontSize:
                                   MediaQuery.of(context).size.width * 0.035,
                             ),
@@ -73,7 +72,6 @@ class _OverviewState extends State<Overview> {
                       Text(
                         'Weather',
                         style: Theme.of(context).textTheme.body2.copyWith(
-                            fontFamily: 'Ocrb',
                             fontSize: MediaQuery.of(context).size.width * 0.05),
                       )
                     ],

@@ -33,33 +33,26 @@ class _AnalysisState extends State<Analysis> {
           child: Padding(
             padding: const EdgeInsets.only(left: 15.0, right: 15.0),
             child: ListView(
-              physics:
-                  BouncingScrollPhysics(), //* if the listview doesn't overflow, pull to refresh is impossible
+              physics: AlwaysScrollableScrollPhysics(
+                  parent: BouncingScrollPhysics()),
               children: <Widget>[
                 Row(
-                  //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.only(right: 5.0),
                       child: Text(
                         '$_counter%',
-                        style: Theme.of(context).textTheme.display3.copyWith(
-                              fontFamily: 'Ocrb',
-                            ),
+                        style: Theme.of(context).textTheme.display3,
                       ),
                     ),
                     Text(
                       'Today',
-                      style: Theme.of(context).textTheme.body2.copyWith(
-                            fontFamily: 'Ocrb',
-                          ),
+                      style: Theme.of(context).textTheme.body2,
                     ),
                     Spacer(),
                     Text(
                       'Weather',
-                      style: Theme.of(context).textTheme.display1.copyWith(
-                            fontFamily: 'Ocrb',
-                          ),
+                      style: Theme.of(context).textTheme.display1,
                     ),
                   ],
                 ),
@@ -82,7 +75,6 @@ class _AnalysisState extends State<Analysis> {
                     Text(
                       'Sun, 1 Sep',
                       style: Theme.of(context).textTheme.body2.copyWith(
-                            fontFamily: 'Ocrb',
                             fontSize: MediaQuery.of(context).size.width * 0.05,
                           ),
                     ),

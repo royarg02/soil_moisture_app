@@ -69,7 +69,6 @@ class _HomeAppState extends State<HomeApp> {
             title: new Text(
               "Overview",
               style: TextStyle(
-                fontFamily: 'Ocrb',
                 color: _currentIndex == 0
                     ? appSecondaryDarkColor
                     : appPrimaryDarkColor,
@@ -86,7 +85,6 @@ class _HomeAppState extends State<HomeApp> {
             title: new Text(
               "Analysis",
               style: TextStyle(
-                fontFamily: 'Ocrb',
                 color: _currentIndex == 1
                     ? appSecondaryDarkColor
                     : appPrimaryDarkColor,

@@ -2,14 +2,17 @@ import 'package:soil_moisture_app/ui/colors.dart';
 import 'package:flutter/material.dart';
 
 ThemeData buildLightTheme() {
-  ThemeData base = ThemeData.light();
+  ThemeData base = ThemeData(
+    brightness: Brightness.light,
+    fontFamily: 'Ocrb',
+  );
   return base.copyWith(
     appBarTheme: base.appBarTheme.copyWith(
       color: appPrimaryDarkColor,
       textTheme: TextTheme(
         title: TextStyle(
           fontSize: 28.0,
-          color: Colors.black,
+          color: appSecondaryDarkColor,
           fontFamily: 'Ocrb',
         ),
       ),
@@ -19,7 +22,7 @@ ThemeData buildLightTheme() {
     // sets the active color of the `BottomNavigationBar` if `Brightness` is light
     primaryColor: appSecondaryLightColor,
     textTheme: base.textTheme.copyWith(
-      caption: new TextStyle(
+      caption: TextStyle(
         color: appSecondaryDarkColor,
       ),
     ),

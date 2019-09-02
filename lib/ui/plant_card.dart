@@ -40,10 +40,9 @@ class PlantCard extends StatelessWidget {
               children: <Widget>[
                 Text(
                   this.title,
-                  style: Theme.of(context)
-                      .textTheme
-                      .body2
-                      .copyWith(fontFamily: 'Ocrb', fontSize: 18.0),
+                  style: Theme.of(context).textTheme.body2.copyWith(
+                        fontSize: 18.0,
+                      ),
                 ),
                 Container(
                   height: 50.0,
