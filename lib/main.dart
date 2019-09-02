@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:soil_moisture_app/ui/build_theme.dart';
 import 'package:soil_moisture_app/ui/colors.dart';
@@ -31,11 +33,18 @@ class HomeApp extends StatefulWidget {
 }
 
 class _HomeAppState extends State<HomeApp> {
-  int _currentIndex = 0;
-  final List<Widget> _children = [
-    Overview(),
-    Analysis(),
-  ];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Timer(
+        Duration(seconds: 5),
+        () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => OriginalHome()),
+            ));
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
@@ -49,8 +58,115 @@ class _HomeAppState extends State<HomeApp> {
       ),
     );
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
+      // appBar: AppBar(
+      //   title: Text(widget.title),
+      //   centerTitle: true,
+      // ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+              color: appPrimaryColor,
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Expanded(
+                flex: 2,
+                child: Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      CircleAvatar(
+                        backgroundColor: appSecondaryDarkColor,
+                        radius: 50.0,
+                        child: Icon(
+                          Icons.ac_unit,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 10.0),
+                      ),
+                      Text(
+                        "Soil App",
+                      )
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+          // _children[_currentIndex],
+        ],
+      ),
+      // bottomNavigationBar: new BottomNavigationBar(
+      //   onTap: onTabTapped,
+      //   type: BottomNavigationBarType.fixed,
+      //   currentIndex: 0,
+      //   items: [
+      //     BottomNavigationBarItem(
+      //       icon: Icon(
+      //         Icons.remove_red_eye,
+      //         color: _currentIndex == 0
+      //             ? appSecondaryDarkColor
+      //             : appPrimaryDarkColor,
+      //       ),
+      //       title: new Text(
+      //         "Overview",
+      //         style: TextStyle(
+      //           color: _currentIndex == 0
+      //               ? appSecondaryDarkColor
+      //               : appPrimaryDarkColor,
+      //         ),
+      //       ),
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(
+      //         Icons.linear_scale,
+      //         color: _currentIndex == 1
+      //             ? appSecondaryDarkColor
+      //             : appPrimaryDarkColor,
+      //       ),
+      //       title: new Text(
+      //         "Analysis",
+      //         style: TextStyle(
+      //           color: _currentIndex == 1
+      //               ? appSecondaryDarkColor
+      //               : appPrimaryDarkColor,
+      //         ),
+      //       ),
+      //     ),
+      //   ],
+      // ),
+    );
+  }
+
+  // void onTabTapped(int index) {
+  //   setState(() {
+  //     _currentIndex = index;
+  //   });
+  // }
+}
+
+class OriginalHome extends StatefulWidget {
+  @override
+  _OriginalHomeState createState() => _OriginalHomeState();
+}
+
+class _OriginalHomeState extends State<OriginalHome> {
+  int _currentIndex = 0;
+  final List<Widget> _children = [
+    Overview(),
+    Analysis(),
+  ];
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+       appBar: AppBar(
+        title: Text("Soli App"),
         centerTitle: true,
       ),
       body: _children[_currentIndex],
