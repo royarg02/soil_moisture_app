@@ -39,13 +39,9 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          widget.title,
-          style: Theme.of(context)
-              .appBarTheme
-              .textTheme
-              .title
-              .copyWith(fontSize: MediaQuery.of(context).size.height * 0.03),
+        title: Container(
+          margin: const EdgeInsets.all(6.0),
+          child: Image.asset('./assets/images/Soif_sk.png'),
         ),
         centerTitle: true,
       ),
@@ -58,32 +54,34 @@ class _HomeState extends State<Home> {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.remove_red_eye,
+              size: _currentIndex == 0 ? 32.0 : 24.0,
               color: _currentIndex == 0
-                  ? appSecondaryDarkColor
-                  : appPrimaryDarkColor,
+                  ? appPrimaryLightColor
+                  : appSecondaryDarkColor,
             ),
             title: new Text(
               "Overview",
               style: TextStyle(
                 color: _currentIndex == 0
-                    ? appSecondaryDarkColor
-                    : appPrimaryDarkColor,
+                    ? appPrimaryLightColor
+                    : appSecondaryDarkColor,
               ),
             ),
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.linear_scale,
+              size: _currentIndex == 1 ? 32.0 : 24.0,
               color: _currentIndex == 1
-                  ? appSecondaryDarkColor
-                  : appPrimaryDarkColor,
+                  ? appPrimaryLightColor
+                  : appSecondaryDarkColor,
             ),
             title: new Text(
               "Analysis",
               style: TextStyle(
                 color: _currentIndex == 1
-                    ? appSecondaryDarkColor
-                    : appPrimaryDarkColor,
+                    ? appPrimaryLightColor
+                    : appSecondaryDarkColor,
               ),
             ),
           ),

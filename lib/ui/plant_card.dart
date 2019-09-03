@@ -22,14 +22,12 @@ class PlantCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.16,
-      width: MediaQuery.of(context).size.height * 0.16,
       child: Theme(
         data: Theme.of(context).copyWith(
           cardTheme: Theme.of(context).cardTheme.copyWith(
                 color: (percent <= crit)
                     ? Colors.red[200]
-                    : appSecondaryLightColor,
+                    : appPrimaryLightColor,
               ),
         ),
         child: Card(

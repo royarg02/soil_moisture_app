@@ -17,6 +17,7 @@ class _OverviewState extends State<Overview> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
   int _counter = 0;
+  int count = 11;
 
 // * Dummy pull to refresh implemented, remove when done
   Future<void> dummyWait() {
@@ -98,47 +99,26 @@ class _OverviewState extends State<Overview> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.02,
                 ),
-                Wrap(
-                  alignment: WrapAlignment.center,
-                  runSpacing: MediaQuery.of(context).size.height * 0.005,
-                  children: <Widget>[
-                    PlantCard(
-                      title: 'Plant 1',
+                GridView.builder(
+                  physics: ScrollPhysics(),
+                  shrinkWrap: true,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing:
+                        MediaQuery.of(context).size.height * 0.005,
+                    mainAxisSpacing: MediaQuery.of(context).size.height * 0.005,
+                  ),
+                  itemCount: count,
+                  itemBuilder: (context, position) {
+                    return PlantCard(
+                      title: 'Plant $position',
                       img: '',
-                      onTap: () => print('Plant1'),
-                      crit: 0.15,
-                      percent: _counter / 100,
-                    ),
-                    PlantCard(
-                      title: 'Plant 2',
-                      img: '',
-                    ),
-                    PlantCard(
-                      title: 'Plant 3',
-                      img: '',
-                    ),
-                    PlantCard(
-                      title: 'Plant 4',
-                      img: '',
-                    ),
-                    PlantCard(
-                      title: 'Plant 5',
-                      img: '',
-                    ),
-                    PlantCard(
-                      title: 'Plant 6',
-                      img: '',
-                    ),
-                    PlantCard(
-                      title: 'Plant 7',
-                      img: '',
-                    ),
-                    PlantCard(
-                      title: 'Plant 8',
-                      img: '',
-                    ),
-                  ],
-                )
+                      percent: (_counter == 0)
+                          ? 0.15
+                          : rnd.nextInt(_counter) / _counter,
+                    );
+                  },
+                ),
               ],
             ),
           ),

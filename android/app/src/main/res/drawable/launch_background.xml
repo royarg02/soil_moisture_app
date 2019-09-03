@@ -7,6 +7,6 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@mipmap/splashimage" />
+            android:src="@mipmap/soif_launch" />
     </item>
 </layer-list>

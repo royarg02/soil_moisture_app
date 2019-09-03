@@ -16,7 +16,7 @@ class PlantTile extends StatelessWidget {
           cardTheme: Theme.of(context).cardTheme.copyWith(
                 color: (percent <= crit)
                     ? Colors.red[200]
-                    : appSecondaryLightColor,
+                    : appPrimaryLightColor,
               ),
         ),
         child: Card(
