@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:soil_moisture_app/ui/build_theme.dart';
 import 'package:soil_moisture_app/ui/colors.dart';
+import 'package:soil_moisture_app/utils/gettingJson.dart';
 // Pages Import
 
 import 'pages/Analysis.dart';
@@ -10,8 +11,13 @@ import 'dart:math' as math; //! Remove this when refresh implemented
 
 var rnd = math.Random(69); //! Remove this when refresh implemented
 
-void main() {
+void main() async {
   String title = 'Soil App';
+  await fetchTotalData().then((onValue) {
+    addPlantData(onValue['records']);
+  });
+  // * implement onError here
+  print('from main: ${data[0].moisture}');
   runApp(
     MaterialApp(
       title: title,

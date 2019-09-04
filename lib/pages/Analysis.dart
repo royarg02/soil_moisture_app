@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:soil_moisture_app/ui/colors.dart';
-import 'dart:math' as math;
+import 'package:soil_moisture_app/ui/analysis_graph.dart';
+import 'package:soil_moisture_app/utils/gettingJson.dart';
+import 'package:soil_moisture_app/utils/plant_class.dart';
 
-import 'package:soil_moisture_app/ui/plant_tile.dart'; //! Remove this when refresh implemented
-
-var rnd = math.Random(69); //! Remove this when refresh implemented
+import 'package:soil_moisture_app/ui/plant_card.dart';
 
 class Analysis extends StatefulWidget {
   @override
@@ -14,17 +13,34 @@ class Analysis extends StatefulWidget {
 class _AnalysisState extends State<Analysis> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
-  int _counter = 0;
-  int count = 11; //* Dummy count, remove when implemented
-  // * Dummy pull to refresh implemented, remove when done
-  Future<void> dummyWait() {
-    return Future.delayed(Duration(seconds: 4), null);
+
+  int _cardCount;
+  int _selCard;
+
+  void initState() {
+    super.initState();
+    _cardCount = data.length;
+    _selCard = 0;
   }
 
   Future<Null> _refresh() {
-    return dummyWait().then((_) {
-      setState(() => _counter = rnd.nextInt(101));
+    return fetchTotalData().then((onValue) {
+      addPlantData(onValue['records']);
+      print(data.length);
+      setState(() {
+        _cardCount = data.length;
+      });
+      for (Plant v in data) {
+        print('${data.indexOf(v)} -> ${v.moisture}');
+      }
     });
+  }
+
+  void _selectPlant(int value) {
+    setState(() {
+      _selCard = value;
+    });
+    print('Selected -> $_selCard');
   }
 
   @override
@@ -47,8 +63,15 @@ class _AnalysisState extends State<Analysis> {
                         Padding(
                           padding: const EdgeInsets.only(right: 5.0),
                           child: Text(
-                            '$_counter%',
-                            style: Theme.of(context).textTheme.display3,
+                            '${(data[_selCard].moisture * 100).toInt()}%',
+                            style:
+                                Theme.of(context).textTheme.display3.copyWith(
+                                      color: (data[_selCard].isCritical())
+                                          ? Colors.red
+                                          : (data[_selCard].isMoreThanNormal()
+                                              ? Colors.blue
+                                              : Colors.green),
+                                    ),
                           ),
                         ),
                         Text(
@@ -67,7 +90,7 @@ class _AnalysisState extends State<Analysis> {
                       padding: EdgeInsets.symmetric(vertical: 3.0),
                       child: Card(
                         child: Container(
-                          child: Placeholder(),
+                          child: SimpleTimeSeriesChart.withRandomData(),
                         ),
                       ),
                     ),
@@ -99,14 +122,14 @@ class _AnalysisState extends State<Analysis> {
                 ListView.builder(
                   shrinkWrap: true,
                   physics: ScrollPhysics(),
-                  itemCount: count,
-                  itemBuilder: (context, count) {
-                    return PlantTile(
-                      label: 'Plant $count',
-                      percent: (_counter == 0)
-                          ? 0.15
-                          : rnd.nextInt(_counter) /
-                              _counter, //* dummy values, remove when implemented
+                  itemCount: _cardCount,
+                  itemBuilder: (context, position) {
+                    return PlantCard(
+                      position: position,
+                      plant: data[position],
+                      selected: _selCard,
+                      onTap: () => _selectPlant(position),
+                      extended: true,
                     );
                   },
                 ),

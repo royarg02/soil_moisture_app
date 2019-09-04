@@ -3,10 +3,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:soil_moisture_app/ui/plant_card.dart';
 
 import 'package:soil_moisture_app/utils/gettingJson.dart';
-
-import 'dart:math' as math; //! Remove this when refresh implemented
-
-var rnd = math.Random(69); //! Remove this when refresh implemented
+import 'package:soil_moisture_app/utils/plant_class.dart';
 
 class Overview extends StatefulWidget {
   @override
@@ -16,18 +13,34 @@ class Overview extends StatefulWidget {
 class _OverviewState extends State<Overview> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
-  int _counter = 0;
-  int count = 11;
 
-// * Dummy pull to refresh implemented, remove when done
-  Future<void> dummyWait() {
-    return Future.delayed(Duration(seconds: 4), null);
+  int _cardCount;
+  int _selCard;
+
+  void initState() {
+    super.initState();
+    _cardCount = data.length;
+    _selCard = 0;
   }
 
   Future<Null> _refresh() {
-    return dummyWait().then((_) {
-      setState(() => _counter = rnd.nextInt(101));
+    return fetchTotalData().then((onValue) {
+      addPlantData(onValue['records']);
+      print(data.length);
+      setState(() {
+        _cardCount = data.length;
+      });
+      for (Plant v in data) {
+        print('${data.indexOf(v)} -> ${v.moisture}');
+      }
     });
+  }
+
+  void _selectPlant(int value) {
+    setState(() {
+      _selCard = value;
+    });
+    print('Selected -> $_selCard');
   }
 
   @override
@@ -48,27 +61,29 @@ class _OverviewState extends State<Overview> {
                 ),
                 CircularPercentIndicator(
                   animationDuration: 600,
-                  radius: MediaQuery.of(context).size.width * 0.6,
+                  radius: MediaQuery.of(context).size.width * 0.55,
                   animation: true,
-                  percent: _counter / 100,
+                  percent: data[_selCard].moisture,
                   circularStrokeCap: CircularStrokeCap.round,
                   backgroundColor: Colors.grey[300],
-                  progressColor: (_counter < 15)
+                  progressColor: (data[_selCard].isCritical())
                       ? Colors.red
-                      : (_counter < 75 ? Colors.green : Colors.blue),
+                      : (data[_selCard].isMoreThanNormal()
+                          ? Colors.blue
+                          : Colors.green),
                   lineWidth: 10.0,
                   center: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        '$_counter%',
+                        '${(data[_selCard].moisture * 100).toInt()}%',
                         style: Theme.of(context).textTheme.display4.copyWith(
                               fontSize:
                                   MediaQuery.of(context).size.width * 0.25,
                             ),
                       ),
                       Text(
-                        'Current Moisture',
+                        'Plant $_selCard',
                         style: Theme.of(context).textTheme.display1.copyWith(
                               fontSize:
                                   MediaQuery.of(context).size.width * 0.035,
@@ -86,14 +101,9 @@ class _OverviewState extends State<Overview> {
                   height: MediaQuery.of(context).size.height * 0.02,
                 ),
                 Card(
-                  child: ListTile(
-                    title: Text(
-                      'You have pushed the button this many times:(Some Info Here)',
-                    ),
-                    subtitle: Text(
-                      '$_counter',
-                      style: Theme.of(context).textTheme.display1,
-                    ),
+                  child: Text(
+                    'Some Info Here',
+                    style: Theme.of(context).textTheme.display2,
                   ),
                 ),
                 SizedBox(
@@ -108,14 +118,13 @@ class _OverviewState extends State<Overview> {
                         MediaQuery.of(context).size.height * 0.005,
                     mainAxisSpacing: MediaQuery.of(context).size.height * 0.005,
                   ),
-                  itemCount: count,
+                  itemCount: _cardCount,
                   itemBuilder: (context, position) {
                     return PlantCard(
-                      title: 'Plant $position',
-                      img: '',
-                      percent: (_counter == 0)
-                          ? 0.15
-                          : rnd.nextInt(_counter) / _counter,
+                      position: position,
+                      plant: data[position],
+                      selected: _selCard,
+                      onTap: () => _selectPlant(position),
                     );
                   },
                 ),
@@ -125,15 +134,22 @@ class _OverviewState extends State<Overview> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.arrow_downward),
+        child: Icon(Icons.refresh),
         onPressed: () {
           fetchTotalData().then(
             (onValue) {
+              addPlantData(onValue['records']);
+              print(data.length);
+              setState(() {
+                _cardCount = data.length;
+              });
+              for (Plant v in data) {
+                print('${data.indexOf(v)} -> ${v.moisture}');
+              }
               // The way to get the data
               // onValue['records'][index of the list]['moisutre']
               // onValue['records'][index of the list]['timestamp']
-              print(onValue['records'][0]
-                  ['moisture']); // remove after implementation.
+              //print(_data[0].moisture);
             },
           );
         },

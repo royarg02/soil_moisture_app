@@ -28,7 +28,7 @@ ThemeData buildLightTheme() {
     ),
     cardTheme: base.cardTheme.copyWith(
       color: appPrimaryLightColor,
-      elevation: 5.0,
+      elevation: 3.0,
     ),
     accentColor: appSecondaryColor,
     buttonTheme: base.buttonTheme.copyWith(buttonColor: appSecondaryColor),
