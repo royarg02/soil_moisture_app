@@ -44,7 +44,8 @@ class PlantCard extends StatelessWidget {
       child: Card(
         child: InkWell(
           child: (extended)
-              ? Container(
+              ? // ****** Square Small Card ******
+              Container(
                   height: MediaQuery.of(context).size.height * 0.14,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -130,7 +131,8 @@ class PlantCard extends StatelessWidget {
                     ],
                   ),
                 )
-              : Column(
+              : // ****** Rectangular Long Card ******
+              Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[

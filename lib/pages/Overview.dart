@@ -78,8 +78,7 @@ class _OverviewState extends State<Overview> {
                       Text(
                         '${(data[_selCard].moisture * 100).toInt()}%',
                         style: Theme.of(context).textTheme.display4.copyWith(
-                              fontSize:
-                                  MediaQuery.of(context).size.width * 0.25,
+                              fontSize: MediaQuery.of(context).size.width * 0.2,
                             ),
                       ),
                       Text(
@@ -92,7 +91,7 @@ class _OverviewState extends State<Overview> {
                       Text(
                         'Weather',
                         style: Theme.of(context).textTheme.body2.copyWith(
-                            fontSize: MediaQuery.of(context).size.width * 0.05),
+                            fontSize: MediaQuery.of(context).size.width * 0.04),
                       )
                     ],
                   ),

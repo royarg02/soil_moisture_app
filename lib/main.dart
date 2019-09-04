@@ -7,13 +7,10 @@ import 'package:soil_moisture_app/utils/gettingJson.dart';
 import 'pages/Analysis.dart';
 import 'pages/Overview.dart';
 
-import 'dart:math' as math; //! Remove this when refresh implemented
-
-var rnd = math.Random(69); //! Remove this when refresh implemented
-
 void main() async {
   String title = 'Soil App';
   await fetchTotalData().then((onValue) {
+    print(onValue);
     addPlantData(onValue['records']);
   });
   // * implement onError here
@@ -22,7 +19,10 @@ void main() async {
     MaterialApp(
       title: title,
       debugShowCheckedModeBanner: false,
-      home: new Home(title),
+      home: DefaultTabController(
+        length: 2,
+        child: Home(title),
+      ),
       theme: buildLightTheme(),
     ),
   );
@@ -36,7 +36,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _currentIndex = 0;
   final List<Widget> _children = [
     Overview(),
     Analysis(),
@@ -51,54 +50,28 @@ class _HomeState extends State<Home> {
         ),
         centerTitle: true,
       ),
-      body: _children[_currentIndex],
-      bottomNavigationBar: new BottomNavigationBar(
-        onTap: onTabTapped,
-        type: BottomNavigationBarType.fixed,
-        currentIndex: 0,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.remove_red_eye,
-              size: _currentIndex == 0 ? 32.0 : 24.0,
-              color: _currentIndex == 0
-                  ? appPrimaryLightColor
-                  : appSecondaryDarkColor,
-            ),
-            title: new Text(
-              "Overview",
-              style: TextStyle(
-                color: _currentIndex == 0
-                    ? appPrimaryLightColor
-                    : appSecondaryDarkColor,
-              ),
-            ),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.linear_scale,
-              size: _currentIndex == 1 ? 32.0 : 24.0,
-              color: _currentIndex == 1
-                  ? appPrimaryLightColor
-                  : appSecondaryDarkColor,
-            ),
-            title: new Text(
-              "Analysis",
-              style: TextStyle(
-                color: _currentIndex == 1
-                    ? appPrimaryLightColor
-                    : appSecondaryDarkColor,
-              ),
-            ),
-          ),
-        ],
+      body: TabBarView(
+        children: _children,
+        physics: NeverScrollableScrollPhysics(),
       ),
+      bottomNavigationBar: TabBar(
+        tabs: <Widget>[
+          Tab(
+            icon: Icon(Icons.remove_red_eye),
+            text: 'Overview',
+          ),
+          Tab(
+            icon: Icon(Icons.linear_scale),
+            text: 'Analysis',
+          )
+        ],
+        labelColor: appPrimaryLightColor,
+        unselectedLabelColor: appSecondaryDarkColor,
+        indicatorSize: TabBarIndicatorSize.label,
+        indicatorPadding: EdgeInsets.all(5.0),
+        indicatorColor: appSecondaryLightColor,
+      ),
+      backgroundColor: Theme.of(context).canvasColor,
     );
-  }
-
-  void onTabTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
   }
 }

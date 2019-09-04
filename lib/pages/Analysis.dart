@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soil_moisture_app/ui/analysis_graph.dart';
+import 'package:soil_moisture_app/ui/colors.dart';
 import 'package:soil_moisture_app/utils/gettingJson.dart';
 import 'package:soil_moisture_app/utils/plant_class.dart';
 
@@ -16,11 +17,20 @@ class _AnalysisState extends State<Analysis> {
 
   int _cardCount;
   int _selCard;
+  String _measure;
+
+  void _changeMeasure(String newMeasure) {
+    setState(() {
+      this._measure = newMeasure;
+    });
+    print(_measure);
+  }
 
   void initState() {
     super.initState();
     _cardCount = data.length;
     _selCard = 0;
+    _measure = 'Humidity';
   }
 
   Future<Null> _refresh() {
@@ -58,32 +68,63 @@ class _AnalysisState extends State<Analysis> {
               children: [
                 Column(
                   children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(right: 5.0),
-                          child: Text(
-                            '${(data[_selCard].moisture * 100).toInt()}%',
-                            style:
-                                Theme.of(context).textTheme.display3.copyWith(
-                                      color: (data[_selCard].isCritical())
-                                          ? Colors.red
-                                          : (data[_selCard].isMoreThanNormal()
-                                              ? Colors.blue
-                                              : Colors.green),
-                                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 5.0),
+                      decoration: BoxDecoration(
+                          color: appPrimaryColor,
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.circular(8.0),
+                          border: Border.all(
+                            color: appSecondaryLightColor,
+                            width: 3.0,
+                          )),
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: Text(
+                              '${(data[_selCard].moisture * 100).toInt()}%',
+                              style:
+                                  Theme.of(context).textTheme.display3.copyWith(
+                                        color: (data[_selCard].isCritical())
+                                            ? Colors.red
+                                            : (data[_selCard].isMoreThanNormal()
+                                                ? Colors.blue
+                                                : Colors.green),
+                                      ),
+                            ),
                           ),
-                        ),
-                        Text(
-                          'Today',
-                          style: Theme.of(context).textTheme.body2,
-                        ),
-                        Spacer(),
-                        Text(
-                          'Weather',
-                          style: Theme.of(context).textTheme.display1,
-                        ),
-                      ],
+                          DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              value: _measure,
+                              onChanged: _changeMeasure,
+                              items: <String>[
+                                'Moisture',
+                                'Humidity'
+                              ].map<DropdownMenuItem<String>>((String option) {
+                                return DropdownMenuItem<String>(
+                                    value: option,
+                                    child: new Text(
+                                      option,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .display1
+                                          .copyWith(fontSize: 24.0),
+                                    ));
+                              }).toList(),
+                            ),
+                          ),
+                          Text(
+                            'Today',
+                            style: Theme.of(context).textTheme.body2,
+                          ),
+                          Spacer(),
+                          Text(
+                            'Weather',
+                            style: Theme.of(context).textTheme.display1,
+                          ),
+                        ],
+                      ),
                     ),
                     Container(
                       height: MediaQuery.of(context).size.height * 0.3,
