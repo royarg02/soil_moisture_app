@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:soil_moisture_app/ui/build_theme.dart';
 import 'package:soil_moisture_app/ui/colors.dart';
 import 'package:soil_moisture_app/utils/gettingJson.dart';
+import 'package:soil_moisture_app/utils/all_data.dart';
 // Pages Import
 
 import 'pages/Analysis.dart';
@@ -9,12 +10,9 @@ import 'pages/Overview.dart';
 
 void main() async {
   String title = 'Soil App';
-  await fetchTotalData().then((onValue) {
-    print(onValue);
-    addPlantData(onValue['records']);
-  });
+  await fetchTotalData();
   // * implement onError here
-  print('from main: ${data[0].moisture}');
+  print('from main: ${plantList[0].getLastMoisture}');
   runApp(
     MaterialApp(
       title: title,

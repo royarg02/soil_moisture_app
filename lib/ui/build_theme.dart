@@ -16,9 +16,9 @@ ThemeData buildLightTheme() {
         ),
       ),
     ),
-    // sets the background color of the `BottomNavigationBar`
+    // * sets the background color of the `BottomNavigationBar`
     canvasColor: appSecondaryLightColor,
-    // sets the active color of the `BottomNavigationBar` if `Brightness` is light
+    // * sets the active color of the `BottomNavigationBar` if `Brightness` is light
     primaryColor: appSecondaryLightColor,
     textTheme: base.textTheme.copyWith(
       caption: TextStyle(

@@ -1,18 +1,25 @@
 class Plant {
-  String label = 'Plant';
-  double moisture;
-  double critMoisture = 0.35;
-  double moreThanNormal = 0.75;
-  String imgAsset = '';
+  String _label = 'Plant';
+  List<dynamic> _values;
+  double _critMoisture = 0.35;
+  double _moreThanNormal = 0.75;
+  String _imgAsset = '';
 
-  Plant(this.moisture);
-  Plant.fromJson(Map<String, dynamic> data) {
-    this.moisture = data['moisture'];
+  Plant(this._values);
+  Plant.createElement(this._label, this._values);
+
+  bool isCritical([double check]) {
+    check = (check == null)? this.getLastMoisture : check;
+    return (check <= this._critMoisture);
   }
 
-  bool isCritical() => (this.moisture <= this.critMoisture);
-  bool isMoreThanNormal() => (this.moisture >= this.moreThanNormal);
-}
+  bool isMoreThanNormal([double check]) {
+    check = (check == null)? this.getLastMoisture : check;
+    return (check >= this._moreThanNormal);
+  }
 
-// * IDEA 101
-// * Integrate crit, img defined in PlantCard here
+  String get getLabel => _label;
+  String get getImage => _imgAsset;
+  List<double> get getAllMoisture => _values;
+  double get getLastMoisture => (_values.isEmpty)? 0.5 : _values.last;
+}

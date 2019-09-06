@@ -3,7 +3,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:soil_moisture_app/ui/plant_card.dart';
 
 import 'package:soil_moisture_app/utils/gettingJson.dart';
-import 'package:soil_moisture_app/utils/plant_class.dart';
+import 'package:soil_moisture_app/utils/all_data.dart';
 
 class Overview extends StatefulWidget {
   @override
@@ -19,21 +19,14 @@ class _OverviewState extends State<Overview> {
 
   void initState() {
     super.initState();
-    _cardCount = data.length;
+    _cardCount = plantList.length;
     _selCard = 0;
   }
 
-  Future<Null> _refresh() {
-    return fetchTotalData().then((onValue) {
-      addPlantData(onValue['records']);
-      print(data.length);
-      setState(() {
-        _cardCount = data.length;
-      });
-      for (Plant v in data) {
-        print('${data.indexOf(v)} -> ${v.moisture}');
-      }
-    });
+  Future<Null> _refresh() async {
+     await fetchTotalData();
+    // * implement onError here
+    print('from main: ${plantList[0].getLastMoisture}');
   }
 
   void _selectPlant(int value) {
@@ -63,12 +56,12 @@ class _OverviewState extends State<Overview> {
                   animationDuration: 600,
                   radius: MediaQuery.of(context).size.width * 0.55,
                   animation: true,
-                  percent: data[_selCard].moisture,
+                  percent: plantList[_selCard].getLastMoisture,
                   circularStrokeCap: CircularStrokeCap.round,
                   backgroundColor: Colors.grey[300],
-                  progressColor: (data[_selCard].isCritical())
+                  progressColor: (plantList[_selCard].isCritical())
                       ? Colors.red
-                      : (data[_selCard].isMoreThanNormal()
+                      : (plantList[_selCard].isMoreThanNormal()
                           ? Colors.blue
                           : Colors.green),
                   lineWidth: 10.0,
@@ -76,7 +69,7 @@ class _OverviewState extends State<Overview> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        '${(data[_selCard].moisture * 100).toInt()}%',
+                        '${(plantList[_selCard].getLastMoisture * 100).toInt()}%',
                         style: Theme.of(context).textTheme.display4.copyWith(
                               fontSize: MediaQuery.of(context).size.width * 0.2,
                             ),
@@ -120,9 +113,8 @@ class _OverviewState extends State<Overview> {
                   itemCount: _cardCount,
                   itemBuilder: (context, position) {
                     return PlantCard(
-                      position: position,
-                      plant: data[position],
-                      selected: _selCard,
+                      plant: plantList[position],
+                      isSelected: position == _selCard,
                       onTap: () => _selectPlant(position),
                     );
                   },
@@ -131,27 +123,6 @@ class _OverviewState extends State<Overview> {
             ),
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.refresh),
-        onPressed: () {
-          fetchTotalData().then(
-            (onValue) {
-              addPlantData(onValue['records']);
-              print(data.length);
-              setState(() {
-                _cardCount = data.length;
-              });
-              for (Plant v in data) {
-                print('${data.indexOf(v)} -> ${v.moisture}');
-              }
-              // The way to get the data
-              // onValue['records'][index of the list]['moisutre']
-              // onValue['records'][index of the list]['timestamp']
-              //print(_data[0].moisture);
-            },
-          );
-        },
       ),
     );
   }

@@ -4,27 +4,20 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:soil_moisture_app/utils/plant_class.dart';
 
 class PlantCard extends StatelessWidget {
-  final int position;
   Function onTap;
-  final int selected;
   final Plant plant;
   bool isSelected;
   bool extended;
 
   PlantCard(
-      {this.position,
-      this.plant,
+      {this.plant,
       this.onTap,
-      this.selected,
+      this.isSelected,
       this.extended = false}) {
-    isSelected = (this.position == this.selected);
     if (this.onTap == null) {
-      this.onTap = () => print('Plant $position');
+      this.onTap = () => print(plant.getLabel);
     }
   }
-
-// * IDEA 101
-// * Instead pass an object of Plant having percent(moisture), img, crit
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +37,7 @@ class PlantCard extends StatelessWidget {
       child: Card(
         child: InkWell(
           child: (extended)
-              ? // ****** Square Small Card ******
+              ? // ****** Rectangular Long Card ******
               Container(
                   height: MediaQuery.of(context).size.height * 0.14,
                   child: Column(
@@ -61,7 +54,7 @@ class PlantCard extends StatelessWidget {
                                   padding: const EdgeInsets.only(
                                       top: 6.0, bottom: 8.0),
                                   child: Text(
-                                    '${this.plant.label} ${this.position}',
+                                    '${this.plant.getLabel}',
                                     style: Theme.of(context)
                                         .textTheme
                                         .body2
@@ -110,7 +103,7 @@ class PlantCard extends StatelessWidget {
                           trailing: Padding(
                             padding: const EdgeInsets.only(right: 6.0),
                             child: Text(
-                              '${(this.plant.moisture * 100).toInt()}%',
+                              '${(this.plant.getLastMoisture * 100).toInt()}%',
                               style:
                                   Theme.of(context).textTheme.button.copyWith(
                                         fontSize:
@@ -119,7 +112,7 @@ class PlantCard extends StatelessWidget {
                                       ),
                             ),
                           ),
-                          percent: this.plant.moisture,
+                          percent: this.plant.getLastMoisture,
                           progressColor: plant.isCritical()
                               ? Colors.red
                               : plant.isMoreThanNormal()
@@ -131,13 +124,13 @@ class PlantCard extends StatelessWidget {
                     ],
                   ),
                 )
-              : // ****** Rectangular Long Card ******
+              : // ****** Square Small Card ******
               Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      '${this.plant.label} $position',
+                      '${this.plant.getLabel}',
                       style: Theme.of(context).textTheme.body2.copyWith(
                             fontSize: (isSelected)
                                 ? MediaQuery.of(context).size.width * 0.05
@@ -150,7 +143,7 @@ class PlantCard extends StatelessWidget {
                       child: Placeholder(), //* Place Image Asset Here
                     ),
                     LinearPercentIndicator(
-                      percent: this.plant.moisture,
+                      percent: this.plant.getLastMoisture,
                       progressColor: plant.isCritical()
                           ? Colors.red
                           : plant.isMoreThanNormal()
