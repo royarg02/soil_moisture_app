@@ -7,5 +7,5 @@ class Humidity {
     this._values = data['humidity'];
   }
 
-  List<int> get getHumidity => _values;
+  List<dynamic> get getHumidity => _values;
 }

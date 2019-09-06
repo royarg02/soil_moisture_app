@@ -1,120 +1,65 @@
-// Copyright 2018 the Charts project authors. Please see the AUTHORS file
-// for details.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/// Timeseries chart example
-// EXCLUDE_FROM_GALLERY_DOCS_START
-import 'dart:math';
-// EXCLUDE_FROM_GALLERY_DOCS_END
-import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:soil_moisture_app/ui/colors.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter/material.dart';
+import 'package:soil_moisture_app/utils/all_data.dart';
+import 'package:intl/intl.dart';
 
-class SimpleTimeSeriesChart extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
-
-  SimpleTimeSeriesChart(this.seriesList, {this.animate});
-
-  /// Creates a [TimeSeriesChart] with sample data and no transition.
-  factory SimpleTimeSeriesChart.withSampleData() {
-    return new SimpleTimeSeriesChart(
-      _createSampleData(),
-      // Disable animations for image tests.
-      animate: false,
-    );
-  }
-
-  // EXCLUDE_FROM_GALLERY_DOCS_START
-  // This section is excluded from being copied to the gallery.
-  // It is used for creating random series data to demonstrate animation in
-  // the example app only.
-  factory SimpleTimeSeriesChart.withRandomData() {
-    return new SimpleTimeSeriesChart(_createRandomData());
-  }
-
-  /// Create random data.
-  static List<charts.Series<TimeSeriesSales, DateTime>> _createRandomData() {
-    final random = new Random();
-
-    final data = [
-      new TimeSeriesSales(
-          new DateTime(2017, 9, 18, 23, 00), random.nextInt(100)),
-      new TimeSeriesSales(
-          new DateTime(2017, 9, 19, 04, 00), random.nextInt(100)),
-      new TimeSeriesSales(
-          new DateTime(2017, 9, 19, 07, 30), random.nextInt(100)),
-      new TimeSeriesSales(
-          new DateTime(2017, 9, 19, 10, 00), random.nextInt(100)),
-      new TimeSeriesSales(
-          new DateTime(2017, 9, 19, 13, 40), random.nextInt(100)),
-      new TimeSeriesSales(
-          new DateTime(2017, 9, 19, 15, 50), random.nextInt(100)),
-      new TimeSeriesSales(
-          new DateTime(2017, 9, 19, 18, 00), random.nextInt(100)),
-    ];
-
-    return [
-      new charts.Series<TimeSeriesSales, DateTime>(
-        id: 'Sales',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (TimeSeriesSales sales, _) => sales.time,
-        measureFn: (TimeSeriesSales sales, _) => sales.sales,
-        data: data,
-      )
-    ];
-  }
-  // EXCLUDE_FROM_GALLERY_DOCS_END
-
-  @override
-  Widget build(BuildContext context) {
-    return new charts.TimeSeriesChart(
-      seriesList,
-      animate: animate,
-      // Optionally pass in a [DateTimeFactory] used by the chart. The factory
-      // should create the same type of [DateTime] as the data provided. If none
-      // specified, the default creates local date time.
-      dateTimeFactory: const charts.LocalDateTimeFactory(),
-      defaultRenderer: charts.LineRendererConfig(includePoints: true),
-      behaviors: [charts.PanAndZoomBehavior()],
-    );
-  }
-
-  /// Create one series with sample hard coded data.
-  static List<charts.Series<TimeSeriesSales, DateTime>> _createSampleData() {
-    final data = [
-      new TimeSeriesSales(new DateTime(2017, 9, 19), 5),
-      new TimeSeriesSales(new DateTime(2017, 9, 26), 25),
-      new TimeSeriesSales(new DateTime(2017, 10, 3), 100),
-      new TimeSeriesSales(new DateTime(2017, 10, 10), 75),
-    ];
-
-    return [
-      new charts.Series<TimeSeriesSales, DateTime>(
-        id: 'Sales',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (TimeSeriesSales sales, _) => sales.time,
-        measureFn: (TimeSeriesSales sales, _) => sales.sales,
-        data: data,
-      )
-    ];
-  }
+SfCartesianChart moistureChart() {
+  return SfCartesianChart(
+    zoomPanBehavior: ZoomPanBehavior(
+      enablePinching: true,
+      enablePanning: true,
+      zoomMode: ZoomMode.x,
+    ),
+    plotAreaBorderWidth: 0,
+    primaryXAxis: DateTimeAxis(
+      axisLine: AxisLine(width: 1),
+      interval: 3,
+      dateFormat: DateFormat.jm(),
+      majorGridLines: MajorGridLines(width: 1)
+    ),
+    primaryYAxis: NumericAxis(
+      minimum: 0,
+      maximum: 100,
+      interval: 20,
+      axisLine: AxisLine(width: 1),
+      labelFormat: '{value}%',
+      isVisible: true,
+    ),
+    series: getLineSeries(),
+    tooltipBehavior: TooltipBehavior(
+      enable: true,
+      animationDuration: 200,
+      canShowMarker: false,
+      header: '',
+    ),
+  );
 }
 
-/// Sample time series data type.
-class TimeSeriesSales {
-  final DateTime time;
-  final int sales;
+List<LineSeries<dynamic, DateTime>> getLineSeries() {
+  List<_ChartData> data = [];
+  for (var i = 0; i < plantList[1].getAllMoisture.length; ++i) {
+    data.add(_ChartData(plantList[1].getAllMoisture[i], DateTime(2019, 09, 05, i)));
+  }
+  return <LineSeries<_ChartData, DateTime>>[
+    LineSeries<_ChartData, DateTime>(
+      enableTooltip: true,
+      animationDuration: 150,
+      dataSource: data,
+      xValueMapper: (point, _) {
+        print(point.index);
+        return point.index;
+      },
+      yValueMapper: (point, _) => point.value * 100,
+      pointColorMapper: (x, _) => appSecondaryDarkColor,
+      width: 2,
+      markerSettings: MarkerSettings(isVisible: true,color: appPrimaryLightColor),
+    ),
+  ];
+}
 
-  TimeSeriesSales(this.time, this.sales);
+class _ChartData {
+  dynamic value;
+  DateTime index;
+  _ChartData(this.value, this.index);
 }

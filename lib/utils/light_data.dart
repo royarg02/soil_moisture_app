@@ -7,5 +7,5 @@ class Light{
     this._values = data['light'];
   }
   
-  List<double> get getLight => _values;
+  List<dynamic> get getLight => _values;
 }

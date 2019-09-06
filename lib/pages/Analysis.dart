@@ -126,11 +126,11 @@ class _AnalysisState extends State<Analysis> {
                       ],
                     ),
                     Container(
-                      height: MediaQuery.of(context).size.height * 0.3,
+                      height: MediaQuery.of(context).size.height * 0.25,
                       padding: EdgeInsets.symmetric(vertical: 3.0),
                       child: Card(
                         child: Container(
-                          child: SimpleTimeSeriesChart.withRandomData(),
+                          child: moistureChart(),
                         ),
                       ),
                     ),

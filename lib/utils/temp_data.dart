@@ -7,5 +7,5 @@ class Temp{
     this._values = data['temparature'];
   }
   
-  List<int> get getTemp => _values;
+  List<dynamic> get getTemp => _values;
 }

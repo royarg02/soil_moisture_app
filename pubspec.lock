@@ -22,20 +22,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.2"
-  charts_common:
-    dependency: transitive
-    description:
-      name: charts_common
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.8.0"
-  charts_flutter:
-    dependency: "direct main"
-    description:
-      name: charts_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.8.0"
   collection:
     dependency: transitive
     description:
@@ -81,13 +67,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.15.8"
-  logging:
-    dependency: transitive
-    description:
-      name: logging
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.11.3+2"
   matcher:
     dependency: transitive
     description:
@@ -163,6 +142,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
+  syncfusion_flutter_charts:
+    dependency: "direct main"
+    description:
+      name: syncfusion_flutter_charts
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0-beta.4"
   term_glyph:
     dependency: transitive
     description:

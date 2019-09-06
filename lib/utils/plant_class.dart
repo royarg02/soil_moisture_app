@@ -20,6 +20,6 @@ class Plant {
 
   String get getLabel => _label;
   String get getImage => _imgAsset;
-  List<double> get getAllMoisture => _values;
+  List<dynamic> get getAllMoisture => _values;
   double get getLastMoisture => (_values.isEmpty)? 0.5 : _values.last;
 }
