@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:soil_moisture_app/pages/ThresholdPump.dart';
 import 'package:soil_moisture_app/ui/build_theme.dart';
 import 'package:soil_moisture_app/ui/colors.dart';
 import 'package:soil_moisture_app/utils/gettingJson.dart';
@@ -25,6 +26,15 @@ void main() async {
     ),
   );
 }
+
+//To check the Slider Page
+// void main(){
+//   runApp(
+//     new MaterialApp(
+//       home: ThresholdPump(),
+//     ),
+//   );
+// }
 
 class Home extends StatefulWidget {
   final String title;
