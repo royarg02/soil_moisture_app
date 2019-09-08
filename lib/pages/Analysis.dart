@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'package:soil_moisture_app/ui/analysis_graph.dart';
 import 'package:soil_moisture_app/ui/colors.dart';
+import 'package:soil_moisture_app/ui/drawer.dart';
+import 'package:soil_moisture_app/utils/displayError.dart';
 import 'package:soil_moisture_app/utils/gettingJson.dart';
 import 'package:soil_moisture_app/utils/all_data.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:soil_moisture_app/ui/plant_card.dart';
 
@@ -18,11 +22,27 @@ class _AnalysisState extends State<Analysis> {
   int _cardCount;
   int _selCard;
   String _measure;
+  List<dynamic> _chartsData;
 
   void _changeMeasure(String newMeasure) {
     setState(() {
       this._measure = newMeasure;
+      switch (_measure) {
+        case 'Humidity':
+          _chartsData = dayHumid.getHumidity;
+          break;
+        case 'Light':
+          _chartsData = dayLight.getLight;
+          break;
+        case 'Temp':
+          _chartsData = dayTemp.getTemp;
+          break;
+        case 'Moisture':
+        _chartsData = plantList[_selCard].getAllMoisture;
+        break;
+      }
     });
+    print(_chartsData);
     print(_measure);
   }
 
@@ -30,7 +50,8 @@ class _AnalysisState extends State<Analysis> {
     super.initState();
     _cardCount = plantList.length;
     _selCard = 0;
-    _measure = 'Humidity';
+    _chartsData = plantList[_selCard].getAllMoisture;
+    _measure = 'Moisture';
   }
 
   Future<Null> _refresh() async {
@@ -44,11 +65,20 @@ class _AnalysisState extends State<Analysis> {
       _selCard = value;
     });
     print('Selected -> $_selCard');
+    _changeMeasure(_measure);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: SoifDrawer(),
+      appBar: AppBar(
+        title: Container(
+          margin: const EdgeInsets.all(6.0),
+          child: Image.asset('./assets/images/Soif_sk.png'),
+        ),
+        centerTitle: true,
+      ),
       body: RefreshIndicator(
         key: _refreshIndicatorKey,
         onRefresh: _refresh,
@@ -62,7 +92,7 @@ class _AnalysisState extends State<Analysis> {
                 Column(
                   children: <Widget>[
                     Container(
-                      margin: EdgeInsets.only(top: 5.0),
+                      margin: EdgeInsets.symmetric(vertical: 20.0),
                       padding: EdgeInsets.symmetric(horizontal: 5.0),
                       child: Theme(
                         data: Theme.of(context).copyWith(
@@ -72,7 +102,7 @@ class _AnalysisState extends State<Analysis> {
                           child: DropdownButton<String>(
                             value: _measure,
                             onChanged: _changeMeasure,
-                            items: <String>['Moisture', 'Humidity']
+                            items: <String>['Moisture','Light', 'Humidity', 'Temp']
                                 .map<DropdownMenuItem<String>>((String option) {
                               return DropdownMenuItem<String>(
                                   value: option,
@@ -115,25 +145,29 @@ class _AnalysisState extends State<Analysis> {
                           ),
                         ),
                         Text(
-                          'Today',
+                          'Current Moisture',
                           style: Theme.of(context).textTheme.body2,
                         ),
                         Spacer(),
-                        Text(
-                          'Weather',
-                          style: Theme.of(context).textTheme.display1,
-                        ),
                       ],
                     ),
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.25,
-                      padding: EdgeInsets.symmetric(vertical: 3.0),
-                      child: Card(
-                        child: Container(
-                          child: moistureChart(),
-                        ),
-                      ),
-                    ),
+                    (plantList[0].getAllMoisture == null ||
+                            plantList[1].getAllMoisture == null ||
+                            dayLight.getLight == null ||
+                            dayTemp.getTemp == null ||
+                            dayHumid.getHumidity == null)
+                        ? ShowError()
+                        : Container(
+                            height: MediaQuery.of(context).size.height * 0.35,
+                            padding: EdgeInsets.symmetric(vertical: 3.0),
+                            child: Card(
+                              child: Container(
+                                child: (_chartsData == null)
+                                    ? Container()
+                                    : displayChart(_chartsData, _measure),
+                              ),
+                            ),
+                          ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -142,7 +176,7 @@ class _AnalysisState extends State<Analysis> {
                           onPressed: null,
                         ),
                         Text(
-                          'Sun, 1 Sep',
+                          'Thu, 5 Sep',
                           style: Theme.of(context).textTheme.body2.copyWith(
                                 fontSize:
                                     MediaQuery.of(context).size.width * 0.05,
@@ -159,16 +193,21 @@ class _AnalysisState extends State<Analysis> {
                     ),
                   ],
                 ),
-                ListView.builder(
+                GridView.builder(
                   shrinkWrap: true,
                   physics: ScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing:
+                        MediaQuery.of(context).size.height * 0.005,
+                    mainAxisSpacing: MediaQuery.of(context).size.height * 0.005,
+                  ),
                   itemCount: _cardCount,
                   itemBuilder: (context, position) {
                     return PlantCard(
                       plant: plantList[position],
                       isSelected: (position == _selCard),
                       onTap: () => _selectPlant(position),
-                      extended: true,
                     );
                   },
                 ),

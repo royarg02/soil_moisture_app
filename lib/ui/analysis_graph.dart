@@ -3,8 +3,10 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter/material.dart';
 import 'package:soil_moisture_app/utils/all_data.dart';
 import 'package:intl/intl.dart';
+import 'dart:math';
 
-SfCartesianChart moistureChart() {
+SfCartesianChart displayChart(List<dynamic> data, String graph) {
+  print(data);
   return SfCartesianChart(
     zoomPanBehavior: ZoomPanBehavior(
       enablePinching: true,
@@ -16,17 +18,25 @@ SfCartesianChart moistureChart() {
       axisLine: AxisLine(width: 1),
       interval: 3,
       dateFormat: DateFormat.jm(),
-      majorGridLines: MajorGridLines(width: 1)
+      majorGridLines: MajorGridLines(width: 1),
+      labelStyle: ChartTextStyle(
+        fontFamily: 'Ocrb',
+      ),
     ),
     primaryYAxis: NumericAxis(
-      minimum: 0,
-      maximum: 100,
+      minimum: (graph == 'Light')? -100 : 0,
+      maximum: (graph == 'Light')? 1400 : 100,
       interval: 20,
       axisLine: AxisLine(width: 1),
-      labelFormat: '{value}%',
+      labelFormat: (graph == 'Temp')
+          ? '{value}°C'
+          : (graph == 'Light') ? '{value} Lux' : '{value}%',
       isVisible: true,
+      labelStyle: ChartTextStyle(
+        fontFamily: 'Ocrb',
+      ),
     ),
-    series: getLineSeries(),
+    series: getLineSeries(data, graph),
     tooltipBehavior: TooltipBehavior(
       enable: true,
       animationDuration: 200,
@@ -36,10 +46,15 @@ SfCartesianChart moistureChart() {
   );
 }
 
-List<LineSeries<dynamic, DateTime>> getLineSeries() {
+List<LineSeries<dynamic, DateTime>> getLineSeries(
+    List<dynamic> chartData, String graph) {
+  print(chartData);
+  //chartData = dayLight.getLight;
   List<_ChartData> data = [];
-  for (var i = 0; i < plantList[1].getAllMoisture.length; ++i) {
-    data.add(_ChartData(plantList[1].getAllMoisture[i], DateTime(2019, 09, 05, i)));
+  if (plantList != null) {
+    for (var i = 0; i < chartData.length; ++i) {
+      data.add(_ChartData(chartData[i], DateTime(2019, 09, 05, i)));
+    }
   }
   return <LineSeries<_ChartData, DateTime>>[
     LineSeries<_ChartData, DateTime>(
@@ -47,13 +62,16 @@ List<LineSeries<dynamic, DateTime>> getLineSeries() {
       animationDuration: 150,
       dataSource: data,
       xValueMapper: (point, _) {
-        print(point.index);
+        //print(point.index);
         return point.index;
       },
-      yValueMapper: (point, _) => point.value * 100,
-      pointColorMapper: (x, _) => appSecondaryDarkColor,
+      yValueMapper: (point, _) {
+        return (graph == 'Moisture') ? point.value * 100 : point.value;
+      },
+      pointColorMapper: (x, _) => appSecondaryColor,
       width: 2,
-      markerSettings: MarkerSettings(isVisible: true,color: appPrimaryLightColor),
+      markerSettings:
+          MarkerSettings(isVisible: true, color: appPrimaryLightColor),
     ),
   ];
 }
