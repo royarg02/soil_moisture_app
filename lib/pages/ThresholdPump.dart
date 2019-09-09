@@ -120,6 +120,7 @@ class _ThresholdPumpState extends State<ThresholdPump> {
                       .then((_) {
                     print("${_.statusCode}");
                     print("${json.decode(_.body)}");
+                    status = json.decode(_.body);
                     //print(status['success'].runtimeType);
                     if (status['success']){
                       _showStatus(context, 'Threshhold successfully set.');
