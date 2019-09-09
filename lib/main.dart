@@ -14,26 +14,29 @@ import 'pages/Overview.dart';
 void main() async {
   String title = 'Soil App';
   // * Latest data fetch
-  addLatestData().then(
-    (_) => runApp(
+  addLatestData().then((_) {
+    print('Running App');
+    runApp(
       MaterialApp(
         title: title,
         debugShowCheckedModeBanner: false,
         home: Home(title),
         theme: buildLightTheme(),
       ),
-    ),
-    // onError: (_) => runApp(
-    //   MaterialApp(
-    //     title: 'Error',
-    //     debugShowCheckedModeBanner: false,
-    //     home: Scaffold(
-    //       body: ShowError(),
-    //     ),
-    //   ),
-    // ),
-  );
+    );
+  }
+      // onError: (_) => runApp(
+      //   MaterialApp(
+      //     title: 'Error',
+      //     debugShowCheckedModeBanner: false,
+      //     home: Scaffold(
+      //       body: ShowError(),
+      //     ),
+      //   ),
+      // ),
+      );
   fetchTotalData();
+  //print('Fetch data');
   // * implement onError here
   //print('from main: ${plantList[0].getLastMoisture}');
   // runApp(

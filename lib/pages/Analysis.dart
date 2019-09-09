@@ -55,9 +55,12 @@ class _AnalysisState extends State<Analysis> {
   }
 
   Future<Null> _refresh() async {
-    await fetchTotalData();
+    await refreshTotalData();
     // * implement onError here
     print('from main: ${plantList[0].getLastMoisture}');
+    setState(() {
+     _chartsData = plantList[_selCard].getAllMoisture; 
+    });
   }
 
   void _selectPlant(int value) {

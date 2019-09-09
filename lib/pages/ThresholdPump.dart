@@ -15,6 +15,7 @@ class ThresholdPump extends StatefulWidget {
 class _ThresholdPumpState extends State<ThresholdPump> {
   num val0 = 0.0;
   num val1 = 0.0;
+  String status = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,6 +120,12 @@ class _ThresholdPumpState extends State<ThresholdPump> {
                       .then((_) {
                     print("${_.statusCode}");
                     print("${json.decode(_.body)}");
+                    status = "${json.decode(_.body)}";
+                    if (status == '{success: true}') {
+                      _showStatus(context, 'Threshhold successfully set.');
+                    } else {
+                      _showStatus(context, 'Error Occurred');
+                    }
                   });
                 },
                 color: appSecondaryDarkColor,
@@ -128,5 +135,27 @@ class _ThresholdPumpState extends State<ThresholdPump> {
         ),
       ),
     );
+  }
+
+  void _showStatus(BuildContext context, String status) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              title: Text('Threshhold Set Status'),
+              actions: <Widget>[
+                FlatButton(
+                  color: appSecondaryDarkColor,
+                  textTheme: ButtonTextTheme.primary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(14.0)),
+                  ),
+                  child: Text('OK'),
+                  onPressed: () => Navigator.of(context).pop(),
+                  padding: EdgeInsets.all(12.0),
+                )
+              ],
+              content: Text(status));
+        });
   }
 }

@@ -48,9 +48,9 @@ class PlantCard extends StatelessWidget {
                     ),
               ),
               Container(
-                height: MediaQuery.of(context).size.height * 0.05,
-                width: MediaQuery.of(context).size.height * 0.05,
-                child: Placeholder(), //* Place Image Asset Here
+                height: MediaQuery.of(context).size.height * 0.07,
+                width: MediaQuery.of(context).size.height * 0.07,
+                child: Image.asset('./assets/images/plant.png'), //* Place Image Asset Here
               ),
               LinearPercentIndicator(
                 percent: this.plant.getLastMoisture,
