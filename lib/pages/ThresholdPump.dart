@@ -15,7 +15,7 @@ class ThresholdPump extends StatefulWidget {
 class _ThresholdPumpState extends State<ThresholdPump> {
   num val0 = 0.0;
   num val1 = 0.0;
-  String status = '';
+  Map<String,dynamic> status;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -120,8 +120,8 @@ class _ThresholdPumpState extends State<ThresholdPump> {
                       .then((_) {
                     print("${_.statusCode}");
                     print("${json.decode(_.body)}");
-                    status = "${json.decode(_.body)}";
-                    if (status == '{success: true}') {
+                    //print(status['success'].runtimeType);
+                    if (status['success']){
                       _showStatus(context, 'Threshhold successfully set.');
                     } else {
                       _showStatus(context, 'Error Occurred');
