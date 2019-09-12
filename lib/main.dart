@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // * For SystemChrome
 
 // * external packages import
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -56,6 +57,13 @@ class Home extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.black, //top bar color
+      systemNavigationBarColor: Colors.black, //bottom bar color
+
+      statusBarIconBrightness: Brightness.light, //top icon color
+      systemNavigationBarIconBrightness: Brightness.light, //bottom icons color
+    ));
     return Scaffold(
       appBar: AppBar(
         title: Container(
