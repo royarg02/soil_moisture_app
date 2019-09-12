@@ -1,5 +1,7 @@
-import 'package:soil_moisture_app/ui/colors.dart';
 import 'package:flutter/material.dart';
+
+// * ui import
+import 'package:soil_moisture_app/ui/colors.dart';
 
 ThemeData buildLightTheme() {
   ThemeData base = ThemeData(
@@ -29,6 +31,9 @@ ThemeData buildLightTheme() {
     cardTheme: base.cardTheme.copyWith(
       color: appPrimaryLightColor,
       elevation: 3.0,
+    ),
+    snackBarTheme: base.snackBarTheme.copyWith(
+      backgroundColor: appSecondaryColor,
     ),
     accentColor: appSecondaryColor,
     buttonTheme: base.buttonTheme.copyWith(buttonColor: appSecondaryColor),

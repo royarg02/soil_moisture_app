@@ -1,12 +1,16 @@
-import 'package:soil_moisture_app/ui/colors.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:flutter/material.dart';
-import 'package:soil_moisture_app/utils/all_data.dart';
 import 'package:intl/intl.dart';
-import 'dart:math';
+import 'dart:math'; // * For max() and min()
 
-SfCartesianChart displayChart(List<dynamic> data, String graph) {
-  print(data);
+// * External packages import
+import 'package:syncfusion_flutter_charts/charts.dart';
+
+// * ui import
+import 'package:soil_moisture_app/ui/colors.dart';
+
+SfCartesianChart displayChart(dynamic chartObj, String graph) {
+  num dataMinValue = chartObj.getAllValues.reduce((num a, num b) => min(a, b));
+  num dataMaxValue = chartObj.getAllValues.reduce((num a, num b) => max(a, b));
+  print(chartObj.getAllValues.runtimeType);
   return SfCartesianChart(
     zoomPanBehavior: ZoomPanBehavior(
       enablePinching: true,
@@ -24,19 +28,17 @@ SfCartesianChart displayChart(List<dynamic> data, String graph) {
       ),
     ),
     primaryYAxis: NumericAxis(
-      minimum: (graph == 'Light')? -100 : 0,
-      maximum: (graph == 'Light')? 1400 : 100,
+      minimum: (dataMinValue < 0) ? dataMinValue - 100 : 0,
+      maximum: (dataMaxValue > 100) ? dataMaxValue + 100 : 100,
       interval: 20,
       axisLine: AxisLine(width: 1),
-      labelFormat: (graph == 'Temp')
-          ? '{value}°C'
-          : (graph == 'Light') ? '{value} Lux' : '{value}%',
+      labelFormat: '{value}${chartObj.getUnit}',
       isVisible: true,
       labelStyle: ChartTextStyle(
         fontFamily: 'Ocrb',
       ),
     ),
-    series: getLineSeries(data, graph),
+    series: getLineSeries(chartObj.getAllValues, graph),
     tooltipBehavior: TooltipBehavior(
       enable: true,
       animationDuration: 200,
@@ -48,23 +50,18 @@ SfCartesianChart displayChart(List<dynamic> data, String graph) {
 
 List<LineSeries<dynamic, DateTime>> getLineSeries(
     List<dynamic> chartData, String graph) {
+  // Debug Print
   print(chartData);
-  //chartData = dayLight.getLight;
   List<_ChartData> data = [];
-  if (plantList != null) {
-    for (var i = 0; i < chartData.length; ++i) {
-      data.add(_ChartData(chartData[i], DateTime(2019, 09, 05, i)));
-    }
+  for (var i = 0; i < chartData.length; ++i) {
+    data.add(_ChartData(chartData[i], DateTime(2019, 09, 05, i)));
   }
   return <LineSeries<_ChartData, DateTime>>[
     LineSeries<_ChartData, DateTime>(
       enableTooltip: true,
       animationDuration: 150,
       dataSource: data,
-      xValueMapper: (point, _) {
-        //print(point.index);
-        return point.index;
-      },
+      xValueMapper: (point, _) => point.index,
       yValueMapper: (point, _) {
         return (graph == 'Moisture') ? point.value * 100 : point.value;
       },

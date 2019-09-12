@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:soil_moisture_app/pages/ThresholdPump.dart';
+
+// * external packages import
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+// * ui import
 import 'package:soil_moisture_app/ui/build_theme.dart';
 import 'package:soil_moisture_app/ui/colors.dart';
+
+// * utils import
 import 'package:soil_moisture_app/utils/displayError.dart';
 import 'package:soil_moisture_app/utils/gettingJson.dart';
-import 'package:soil_moisture_app/utils/all_data.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-// Pages Import
 
+// * Pages Import
 import 'pages/Analysis.dart';
 import 'pages/Overview.dart';
+import 'pages/ThresholdPump.dart';
 
 void main() async {
-  String title = 'Soil App';
+  String title = 'Soif';
   // * Latest data fetch
   addLatestData().then((_) {
     print('Running App');
@@ -20,55 +25,31 @@ void main() async {
       MaterialApp(
         title: title,
         debugShowCheckedModeBanner: false,
-        home: Home(title),
+        home: DefaultTabController(
+          length: 2,
+          child: Home(title),
+        ),
         theme: buildLightTheme(),
       ),
     );
-  }
-      // onError: (_) => runApp(
-      //   MaterialApp(
-      //     title: 'Error',
-      //     debugShowCheckedModeBanner: false,
-      //     home: Scaffold(
-      //       body: ShowError(),
-      //     ),
-      //   ),
-      // ),
-      );
-  fetchTotalData();
-  //print('Fetch data');
-  // * implement onError here
-  //print('from main: ${plantList[0].getLastMoisture}');
-  // runApp(
-  //   MaterialApp(
-  //     title: title,
-  //     debugShowCheckedModeBanner: false,
-  //     home: DefaultTabController(
-  //       length: 2,
-  //       child: Home(title),
-  //     ),
-  //     theme: buildLightTheme(),
-  //   ),
-  // );
+  }, onError: (_) {
+    print(_);
+    runApp(
+      MaterialApp(
+        title: 'Error',
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          body: ShowError(type: -1),
+        ),
+      ),
+    );
+  });
 }
 
-//To check the Slider Page
-// void main(){
-//   runApp(
-//     new MaterialApp(
-//       home: ThresholdPump(),
-//     ),
-//   );
-// }
-
-class Home extends StatefulWidget {
+class Home extends StatelessWidget {
   final String title;
   Home(this.title);
-  @override
-  _HomeState createState() => _HomeState();
-}
 
-class _HomeState extends State<Home> {
   final List<Widget> _children = [
     Overview(),
     Analysis(),
@@ -76,79 +57,43 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Overview(),
-      // drawer: Theme(
-      //   data: Theme.of(context).copyWith(
-      //     canvasColor: appPrimaryLightColor,
-      //   ),
-      //   child: Drawer(
-      //     child: ListView(
-      //       children: <Widget>[
-      //         DrawerHeader(
-      //           child: Image.asset('./assets/images/Soif_sk.png'),
-      //         ),
-      //         ListTile(
-      //           title: Text('Overview'),
-      //           leading: Icon(FontAwesomeIcons.eye),
-      //           onTap: () {
-      //             Navigator.of(context).pop();
-      //             Navigator.of(context).push(MaterialPageRoute(
-      //                 builder: (BuildContext context) => Analysis()));
-      //           },
-      //         ),
-      //         ListTile(
-      //           title: Text('Analysis'),
-      //           leading: Icon(FontAwesomeIcons.chartLine),
-      //           onTap: () {
-      //             Navigator.of(context).pop();
-      //             Navigator.of(context).push(MaterialPageRoute(
-      //                 builder: (BuildContext context) => Analysis()));
-      //           },
-      //         ),
-      //         ListTile(
-      //           title: Text('Settings'),
-      //           leading: Icon(Icons.settings),
-      //           onTap: null,
-      //         )
-      //       ],
-      //     ),
-      //   ),
-      // ),
-      // appBar: AppBar(
-      //   title: Container(
-      //     margin: const EdgeInsets.all(6.0),
-      //     child: Image.asset('./assets/images/Soif_sk.png'),
-      //   ),
-      //   centerTitle: true,
-      // ),
-      // body: TabBarView(
-      //   children: _children,
-      //   physics: NeverScrollableScrollPhysics(),
-      // ),
-      // bottomNavigationBar: TabBar(
-      //   tabs: <Widget>[
-      //     Tab(
-      //       icon: Icon(Icons.remove_red_eye),
-      //       text: 'Overview',
-      //     ),
-      //     Tab(
-      //       icon: Icon(Icons.linear_scale),
-      //       text: 'Analysis',
-      //     )
-      //   ],
-      //   labelColor: appPrimaryLightColor,
-      //   unselectedLabelColor: appSecondaryDarkColor,
-      //   indicatorSize: TabBarIndicatorSize.label,
-      //   indicatorPadding: EdgeInsets.all(5.0),
-      //   indicatorColor: appSecondaryLightColor,
-      // ),
-      // backgroundColor: Theme.of(context).canvasColor,
+      appBar: AppBar(
+        title: Container(
+          margin: const EdgeInsets.all(6.0),
+          child: Image.asset('./assets/images/Soif_sk.png'),
+        ),
+        centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(FontAwesomeIcons.slidersH),
+            onPressed: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ThresholdPump())),
+            tooltip: 'Pump Threshold Control',
+          )
+        ],
+      ),
+      body: TabBarView(
+        children: _children,
+        physics: NeverScrollableScrollPhysics(),
+      ),
+      bottomNavigationBar: TabBar(
+        tabs: <Widget>[
+          Tab(
+            icon: Icon(Icons.remove_red_eye),
+            text: 'Overview',
+          ),
+          Tab(
+            icon: Icon(Icons.linear_scale),
+            text: 'Analysis',
+          )
+        ],
+        labelColor: appPrimaryLightColor,
+        unselectedLabelColor: appSecondaryDarkColor,
+        indicatorSize: TabBarIndicatorSize.label,
+        indicatorPadding: EdgeInsets.all(5.0),
+        indicatorColor: appSecondaryLightColor,
+      ),
+      backgroundColor: Theme.of(context).canvasColor,
     );
-  }
-
-  void _onOpTapped(int index) {
-    setState(() {
-      //_currentIndex = index;
-    });
   }
 }

@@ -5,8 +5,6 @@ import 'package:soil_moisture_app/ui/colors.dart';
 import 'package:http/http.dart' as http;
 import 'dart:math';
 
-import 'package:soil_moisture_app/ui/drawer.dart';
-
 class ThresholdPump extends StatefulWidget {
   @override
   _ThresholdPumpState createState() => _ThresholdPumpState();
@@ -15,28 +13,26 @@ class ThresholdPump extends StatefulWidget {
 class _ThresholdPumpState extends State<ThresholdPump> {
   num val0 = 0.0;
   num val1 = 0.0;
-  Map<String,dynamic> status;
+  Map<String, dynamic> status;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SoifDrawer(),
       appBar: AppBar(
-        title: Container(
-          margin: const EdgeInsets.all(6.0),
-          child: Image.asset('./assets/images/Soif_sk.png'),
+        leading: BackButton(),
+        title: Text(
+          'Pump threshold Control',
+          style: Theme.of(context).textTheme.title,
         ),
         centerTitle: true,
       ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+          child: ListView(
+            //mainAxisAlignment: MainAxisAlignment.spaceAround,
+            physics:
+                AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
             children: <Widget>[
-              Text(
-                'Pump threshold Control',
-                style: Theme.of(context).textTheme.title,
-              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -91,49 +87,47 @@ class _ThresholdPumpState extends State<ThresholdPump> {
                   ),
                 ],
               ),
-              MaterialButton(
-                child: Text(
-                  'Set',
-                  style: Theme.of(context).textTheme.button.copyWith(
-                        color: appPrimaryLightColor,
-                      ),
-                ),
-                onPressed: () async {
-                  print(
-                      'Plant 1 Pump: ${(val0 * pow(10.0, 2)).round().toDouble() / pow(10.0, 2)}');
-                  print(
-                      'Plant 2 Pump: ${(val1 * pow(10.0, 2)).round().toDouble() / pow(10.0, 2)}');
-                  String url = "http://drip-io.herokuapp.com/setthreshold";
-                  String postBody = json.encode({
-                    "pump0":
-                        (val0 * pow(10.0, 2)).round().toDouble() / pow(10.0, 2),
-                    "pump1":
-                        (val1 * pow(10.0, 2)).round().toDouble() / pow(10.0, 2),
-                  });
-                  http
-                      .post(url,
-                          headers: {
-                            "Content-Type": "application/json",
-                          },
-                          body: postBody,
-                          encoding: Encoding.getByName('utf-8'))
-                      .then((_) {
-                    print("${_.statusCode}");
-                    print("${json.decode(_.body)}");
-                    status = json.decode(_.body);
-                    //print(status['success'].runtimeType);
-                    if (status['success']){
-                      _showStatus(context, 'Threshhold successfully set.');
-                    } else {
-                      _showStatus(context, 'Error Occurred');
-                    }
-                  });
-                },
-                color: appSecondaryDarkColor,
-              ),
             ],
           ),
         ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton.extended(
+        label: Text(
+          'Set',
+          style: Theme.of(context).textTheme.button.copyWith(
+                color: appPrimaryLightColor,
+              ),
+        ),
+        onPressed: () async {
+          print(
+              'Plant 1 Pump: ${(val0 * pow(10.0, 2)).round().toDouble() / pow(10.0, 2)}');
+          print(
+              'Plant 2 Pump: ${(val1 * pow(10.0, 2)).round().toDouble() / pow(10.0, 2)}');
+          String url = "http://drip-io.herokuapp.com/setthreshold";
+          String postBody = json.encode({
+            "pump0": (val0 * pow(10.0, 2)).round().toDouble() / pow(10.0, 2),
+            "pump1": (val1 * pow(10.0, 2)).round().toDouble() / pow(10.0, 2),
+          });
+          http
+              .post(url,
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: postBody,
+                  encoding: Encoding.getByName('utf-8'))
+              .then((_) {
+            print("${_.statusCode}");
+            print("${json.decode(_.body)}");
+            status = json.decode(_.body);
+            //print(status['success'].runtimeType);
+            if (status['success']) {
+              _showStatus(context, 'Threshold successfully set.');
+            } else {
+              _showStatus(context, 'Error Occurred');
+            }
+          });
+        },
       ),
     );
   }
@@ -143,7 +137,7 @@ class _ThresholdPumpState extends State<ThresholdPump> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-              title: Text('Threshhold Set Status'),
+              title: Text('Threshold Set Status'),
               actions: <Widget>[
                 FlatButton(
                   color: appSecondaryDarkColor,
@@ -160,3 +154,4 @@ class _ThresholdPumpState extends State<ThresholdPump> {
         });
   }
 }
+

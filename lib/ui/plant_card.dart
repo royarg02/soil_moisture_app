@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:soil_moisture_app/ui/colors.dart';
+
+// * External Packages Import
 import 'package:percent_indicator/linear_percent_indicator.dart';
+
+// * ui import
+import 'package:soil_moisture_app/ui/colors.dart';
+
+// * utils import
 import 'package:soil_moisture_app/utils/plant_class.dart';
 
 class PlantCard extends StatelessWidget {
@@ -30,7 +36,7 @@ class PlantCard extends StatelessWidget {
                   : this.plant.isCritical()
                       ? Colors.red[100]
                       : appPrimaryLightColor,
-              elevation: (isSelected) ? 8.0 : 3.0,
+              elevation: (isSelected) ? 15.0 : 2.0,
             ),
       ),
       child: Card(
@@ -42,9 +48,7 @@ class PlantCard extends StatelessWidget {
               Text(
                 '${this.plant.getLabel}',
                 style: Theme.of(context).textTheme.body2.copyWith(
-                      fontSize: (isSelected)
-                          ? MediaQuery.of(context).size.width * 0.05
-                          : MediaQuery.of(context).size.width * 0.035,
+                      fontSize: MediaQuery.of(context).size.width * 0.05,
                     ),
               ),
               Container(
@@ -53,7 +57,8 @@ class PlantCard extends StatelessWidget {
                 child: Image.asset('./assets/images/plant.png'), //* Place Image Asset Here
               ),
               LinearPercentIndicator(
-                percent: this.plant.getLastMoisture,
+                addAutomaticKeepAlive: false,
+                percent: this.plant.getLastValue,
                 progressColor: plant.isCritical()
                     ? Colors.red
                     : plant.isMoreThanNormal() ? Colors.blue : Colors.green,

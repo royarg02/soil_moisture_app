@@ -1,25 +1,27 @@
 class Plant {
   String _label = 'Plant';
-  List<dynamic> _values = [];
+  List<num> _values;
   double _critMoisture = 0.35;
   double _moreThanNormal = 0.75;
-  double _lastMoisture;
+  num _lastVal;
+  String _unit = '%';
 
   Plant(this._values);
   Plant.createElement(this._label, this._values);
-  Plant.createWithLast(this._label, this._lastMoisture);
+  Plant.createWithLast(this._label, this._lastVal);
 
   bool isCritical([double check]) {
-    check = (check == null) ? this.getLastMoisture : check;
+    check = check ?? this.getLastValue;
     return (check <= this._critMoisture);
   }
 
   bool isMoreThanNormal([double check]) {
-    check = (check == null) ? this.getLastMoisture : check;
+    check = check ?? this.getLastValue;
     return (check >= this._moreThanNormal);
   }
 
   String get getLabel => _label;
-  List<dynamic> get getAllMoisture => _values;
-  double get getLastMoisture => (_values.isEmpty)?this._lastMoisture:_values.last;
+  List<num> get getAllValues => _values;
+  num get getLastValue => (_values == null) ? this._lastVal : _values.last;
+  String get getUnit => _unit;
 }

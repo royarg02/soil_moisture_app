@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 
+// * ui import
 import 'package:soil_moisture_app/ui/analysis_graph.dart';
 import 'package:soil_moisture_app/ui/colors.dart';
-import 'package:soil_moisture_app/ui/drawer.dart';
+import 'package:soil_moisture_app/ui/plant_card.dart';
+import 'package:soil_moisture_app/ui/refresh_snackbar.dart';
+
+// * utils import
 import 'package:soil_moisture_app/utils/displayError.dart';
 import 'package:soil_moisture_app/utils/gettingJson.dart';
 import 'package:soil_moisture_app/utils/all_data.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-import 'package:soil_moisture_app/ui/plant_card.dart';
 
 class Analysis extends StatefulWidget {
   @override
@@ -16,74 +17,65 @@ class Analysis extends StatefulWidget {
 }
 
 class _AnalysisState extends State<Analysis> {
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      new GlobalKey<RefreshIndicatorState>();
-
   int _cardCount;
   int _selCard;
   String _measure;
-  List<dynamic> _chartsData;
+  dynamic _chartObj;
+
+  void initState() {
+    _cardCount = plantList.length;
+    _selCard = 0;
+    _changeMeasure('Moisture');
+    super.initState();
+  }
 
   void _changeMeasure(String newMeasure) {
     setState(() {
       this._measure = newMeasure;
       switch (_measure) {
         case 'Humidity':
-          _chartsData = dayHumid.getHumidity;
+          _chartObj = dayHumid;
           break;
         case 'Light':
-          _chartsData = dayLight.getLight;
+          _chartObj = dayLight;
           break;
-        case 'Temp':
-          _chartsData = dayTemp.getTemp;
+        case 'Temperature':
+          _chartObj = dayTemp;
           break;
         case 'Moisture':
-        _chartsData = plantList[_selCard].getAllMoisture;
-        break;
+          _chartObj = plantList[_selCard];
+          break;
       }
     });
-    print(_chartsData);
+    // Debug Print
+    print(_chartObj.getAllValues);
     print(_measure);
   }
 
-  void initState() {
-    super.initState();
-    _cardCount = plantList.length;
-    _selCard = 0;
-    _chartsData = plantList[_selCard].getAllMoisture;
-    _measure = 'Moisture';
-  }
-
   Future<Null> _refresh() async {
-    await refreshTotalData();
-    // * implement onError here
-    print('from main: ${plantList[0].getLastMoisture}');
-    setState(() {
-     _chartsData = plantList[_selCard].getAllMoisture; 
+    await refreshTotalData().then((_) {
+      Scaffold.of(context).showSnackBar(SuccessOnRefresh().build(context));
+    }, onError: (_) {
+      Scaffold.of(context).showSnackBar(FailureOnRefresh().build(context));
     });
+    _changeMeasure(_measure);
+    // Debug Print
+    print('from main: ${plantList[0].getLastValue}');
   }
 
   void _selectPlant(int value) {
     setState(() {
       _selCard = value;
     });
-    print('Selected -> $_selCard');
     _changeMeasure(_measure);
+    // Debug Print
+    print('Selected -> $_selCard');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: SoifDrawer(),
-      appBar: AppBar(
-        title: Container(
-          margin: const EdgeInsets.all(6.0),
-          child: Image.asset('./assets/images/Soif_sk.png'),
-        ),
-        centerTitle: true,
-      ),
       body: RefreshIndicator(
-        key: _refreshIndicatorKey,
         onRefresh: _refresh,
         child: SafeArea(
           child: Padding(
@@ -94,83 +86,83 @@ class _AnalysisState extends State<Analysis> {
               children: [
                 Column(
                   children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 20.0),
-                      padding: EdgeInsets.symmetric(horizontal: 5.0),
-                      child: Theme(
-                        data: Theme.of(context).copyWith(
-                          canvasColor: appPrimaryLightColor,
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            value: _measure,
-                            onChanged: _changeMeasure,
-                            items: <String>['Moisture','Light', 'Humidity', 'Temp']
-                                .map<DropdownMenuItem<String>>((String option) {
-                              return DropdownMenuItem<String>(
-                                  value: option,
-                                  child: new Text(
-                                    option,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .display1
-                                        .copyWith(fontSize: 24.0),
-                                  ));
-                            }).toList(),
-                          ),
-                        ),
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 2.0,
-                          color: appPrimaryDarkColor,
-                        ),
-                        borderRadius: BorderRadius.circular(25.0),
-                        shape: BoxShape.rectangle,
-                      ),
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(right: 10.0),
-                          child: Text(
-                            '${(plantList[_selCard].getLastMoisture * 100).toInt()}%',
-                            style: Theme.of(context)
-                                .textTheme
-                                .display3
-                                .copyWith(
-                                  color: (plantList[_selCard].isCritical())
-                                      ? Colors.red
-                                      : (plantList[_selCard].isMoreThanNormal()
-                                          ? Colors.blue
-                                          : Colors.green),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 12.0),
+                      child: Row(
+                        children: <Widget>[
+                          Text(
+                            '${_chartObj.getLastValue * ((_measure == 'Moisture') ? 100 : 1)}',
+                            style: Theme.of(context).textTheme.display3.copyWith(
+                                  color: appSecondaryDarkColor,
+                                  fontSize: 40.0,
                                 ),
                           ),
-                        ),
-                        Text(
-                          'Current Moisture',
-                          style: Theme.of(context).textTheme.body2,
-                        ),
-                        Spacer(),
-                      ],
-                    ),
-                    (plantList[0].getAllMoisture == null ||
-                            plantList[1].getAllMoisture == null ||
-                            dayLight.getLight == null ||
-                            dayTemp.getTemp == null ||
-                            dayHumid.getHumidity == null)
-                        ? ShowError()
-                        : Container(
-                            height: MediaQuery.of(context).size.height * 0.35,
-                            padding: EdgeInsets.symmetric(vertical: 3.0),
-                            child: Card(
-                              child: Container(
-                                child: (_chartsData == null)
-                                    ? Container()
-                                    : displayChart(_chartsData, _measure),
-                              ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: Text(
+                              '${_chartObj.getUnit}',
+                              style: Theme.of(context).textTheme.body1.copyWith(
+                                    fontSize: 24.0,
+                                  ),
                             ),
                           ),
+                          Text(
+                            'Current $_measure',
+                            style: Theme.of(context).textTheme.body2,
+                          ),
+                          Spacer(),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 5.0),
+                            child: Theme(
+                              data: Theme.of(context).copyWith(
+                                canvasColor: appPrimaryLightColor,
+                              ),
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton<String>(
+                                  value: _measure,
+                                  onChanged: _changeMeasure,
+                                  items: <String>[
+                                    'Moisture',
+                                    'Light',
+                                    'Humidity',
+                                    'Temperature'
+                                  ].map<DropdownMenuItem<String>>(
+                                      (String option) {
+                                    return DropdownMenuItem<String>(
+                                        value: option,
+                                        child: new Text(
+                                          option,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .display1
+                                              .copyWith(fontSize: 24.0),
+                                        ));
+                                  }).toList(),
+                                ),
+                              ),
+                            ),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 2.0,
+                                color: appPrimaryDarkColor,
+                              ),
+                              borderRadius: BorderRadius.circular(25.0),
+                              shape: BoxShape.rectangle,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.35,
+                      child: Card(
+                        child: Container(
+                          child: (_chartObj.getAllValues == null)
+                              ? ShowError()
+                              : displayChart(_chartObj, _measure),
+                        ),
+                      ),
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
