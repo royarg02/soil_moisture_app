@@ -84,109 +84,125 @@ class _AnalysisState extends State<Analysis> {
               physics: AlwaysScrollableScrollPhysics(
                   parent: BouncingScrollPhysics()),
               children: [
-                Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12.0),
-                      child: Row(
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12.0),
+                  child: Row(
+                    children: <Widget>[
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(
-                            '${_chartObj.getLastValue * ((_measure == 'Moisture') ? 100 : 1)}',
-                            style: Theme.of(context).textTheme.display3.copyWith(
-                                  color: appSecondaryDarkColor,
-                                  fontSize: 40.0,
-                                ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 10.0),
-                            child: Text(
-                              '${_chartObj.getUnit}',
-                              style: Theme.of(context).textTheme.body1.copyWith(
-                                    fontSize: 24.0,
-                                  ),
-                            ),
+                          Row(
+                            children: <Widget>[
+                              Text(
+                                '${_chartObj.getLastValue.toDouble() * ((_measure == 'Moisture') ? 100 : 1)}',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .display3
+                                    .copyWith(
+                                      color: appSecondaryDarkColor,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width *
+                                              0.1,
+                                    ),
+                              ),
+                              Text(
+                                '${_chartObj.getUnit}',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .body1
+                                    .copyWith(
+                                      fontSize:
+                                          MediaQuery.of(context).size.width *
+                                              0.07,
+                                    ),
+                              ),
+                            ],
                           ),
                           Text(
                             'Current $_measure',
                             style: Theme.of(context).textTheme.body2,
                           ),
-                          Spacer(),
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 5.0),
-                            child: Theme(
-                              data: Theme.of(context).copyWith(
-                                canvasColor: appPrimaryLightColor,
-                              ),
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButton<String>(
-                                  value: _measure,
-                                  onChanged: _changeMeasure,
-                                  items: <String>[
-                                    'Moisture',
-                                    'Light',
-                                    'Humidity',
-                                    'Temperature'
-                                  ].map<DropdownMenuItem<String>>(
-                                      (String option) {
-                                    return DropdownMenuItem<String>(
-                                        value: option,
-                                        child: new Text(
-                                          option,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .display1
-                                              .copyWith(fontSize: 24.0),
-                                        ));
-                                  }).toList(),
-                                ),
-                              ),
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                width: 2.0,
-                                color: appPrimaryDarkColor,
-                              ),
-                              borderRadius: BorderRadius.circular(25.0),
-                              shape: BoxShape.rectangle,
-                            ),
-                          ),
                         ],
                       ),
-                    ),
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.35,
-                      child: Card(
-                        child: Container(
-                          child: (_chartObj.getAllValues == null)
-                              ? ShowError()
-                              : displayChart(_chartObj, _measure),
+                      Spacer(),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 5.0),
+                        child: Theme(
+                          data: Theme.of(context).copyWith(
+                            canvasColor: appPrimaryLightColor,
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              value: _measure,
+                              onChanged: _changeMeasure,
+                              items: <String>[
+                                'Moisture',
+                                'Light',
+                                'Humidity',
+                                'Temperature'
+                              ].map<DropdownMenuItem<String>>((String option) {
+                                return DropdownMenuItem<String>(
+                                    value: option,
+                                    child: new Text(
+                                      option,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .display1
+                                          .copyWith(
+                                              fontSize: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.035),
+                                    ));
+                              }).toList(),
+                            ),
+                          ),
+                        ),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            width: 2.0,
+                            color: appPrimaryDarkColor,
+                          ),
+                          borderRadius: BorderRadius.circular(25.0),
+                          shape: BoxShape.rectangle,
                         ),
                       ),
+                    ],
+                  ),
+                ),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.35,
+                  child: Card(
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: (_chartObj.getAllValues == null)
+                          ? CircularProgressIndicator() // * Broken, refresh to see data
+                          : displayChart(_chartObj, _measure, context),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        IconButton(
-                          icon: Icon(Icons.chevron_left),
-                          onPressed: null,
-                        ),
-                        Text(
-                          'Thu, 5 Sep',
-                          style: Theme.of(context).textTheme.body2.copyWith(
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.05,
-                              ),
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.chevron_right),
-                          onPressed: null,
-                        )
-                      ],
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(Icons.chevron_left),
+                      onPressed: null,
                     ),
-                    SizedBox(
-                      height: 10.0,
+                    Text(
+                      'Thu, 5 Sep',
+                      style: Theme.of(context).textTheme.body2.copyWith(
+                            fontSize: MediaQuery.of(context).size.width * 0.05,
+                          ),
                     ),
+                    IconButton(
+                      icon: Icon(Icons.chevron_right),
+                      onPressed: null,
+                    )
                   ],
+                ),
+                SizedBox(
+                  height: 10.0,
                 ),
                 GridView.builder(
                   shrinkWrap: true,

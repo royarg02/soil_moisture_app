@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:math'; // * For max() and min()
 
@@ -7,7 +8,8 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 // * ui import
 import 'package:soil_moisture_app/ui/colors.dart';
 
-SfCartesianChart displayChart(dynamic chartObj, String graph) {
+SfCartesianChart displayChart(
+    dynamic chartObj, String graph, BuildContext context) {
   num dataMinValue = chartObj.getAllValues.reduce((num a, num b) => min(a, b));
   num dataMaxValue = chartObj.getAllValues.reduce((num a, num b) => max(a, b));
   print(chartObj.getAllValues.runtimeType);
@@ -38,7 +40,7 @@ SfCartesianChart displayChart(dynamic chartObj, String graph) {
         fontFamily: 'Ocrb',
       ),
     ),
-    series: getLineSeries(chartObj.getAllValues, graph),
+    series: getLineSeries(chartObj.getAllValues, graph, context),
     tooltipBehavior: TooltipBehavior(
       enable: true,
       animationDuration: 200,
@@ -49,7 +51,7 @@ SfCartesianChart displayChart(dynamic chartObj, String graph) {
 }
 
 List<LineSeries<dynamic, DateTime>> getLineSeries(
-    List<dynamic> chartData, String graph) {
+    List<dynamic> chartData, String graph, BuildContext context) {
   // Debug Print
   print(chartData);
   List<_ChartData> data = [];
@@ -67,8 +69,12 @@ List<LineSeries<dynamic, DateTime>> getLineSeries(
       },
       pointColorMapper: (x, _) => appSecondaryColor,
       width: 2,
-      markerSettings:
-          MarkerSettings(isVisible: true, color: appPrimaryLightColor),
+      markerSettings: MarkerSettings(
+        isVisible: true,
+        color: appPrimaryLightColor,
+        height: MediaQuery.of(context).size.width * 0.015,
+        width: MediaQuery.of(context).size.width * 0.015,
+      ),
     ),
   ];
 }

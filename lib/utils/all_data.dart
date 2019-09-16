@@ -9,3 +9,6 @@ List<Plant> plantList = [];
 Light dayLight;
 Temp dayTemp;
 Humidity dayHumid;
+
+// * base url for application get/post
+final baseUrl = "https://drip-io.herokuapp.com";

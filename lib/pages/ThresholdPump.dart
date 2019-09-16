@@ -137,21 +137,21 @@ class _ThresholdPumpState extends State<ThresholdPump> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-              title: Text('Threshold Set Status'),
-              actions: <Widget>[
-                FlatButton(
-                  color: appSecondaryDarkColor,
-                  textTheme: ButtonTextTheme.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(14.0)),
-                  ),
-                  child: Text('OK'),
-                  onPressed: () => Navigator.of(context).pop(),
-                  padding: EdgeInsets.all(12.0),
-                )
-              ],
-              content: Text(status));
+            title: Text('Threshold Set Status'),
+            actions: <Widget>[
+              FlatButton(
+                color: appSecondaryDarkColor,
+                textTheme: ButtonTextTheme.primary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(14.0)),
+                ),
+                child: Text('OK'),
+                onPressed: () => Navigator.of(context).pop(),
+                padding: EdgeInsets.all(12.0),
+              )
+            ],
+            content: Text(status),
+          );
         });
   }
 }
-

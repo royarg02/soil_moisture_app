@@ -14,8 +14,7 @@ var _formatter = DateFormat('dd-MM-yyyy');
 String _currDay = '05-09-2019'; //_formatter.format(DateTime.now());
 
 Future<Map<String, dynamic>> fetchJsonData({bool current = false}) async {
-  String url =
-      "https://drip-io.herokuapp.com/getdata/${(current) ? 'now' : _currDay}";
+  String url = "$baseUrl/getdata/${(current) ? 'now' : _currDay}";
   print(url);
   final response = await http.get(url);
   var parsed = json.decode(response.body);

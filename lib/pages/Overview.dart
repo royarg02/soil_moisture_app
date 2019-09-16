@@ -70,7 +70,7 @@ class _OverviewState extends State<Overview> {
                         : (plantList[_selCard].isMoreThanNormal()
                             ? Colors.blue
                             : Colors.green),
-                    lineWidth: 10.0,
+                    lineWidth: MediaQuery.of(context).size.width * 0.02,
                     center: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -82,7 +82,7 @@ class _OverviewState extends State<Overview> {
                               ),
                         ),
                         Text(
-                          'Plant $_selCard',
+                          '${plantList[_selCard].getLabel}',
                           style: Theme.of(context).textTheme.display1.copyWith(
                                 fontSize:
                                     MediaQuery.of(context).size.width * 0.05,
@@ -99,34 +99,33 @@ class _OverviewState extends State<Overview> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                Container(
+                  height: MediaQuery.of(context).size.width * 0.12,
+                  margin: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.07),
                   child: Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          Text(
-                            '💧${dayHumid.getLastValue}${dayHumid.getUnit}', // ! Get API Fix
-                            style: Theme.of(context).textTheme.body2.copyWith(
-                                fontSize:
-                                    MediaQuery.of(context).size.height * 0.03),
-                          ),
-                          Text(
-                            '💡${(dayLight.getLastValue < 1000) ? dayLight.getLastValue.toInt() : (dayLight.getLastValue ~/ 1000).toString() + 'K'} ${dayLight.getUnit}',
-                            style: Theme.of(context).textTheme.body2.copyWith(
-                                fontSize:
-                                    MediaQuery.of(context).size.height * 0.03),
-                          ),
-                          Text(
-                            '🌡${dayTemp.getLastValue}${dayTemp.getUnit}',
-                            style: Theme.of(context).textTheme.body2.copyWith(
-                                fontSize:
-                                    MediaQuery.of(context).size.height * 0.03),
-                          ),
-                        ],
-                      ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Text(
+                          '💧${dayHumid.getLastValue}${dayHumid.getUnit}', // ! Get API Fix
+                          style: Theme.of(context).textTheme.body2.copyWith(
+                              fontSize:
+                                  MediaQuery.of(context).size.height * 0.025),
+                        ),
+                        Text(
+                          '💡${(dayLight.getLastValue < 1000) ? dayLight.getLastValue.toInt() : (dayLight.getLastValue ~/ 1000).toString() + 'K'} ${dayLight.getUnit}',
+                          style: Theme.of(context).textTheme.body2.copyWith(
+                              fontSize:
+                                  MediaQuery.of(context).size.height * 0.025),
+                        ),
+                        Text(
+                          '🌡${dayTemp.getLastValue}${dayTemp.getUnit}',
+                          style: Theme.of(context).textTheme.body2.copyWith(
+                              fontSize:
+                                  MediaQuery.of(context).size.height * 0.025),
+                        ),
+                      ],
                     ),
                   ),
                 ),
