@@ -1,56 +1,55 @@
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart'; // * For formatting date
 import 'dart:convert';
 import 'dart:async';
 
 // * utils import
-import 'package:soil_moisture_app/utils/humidity_data.dart';
-import 'package:soil_moisture_app/utils/light_data.dart';
-import 'package:soil_moisture_app/utils/plant_class.dart';
-import 'package:soil_moisture_app/utils/temp_data.dart';
-import 'package:soil_moisture_app/utils/all_data.dart';
+import 'package:soil_moisture_app/utils/date_func.dart';
 
-var _formatter = DateFormat('dd-MM-yyyy');
-String _currDay = '05-09-2019'; //_formatter.format(DateTime.now());
+// * Data import
+import 'package:soil_moisture_app/data/humidity_data.dart';
+import 'package:soil_moisture_app/data/light_data.dart';
+import 'package:soil_moisture_app/data/plant_class.dart';
+import 'package:soil_moisture_app/data/temp_data.dart';
+import 'package:soil_moisture_app/data/all_data.dart';
 
-Future<Map<String, dynamic>> fetchJsonData({bool current = false}) async {
-  String url = "$baseUrl/getdata/${(current) ? 'now' : _currDay}";
+// * determines if any data is got from the API
+bool isDataGot;
+
+Future<Map<String, dynamic>> fetchJsonData() async {
+  String url = "$baseUrl/getdata/$fetchDatedd_mm_yyyy";
   print(url);
   final response = await http.get(url);
   var parsed = json.decode(response.body);
+  print(response.statusCode);
   return parsed;
 }
 
 Future<Null> addData(Map<String, dynamic> data) {
+  isDataGot = true;
   print(data);
   plantList = [];
-  data['records'][0]['moisture']
-      .forEach((k, v) => plantList.add(Plant.createElement(k, v.cast<num>())));
+  if (data['records'].isEmpty) {
+    isDataGot = false;
+    return null;
+  }
+  data['records'][0]['moisture'].forEach((k, v) {
+    plantList.add(Plant.createElement(k, v.cast<num>()));
+    if (isNow()) {
+      nowData.lastMoistures.add(v.cast<num>().last);
+      print(nowData.lastMoistures);
+    }
+  });
   dayHumid = Humidity.fromJson(data['records'][0]);
   dayTemp = Temp.fromJson(data['records'][0]);
   dayLight = Light.fromJson(data['records'][0]);
-  return null;
+  if (isNow()) {
+    nowData.lastHumidity = dayHumid.getAllValues.last;
+    nowData.lastLight = dayLight.getAllValues.last;
+    nowData.lastTemp = dayLight.getAllValues.last;
+  }
 }
 
 Future<Null> fetchTotalData() async {
-  print(_currDay);
-  fetchJsonData().then((onValue) => addData(onValue));
-}
-
-Future<Null> refreshTotalData() async {
-  print(_currDay);
+  print(fetchDatedd_mm_yyyy);
   await fetchJsonData().then((onValue) => addData(onValue));
-}
-
-Future<Null> addLatestData() async {
-  await fetchJsonData(current: true).then((onValue) {
-    print(onValue);
-    plantList = [];
-    onValue['moisture']
-        .forEach((k, v) => plantList.add(Plant.createWithLast(k, v)));
-    dayHumid = Humidity.addLatest(onValue['humidity']);
-    dayTemp = Temp.addLatest(onValue['temparature']);
-    dayLight = Light.addLatest(onValue['light']); // ! gives int API fix
-  });
-  fetchTotalData();
 }

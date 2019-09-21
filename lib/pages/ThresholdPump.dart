@@ -1,9 +1,14 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:soil_moisture_app/ui/colors.dart';
 import 'package:http/http.dart' as http;
 import 'dart:math';
+
+// * ui import
+import 'package:soil_moisture_app/ui/thresholdSlider.dart';
+import 'package:soil_moisture_app/ui/colors.dart';
+
+// * data import
+import 'package:soil_moisture_app/data/all_data.dart';
 
 class ThresholdPump extends StatefulWidget {
   @override
@@ -11,9 +16,49 @@ class ThresholdPump extends StatefulWidget {
 }
 
 class _ThresholdPumpState extends State<ThresholdPump> {
-  num val0 = 0.0;
-  num val1 = 0.0;
+  List<num> val;
+  String url = "$baseUrl/setthreshold";
   Map<String, dynamic> status;
+
+  void initState() {
+    val = List.filled(2, 0.0);
+    super.initState();
+  }
+
+  void _setThreshold({int position, num value}) {
+    setState(() {
+       val[position] = value;
+    });
+  }
+
+  void _postThreshold() async {
+    print(
+        'Plant 1 Pump: ${(val[0] * pow(10.0, 2)).round().toDouble() / pow(10.0, 2)}');
+    print(
+        'Plant 2 Pump: ${(val[1] * pow(10.0, 2)).round().toDouble() / pow(10.0, 2)}');
+    String postBody = json.encode({
+      "pump0": (val[0] * pow(10.0, 2)).round().toDouble() / pow(10.0, 2),
+      "pump1": (val[1] * pow(10.0, 2)).round().toDouble() / pow(10.0, 2),
+    });
+    http
+        .post(url,
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: postBody,
+            encoding: Encoding.getByName('utf-8'))
+        .then((_) {
+      print("${_.statusCode}");
+      print("${json.decode(_.body)}");
+      status = json.decode(_.body);
+      if (status['success']) {
+        _showStatus(context, 'Threshold successfully set.');
+      } else {
+        _showStatus(context, 'Error Occurred');
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,67 +73,18 @@ class _ThresholdPumpState extends State<ThresholdPump> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0),
-          child: ListView(
-            //mainAxisAlignment: MainAxisAlignment.spaceAround,
-            physics:
-                AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 30.0),
-                    child: Text(
-                      'Plant0',
-                      style: Theme.of(context).textTheme.display1,
-                    ),
-                  ),
-                  Slider(
-                    value: val0,
-                    onChanged: (val) {
-                      setState(() {
-                        val0 = val;
-                        // print(val0.round());
-                      });
-                    },
-                    min: 0,
-                    max: 1,
-                    divisions: 20,
-                    activeColor: appSecondaryLightColor,
-                    inactiveColor: appPrimaryColor,
-                    label: "$val0",
-                  ),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 30.0),
-                    child: Text(
-                      'Plant1',
-                      style: Theme.of(context).textTheme.display1,
-                    ),
-                  ),
-                  Slider(
-                    value: val1,
-                    onChanged: (val) {
-                      setState(() {
-                        val1 = val;
-                        // print(val1.round());
-                      });
-                    },
-                    min: 0,
-                    max: 1,
-                    divisions: 20,
-                    activeColor: appSecondaryLightColor,
-                    inactiveColor: appPrimaryColor,
-                    label: "$val1",
-                  ),
-                ],
-              ),
-            ],
-          ),
+          child: ListView.builder(
+              physics: AlwaysScrollableScrollPhysics(
+                  parent: BouncingScrollPhysics()),
+              itemCount: val.length,
+              itemBuilder: (context, position) {
+                return ThresholdSlider(
+                  label: 'Plant $position',
+                  threshold: val[position],
+                  position: position,
+                  thresholdChanger: _setThreshold,
+                );
+              }),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -99,35 +95,7 @@ class _ThresholdPumpState extends State<ThresholdPump> {
                 color: appPrimaryLightColor,
               ),
         ),
-        onPressed: () async {
-          print(
-              'Plant 1 Pump: ${(val0 * pow(10.0, 2)).round().toDouble() / pow(10.0, 2)}');
-          print(
-              'Plant 2 Pump: ${(val1 * pow(10.0, 2)).round().toDouble() / pow(10.0, 2)}');
-          String url = "http://drip-io.herokuapp.com/setthreshold";
-          String postBody = json.encode({
-            "pump0": (val0 * pow(10.0, 2)).round().toDouble() / pow(10.0, 2),
-            "pump1": (val1 * pow(10.0, 2)).round().toDouble() / pow(10.0, 2),
-          });
-          http
-              .post(url,
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: postBody,
-                  encoding: Encoding.getByName('utf-8'))
-              .then((_) {
-            print("${_.statusCode}");
-            print("${json.decode(_.body)}");
-            status = json.decode(_.body);
-            //print(status['success'].runtimeType);
-            if (status['success']) {
-              _showStatus(context, 'Threshold successfully set.');
-            } else {
-              _showStatus(context, 'Error Occurred');
-            }
-          });
-        },
+        onPressed: _postThreshold,
       ),
     );
   }

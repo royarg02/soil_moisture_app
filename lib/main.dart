@@ -19,37 +19,62 @@ import 'pages/ThresholdPump.dart';
 
 void main() async {
   String title = 'Soif';
-  // * Latest data fetch
-  addLatestData().then((_) {
-    print('Running App');
-    runApp(
-      MaterialApp(
-        title: title,
-        debugShowCheckedModeBanner: false,
-        home: DefaultTabController(
-          length: 2,
-          child: Home(title),
-        ),
-        theme: buildLightTheme(),
-      ),
-    );
-  }, onError: (_) {
-    print(_);
-    runApp(
-      MaterialApp(
-        title: 'Error',
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          body: ShowError(type: -1),
-        ),
-      ),
-    );
-  });
+  runApp(MaterialApp(
+    title: title,
+    debugShowCheckedModeBanner: false,
+    home: Home(title),
+    theme: buildLightTheme(),
+  ));
 }
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   final String title;
   Home(this.title);
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  Future _totalData;
+
+  void initState() {
+    // * Makes the future(builder) run only once at startup
+    _totalData = fetchTotalData();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: _totalData,
+      builder: (context, AsyncSnapshot snapshot) {
+        print(snapshot);
+        if (snapshot.hasError) {
+          return Scaffold(
+            backgroundColor: appPrimaryColor,
+            body: NoInternet(),
+          );
+        } else if (snapshot.connectionState == ConnectionState.done) {
+          return DefaultTabController(
+            length: 2,
+            child: Tabs(widget.title),
+          );
+        } else {
+          return Scaffold(
+            backgroundColor: appPrimaryColor,
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+      },
+    );
+  }
+}
+
+class Tabs extends StatelessWidget {
+  final String title;
+  Tabs(this.title);
 
   final List<Widget> _children = [
     Overview(),

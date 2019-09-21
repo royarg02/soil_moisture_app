@@ -9,7 +9,10 @@ import 'package:soil_moisture_app/ui/refresh_snackbar.dart';
 // * utils import
 import 'package:soil_moisture_app/utils/displayError.dart';
 import 'package:soil_moisture_app/utils/gettingJson.dart';
-import 'package:soil_moisture_app/utils/all_data.dart';
+import 'package:soil_moisture_app/utils/date_func.dart';
+
+// * Data import
+import 'package:soil_moisture_app/data/all_data.dart';
 
 class Analysis extends StatefulWidget {
   @override
@@ -19,48 +22,69 @@ class Analysis extends StatefulWidget {
 class _AnalysisState extends State<Analysis> {
   int _cardCount;
   int _selCard;
+  bool _isLoading;
   String _measure;
   dynamic _chartObj;
 
   void initState() {
     _cardCount = plantList.length;
     _selCard = 0;
+    _isLoading = false;
     _changeMeasure('Moisture');
+
     super.initState();
   }
 
   void _changeMeasure(String newMeasure) {
     setState(() {
       this._measure = newMeasure;
-      switch (_measure) {
-        case 'Humidity':
-          _chartObj = dayHumid;
-          break;
-        case 'Light':
-          _chartObj = dayLight;
-          break;
-        case 'Temperature':
-          _chartObj = dayTemp;
-          break;
-        case 'Moisture':
-          _chartObj = plantList[_selCard];
-          break;
+      if (isDataGot) {
+        switch (_measure) {
+          case 'Humidity':
+            _chartObj = dayHumid;
+            break;
+          case 'Light':
+            _chartObj = dayLight;
+            break;
+          case 'Temperature':
+            _chartObj = dayTemp;
+            break;
+          case 'Moisture':
+            _chartObj = plantList[_selCard];
+            break;
+        }
+        // Debug Print
+        print(_chartObj.getAllValues);
+        print(_measure);
       }
     });
-    // Debug Print
-    print(_chartObj.getAllValues);
-    print(_measure);
+  }
+
+  Future<Null> _fetchForDate() async {
+    setState(() {
+      _isLoading = true;
+    });
+    Scaffold.of(context).removeCurrentSnackBar();
+    await _refresh();
+    setState(() {
+      _cardCount = plantList.length;
+      _isLoading = false;
+      // Debug Print
+      print(_cardCount);
+    });
   }
 
   Future<Null> _refresh() async {
-    await refreshTotalData().then((_) {
+    await fetchTotalData().then((_) {
       Scaffold.of(context).showSnackBar(SuccessOnRefresh().build(context));
     }, onError: (_) {
       Scaffold.of(context).showSnackBar(FailureOnRefresh().build(context));
     });
     _changeMeasure(_measure);
     // Debug Print
-    print('from main: ${plantList[0].getLastValue}');
+    if (isDataGot) {
+      print('analysis refresh got: ${plantList[0].getLastValue}');
+    }
   }
 
   void _selectPlant(int value) {
@@ -88,43 +112,50 @@ class _AnalysisState extends State<Analysis> {
                   padding: const EdgeInsets.symmetric(vertical: 12.0),
                   child: Row(
                     children: <Widget>[
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              Text(
-                                '${_chartObj.getLastValue.toDouble() * ((_measure == 'Moisture') ? 100 : 1)}',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .display3
-                                    .copyWith(
-                                      color: appSecondaryDarkColor,
-                                      fontSize:
-                                          MediaQuery.of(context).size.width *
-                                              0.1,
+                      (isDataGot && !_isLoading)
+                          ? Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Row(
+                                  children: <Widget>[
+                                    Text(
+                                      '${_chartObj.getLastValue.toDouble() * ((_measure == 'Moisture') ? 100 : 1)}',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .display3
+                                          .copyWith(
+                                            color: appSecondaryDarkColor,
+                                            fontSize: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.1,
+                                          ),
                                     ),
-                              ),
-                              Text(
-                                '${_chartObj.getUnit}',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .body1
-                                    .copyWith(
-                                      fontSize:
-                                          MediaQuery.of(context).size.width *
-                                              0.07,
+                                    Text(
+                                      '${_chartObj.getUnit}',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .body1
+                                          .copyWith(
+                                            fontSize: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.07,
+                                          ),
                                     ),
-                              ),
-                            ],
-                          ),
-                          Text(
-                            'Current $_measure',
-                            style: Theme.of(context).textTheme.body2,
-                          ),
-                        ],
-                      ),
+                                  ],
+                                ),
+                                Text(
+                                  'Latest recorded $_measure on $fetchDateEEE_MMM_d',
+                                  style: Theme.of(context).textTheme.body2,
+                                ),
+                              ],
+                            )
+                          : Container(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.087,
+                            ),
                       Spacer(),
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 5.0),
@@ -174,12 +205,13 @@ class _AnalysisState extends State<Analysis> {
                 Container(
                   height: MediaQuery.of(context).size.height * 0.35,
                   child: Card(
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: (_chartObj.getAllValues == null)
-                          ? CircularProgressIndicator() // * Broken, refresh to see data
-                          : displayChart(_chartObj, _measure, context),
-                    ),
+                    child: (_isLoading)
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : (isDataGot)
+                            ? displayChart(_chartObj, _measure, context)
+                            : NoData(),
                   ),
                 ),
                 Row(
@@ -187,17 +219,38 @@ class _AnalysisState extends State<Analysis> {
                   children: <Widget>[
                     IconButton(
                       icon: Icon(Icons.chevron_left),
-                      onPressed: null,
+                      onPressed: () async {
+                        prevDate();
+                        await _fetchForDate();
+                      },
                     ),
-                    Text(
-                      'Thu, 5 Sep',
-                      style: Theme.of(context).textTheme.body2.copyWith(
-                            fontSize: MediaQuery.of(context).size.width * 0.05,
-                          ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      alignment: Alignment.center,
+                      child: Text(
+                        '$fetchDateEEE_MMM_d',
+                        style: Theme.of(context).textTheme.body2.copyWith(
+                              fontSize:
+                                  MediaQuery.of(context).size.width * 0.05,
+                            ),
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 2.0,
+                          color: appPrimaryDarkColor,
+                        ),
+                        borderRadius: BorderRadius.circular(25.0),
+                        shape: BoxShape.rectangle,
+                      ),
                     ),
                     IconButton(
                       icon: Icon(Icons.chevron_right),
-                      onPressed: null,
+                      onPressed: (isNow())
+                          ? null
+                          : () async {
+                              nextDate();
+                              await _fetchForDate();
+                            },
                     )
                   ],
                 ),

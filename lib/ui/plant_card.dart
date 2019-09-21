@@ -6,8 +6,8 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 // * ui import
 import 'package:soil_moisture_app/ui/colors.dart';
 
-// * utils import
-import 'package:soil_moisture_app/utils/plant_class.dart';
+// * Data import
+import 'package:soil_moisture_app/data/plant_class.dart';
 
 class PlantCard extends StatelessWidget {
   Function onTap;

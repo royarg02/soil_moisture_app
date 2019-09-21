@@ -1,6 +1,5 @@
 class Light {
   List<num> _values;
-  num _lastVal;
   String _unit = 'Lux';
   Light() {
     this._values = [];
@@ -10,11 +9,7 @@ class Light {
     this._values = data['light'].cast<num>();
   }
 
-  Light.addLatest(num data) {
-    this._lastVal = data;
-  }
-
   List<num> get getAllValues => _values;
-  num get getLastValue => (_values == null) ? _lastVal : _values.last;
+  num get getLastValue => _values.last;
   String get getUnit => _unit;
 }

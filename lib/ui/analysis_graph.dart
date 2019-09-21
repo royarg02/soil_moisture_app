@@ -30,8 +30,8 @@ SfCartesianChart displayChart(
       ),
     ),
     primaryYAxis: NumericAxis(
-      minimum: (dataMinValue < 0) ? dataMinValue - 100 : 0,
-      maximum: (dataMaxValue > 100) ? dataMaxValue + 100 : 100,
+      minimum: (dataMinValue < 0) ? dataMinValue - 100.0 : 0,
+      maximum: (dataMaxValue > 100) ? dataMaxValue + 100.0 : 100,
       interval: 20,
       axisLine: AxisLine(width: 1),
       labelFormat: '{value}${chartObj.getUnit}',
