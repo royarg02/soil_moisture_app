@@ -22,59 +22,55 @@ void main() async {
   runApp(MaterialApp(
     title: title,
     debugShowCheckedModeBanner: false,
-    home: Home(title),
+    home: DefaultTabController(
+      length: 2,
+      child: Home(title),
+    ),
     theme: buildLightTheme(),
   ));
 }
 
-class Home extends StatefulWidget {
+// class Home extends StatefulWidget {
+//   final String title;
+//   Home(this.title);
+//   @override
+//   _HomeState createState() => _HomeState();
+// }
+
+// class _HomeState extends State<Home> {
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return FutureBuilder(
+//       future: _totalData,
+//       builder: (context, AsyncSnapshot snapshot) {
+//         print(snapshot);
+//         if (snapshot.hasError) {
+//           return Scaffold(
+//             backgroundColor: appPrimaryColor,
+//             body: NoInternet(),
+//           );
+//         } else if (snapshot.connectionState == ConnectionState.done) {
+//           return DefaultTabController(
+//             length: 2,
+//             child: Tabs(widget.title),
+//           );
+//         } else {
+//           return Scaffold(
+//             backgroundColor: appPrimaryColor,
+//             body: Center(
+//               child: CircularProgressIndicator(),
+//             ),
+//           );
+//         }
+//       },
+//     );
+//   }
+// }
+
+class Home extends StatelessWidget {
   final String title;
   Home(this.title);
-  @override
-  _HomeState createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  Future _totalData;
-
-  void initState() {
-    // * Makes the future(builder) run only once at startup
-    _totalData = fetchTotalData();
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _totalData,
-      builder: (context, AsyncSnapshot snapshot) {
-        print(snapshot);
-        if (snapshot.hasError) {
-          return Scaffold(
-            backgroundColor: appPrimaryColor,
-            body: NoInternet(),
-          );
-        } else if (snapshot.connectionState == ConnectionState.done) {
-          return DefaultTabController(
-            length: 2,
-            child: Tabs(widget.title),
-          );
-        } else {
-          return Scaffold(
-            backgroundColor: appPrimaryColor,
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        }
-      },
-    );
-  }
-}
-
-class Tabs extends StatelessWidget {
-  final String title;
-  Tabs(this.title);
 
   final List<Widget> _children = [
     Overview(),

@@ -10,7 +10,16 @@ List<Plant> plantList = [];
 Light dayLight;
 Temp dayTemp;
 Humidity dayHumid;
+
+// * Data objects to be used in Overview
+List<Plant> nowPlantList = [];
+Light nowLight;
+Temp nowTemp;
+Humidity nowHumid;
 DataNow nowData = DataNow();
 
 // * base url for application get/post
 final baseUrl = "https://drip-io.herokuapp.com";
+
+// * for threshold setter
+List<num> val;

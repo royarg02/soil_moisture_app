@@ -7,7 +7,7 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/splashimage"
+            android:src="@drawable/soif_launch"
              />
     </item>
 </layer-list>

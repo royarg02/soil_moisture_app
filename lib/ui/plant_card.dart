@@ -54,7 +54,8 @@ class PlantCard extends StatelessWidget {
               Container(
                 height: MediaQuery.of(context).size.height * 0.07,
                 width: MediaQuery.of(context).size.height * 0.07,
-                child: Image.asset('./assets/images/plant.png'), //* Place Image Asset Here
+                child: Image.asset(
+                    './assets/images/plant.png'), //* Place Image Asset Here
               ),
               LinearPercentIndicator(
                 addAutomaticKeepAlive: false,

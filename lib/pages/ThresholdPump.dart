@@ -16,12 +16,12 @@ class ThresholdPump extends StatefulWidget {
 }
 
 class _ThresholdPumpState extends State<ThresholdPump> {
-  List<num> val;
   String url = "$baseUrl/setthreshold";
   Map<String, dynamic> status;
 
   void initState() {
-    val = List.filled(2, 0.0);
+    // ! Replace with current threshold fetch when implemented
+    val = List.filled(nowPlantList.length, 0.0);
     super.initState();
   }
 
@@ -79,7 +79,7 @@ class _ThresholdPumpState extends State<ThresholdPump> {
               itemCount: val.length,
               itemBuilder: (context, position) {
                 return ThresholdSlider(
-                  label: 'Plant $position',
+                  label: '${nowPlantList[position].getLabel}',
                   threshold: val[position],
                   position: position,
                   thresholdChanger: _setThreshold,
