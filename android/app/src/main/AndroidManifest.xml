@@ -10,7 +10,8 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="soif"
-        android:icon="@mipmap/soif_launch">
+        android:icon="@mipmap/soif_launch"
+        android:roundIcon="@mipmap/soif_launch">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

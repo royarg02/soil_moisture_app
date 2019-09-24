@@ -5,8 +5,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 
 // * utils import
 import 'package:soil_moisture_app/utils/displayError.dart';
-import 'package:soil_moisture_app/utils/date_func.dart';
-import 'package:soil_moisture_app/utils/gettingJson.dart';
+import 'package:soil_moisture_app/utils/json_post_get.dart';
 
 // * Data import
 import 'package:soil_moisture_app/data/all_data.dart';
@@ -21,11 +20,8 @@ class Overview extends StatefulWidget {
 }
 
 class _OverviewState extends State<Overview> {
-  Future _latData;
-
+  
   void initState() {
-    // * Makes the future(builder) run only once at startup
-    _latData = fetchLatestData();
     super.initState();
   }
 
@@ -36,7 +32,7 @@ class _OverviewState extends State<Overview> {
       Scaffold.of(context).showSnackBar(FailureOnRefresh().build(context));
     });
     // Debug Print
-    if (isDataGot) {
+    if (isCurrentDataGot) {
       print('Overview refresh got: ${nowPlantList[0].getLastValue}');
     }
   }
@@ -47,7 +43,7 @@ class _OverviewState extends State<Overview> {
       body: RefreshIndicator(
         onRefresh: _refresh,
         child: FutureBuilder(
-          future: _latData,
+          future: latData,
           builder: (context, AsyncSnapshot snapshot) {
             print(snapshot);
             if (snapshot.hasError) {
@@ -107,7 +103,7 @@ class _PageState extends State<Page> {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 35.0),
                     child: CircularPercentIndicator(
-                      //addAutomaticKeepAlive: false,
+                      addAutomaticKeepAlive: false,
                       animationDuration: 600,
                       radius: MediaQuery.of(context).size.width * 0.55,
                       animation: true,
@@ -172,7 +168,7 @@ class _PageState extends State<Page> {
                                     MediaQuery.of(context).size.height * 0.025),
                           ),
                           Text(
-                            '💡${(nowLight.getLastValue < 1000) ? nowLight.getLastValue.toInt() : (nowLight.getLastValue ~/ 1000).toString() + 'K'} ${nowLight.getUnit}}',
+                            '💡${(nowLight.getLastValue < 1000) ? nowLight.getLastValue.toInt() : (nowLight.getLastValue ~/ 1000).toString() + 'K'} ${nowLight.getUnit}',
                             style: Theme.of(context).textTheme.body2.copyWith(
                                 fontSize:
                                     MediaQuery.of(context).size.height * 0.025),

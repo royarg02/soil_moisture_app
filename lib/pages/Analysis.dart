@@ -11,7 +11,7 @@ import 'package:soil_moisture_app/ui/refresh_snackbar.dart';
 
 // * utils import
 import 'package:soil_moisture_app/utils/displayError.dart';
-import 'package:soil_moisture_app/utils/gettingJson.dart';
+import 'package:soil_moisture_app/utils/json_post_get.dart';
 import 'package:soil_moisture_app/utils/date_func.dart';
 
 // * Data import
@@ -23,9 +23,8 @@ class Analysis extends StatefulWidget {
 }
 
 class _AnalysisState extends State<Analysis> {
-  Future _allData;
   void initState() {
-    _allData = fetchTotalData();
+    
     super.initState();
   }
 
@@ -33,7 +32,7 @@ class _AnalysisState extends State<Analysis> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-        future: _allData,
+        future: totData,
         builder: (context, AsyncSnapshot snapshot) {
           print(snapshot);
           if (snapshot.hasError) {
@@ -72,7 +71,6 @@ class _PageState extends State<Page> {
     _selCard = 0;
     _isLoading = false;
     _changeMeasure('Moisture');
-
     super.initState();
   }
 

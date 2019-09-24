@@ -29,12 +29,12 @@ class _ThresholdSliderState extends State<ThresholdSlider> {
               child: Text(
                 this.widget.label,
                 style: Theme.of(context).textTheme.body2.copyWith(
-                      fontSize: MediaQuery.of(context).size.width * 0.05,
+                      fontSize: MediaQuery.of(context).size.width * 0.045,
                     ),
               ),
             ),
             Expanded(
-              flex: 9,
+              flex: 12,
               child: Slider(
                 value: widget.threshold,
                 onChanged: (val) => widget.thresholdChanger(
@@ -47,14 +47,13 @@ class _ThresholdSliderState extends State<ThresholdSlider> {
               ),
             ),
             Expanded(
-              flex: 1,
-              //margin: EdgeInsets.only(right: 15.0),
+              flex: 3,
               child: Text(
                 '${widget.threshold}',
                 style: Theme.of(context).textTheme.caption.copyWith(
                       fontSize: MediaQuery.of(context).size.width * 0.03,
                     ),
-                textAlign: TextAlign.start,
+                textAlign: TextAlign.center,
               ),
             )
           ],

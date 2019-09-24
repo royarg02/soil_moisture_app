@@ -16,6 +16,10 @@ import 'package:soil_moisture_app/data/all_data.dart';
 bool isDataGot;
 bool isCurrentDataGot;
 
+// * variables for caching response
+Future latData = fetchLatestData();
+Future totData = fetchTotalData();
+
 Future<Map<String, dynamic>> fetchJsonData({bool latest = false}) async {
   String url = "$baseUrl/getdata/${(latest) ? 'now' : fetchDatedd_mm_yyyy}";
   print(url);
@@ -25,7 +29,26 @@ Future<Map<String, dynamic>> fetchJsonData({bool latest = false}) async {
   return parsed;
 }
 
-Future<Null> addData(Map<String, dynamic> data) {
+Future<Map<String, dynamic>> postThreshold(Map<String, dynamic> data) async {
+  String url = "$baseUrl/setthreshold";
+  Map<String, dynamic> postResult;
+  print(data);
+  print(url);
+  await http
+      .post(url,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: json.encode(data),
+          encoding: Encoding.getByName('utf-8'))
+      .then((onValue) {
+    print(onValue.statusCode);
+    postResult = json.decode(onValue.body);
+  });
+  return postResult;
+}
+
+void addData(Map<String, dynamic> data) {
   isDataGot = true;
   print(data);
   plantList = [];
@@ -35,42 +58,27 @@ Future<Null> addData(Map<String, dynamic> data) {
   }
   data['records'][0]['moisture'].forEach((k, v) {
     plantList.add(Plant.createElement(k, v.cast<num>()));
-    // if (isNow()) {
-    //   nowData.lastMoistures.add(v.cast<num>().last);
-    //   print(nowData.lastMoistures);
-    // }
   });
   dayHumid = Humidity.fromJson(data['records'][0]);
   dayTemp = Temp.fromJson(data['records'][0]);
   dayLight = Light.fromJson(data['records'][0]);
-  // if (isNow()) {
-  //   nowData.lastHumidity = dayHumid.getAllValues.last;
-  //   nowData.lastLight = dayLight.getAllValues.last;
-  //   nowData.lastTemp = dayLight.getAllValues.last;
-  // }
 }
 
-Future<Null> addLatestData(Map<String, dynamic> data) {
+void addLatestData(Map<String, dynamic> data) {
   isCurrentDataGot = true;
-  isDataGot = true;
   print(data);
   nowPlantList = [];
-  if(data == null){
+  if (data == null) {
     isCurrentDataGot = false;
     return null;
   }
-  data['moisture'].forEach((k, v){
+  data['moisture'].forEach((k, v) {
     nowPlantList.add(Plant.createLatest(k, double.parse(v.toString())));
-    // nowData.createElement(k, double.parse(v.toString()));
-    //nowData.latPlantList.add(SmallPlant()double.parse(v.toString()));
   });
-  print(nowData.latPlantList);
+  print(nowPlantList.last.getLastValue);
   nowLight = Light.createLatest(data['light']);
   nowHumid = Humidity.createLatest(data['humidity']);
   nowTemp = Temp.createLatest(data['temparature']);
-  // nowData.lastLight = data['light'];
-  // nowData.lastHumidity = data['humidity'];
-  // nowData.lastTemp = data['temparature'];
 }
 
 Future<Null> fetchTotalData() async {

@@ -1,11 +1,12 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:math';
 
 // * ui import
 import 'package:soil_moisture_app/ui/thresholdSlider.dart';
 import 'package:soil_moisture_app/ui/colors.dart';
+
+// * utils import
+import 'package:soil_moisture_app/utils/json_post_get.dart';
+import 'package:soil_moisture_app/utils/displayError.dart';
 
 // * data import
 import 'package:soil_moisture_app/data/all_data.dart';
@@ -16,46 +17,39 @@ class ThresholdPump extends StatefulWidget {
 }
 
 class _ThresholdPumpState extends State<ThresholdPump> {
-  String url = "$baseUrl/setthreshold";
+  Map<String, dynamic> postData;
   Map<String, dynamic> status;
+  bool _isLoading;
 
   void initState() {
     // ! Replace with current threshold fetch when implemented
-    val = List.filled(nowPlantList.length, 0.0);
+    thresholdVal = List.filled(nowPlantList.length, 0.0);
+    _isLoading = false;
     super.initState();
   }
 
   void _setThreshold({int position, num value}) {
     setState(() {
-       val[position] = value;
+      thresholdVal[position] = value;
     });
   }
 
   void _postThreshold() async {
-    print(
-        'Plant 1 Pump: ${(val[0] * pow(10.0, 2)).round().toDouble() / pow(10.0, 2)}');
-    print(
-        'Plant 2 Pump: ${(val[1] * pow(10.0, 2)).round().toDouble() / pow(10.0, 2)}');
-    String postBody = json.encode({
-      "pump0": (val[0] * pow(10.0, 2)).round().toDouble() / pow(10.0, 2),
-      "pump1": (val[1] * pow(10.0, 2)).round().toDouble() / pow(10.0, 2),
+    setState(() {
+      _isLoading = true;
     });
-    http
-        .post(url,
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: postBody,
-            encoding: Encoding.getByName('utf-8'))
-        .then((_) {
-      print("${_.statusCode}");
-      print("${json.decode(_.body)}");
-      status = json.decode(_.body);
-      if (status['success']) {
-        _showStatus(context, 'Threshold successfully set.');
-      } else {
-        _showStatus(context, 'Error Occurred');
-      }
+    postData = {};
+    for (var i = 0; i < thresholdVal.length; ++i) {
+      postData['pump$i'] = thresholdVal[i];
+    }
+    status = await postThreshold(postData);
+    if (status['success']) {
+      _showStatus(context, 'Threshold successfully set.');
+    } else {
+      _showStatus(context, 'Error Occurred');
+    }
+    setState(() {
+      _isLoading = false;
     });
   }
 
@@ -73,29 +67,37 @@ class _ThresholdPumpState extends State<ThresholdPump> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0),
-          child: ListView.builder(
-              physics: AlwaysScrollableScrollPhysics(
-                  parent: BouncingScrollPhysics()),
-              itemCount: val.length,
-              itemBuilder: (context, position) {
-                return ThresholdSlider(
-                  label: '${nowPlantList[position].getLabel}',
-                  threshold: val[position],
-                  position: position,
-                  thresholdChanger: _setThreshold,
-                );
-              }),
+          child: (isCurrentDataGot)
+              ? ListView.builder(
+                  physics: AlwaysScrollableScrollPhysics(
+                      parent: BouncingScrollPhysics()),
+                  itemCount: thresholdVal.length,
+                  itemBuilder: (context, position) {
+                    return ThresholdSlider(
+                      label: '${nowPlantList[position].getLabel}',
+                      threshold: thresholdVal[position],
+                      position: position,
+                      thresholdChanger: _setThreshold,
+                    );
+                  })
+              : NoDataToday(),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
-        label: Text(
-          'Set',
-          style: Theme.of(context).textTheme.button.copyWith(
-                color: appPrimaryLightColor,
+        label: (_isLoading)
+            ? CircularProgressIndicator(
+                backgroundColor: appPrimaryLightColor,
+              )
+            : Text(
+                'Set',
+                style: Theme.of(context).textTheme.button.copyWith(
+                      color: appPrimaryLightColor,
+                      fontSize: MediaQuery.of(context).size.width * 0.05,
+                    ),
               ),
-        ),
-        onPressed: _postThreshold,
+        onPressed:
+            (isCurrentDataGot) ? (_isLoading) ? null : _postThreshold : null,
       ),
     );
   }

@@ -8,10 +8,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:soil_moisture_app/ui/build_theme.dart';
 import 'package:soil_moisture_app/ui/colors.dart';
 
-// * utils import
-import 'package:soil_moisture_app/utils/displayError.dart';
-import 'package:soil_moisture_app/utils/gettingJson.dart';
-
 // * Pages Import
 import 'pages/Analysis.dart';
 import 'pages/Overview.dart';
@@ -29,44 +25,6 @@ void main() async {
     theme: buildLightTheme(),
   ));
 }
-
-// class Home extends StatefulWidget {
-//   final String title;
-//   Home(this.title);
-//   @override
-//   _HomeState createState() => _HomeState();
-// }
-
-// class _HomeState extends State<Home> {
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return FutureBuilder(
-//       future: _totalData,
-//       builder: (context, AsyncSnapshot snapshot) {
-//         print(snapshot);
-//         if (snapshot.hasError) {
-//           return Scaffold(
-//             backgroundColor: appPrimaryColor,
-//             body: NoInternet(),
-//           );
-//         } else if (snapshot.connectionState == ConnectionState.done) {
-//           return DefaultTabController(
-//             length: 2,
-//             child: Tabs(widget.title),
-//           );
-//         } else {
-//           return Scaffold(
-//             backgroundColor: appPrimaryColor,
-//             body: Center(
-//               child: CircularProgressIndicator(),
-//             ),
-//           );
-//         }
-//       },
-//     );
-//   }
-// }
 
 class Home extends StatelessWidget {
   final String title;
