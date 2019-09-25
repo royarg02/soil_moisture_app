@@ -1,3 +1,10 @@
+/*
+* threshold_slider
+
+* //TODO: Aritra please add details
+* The controls for controlling the moisture threshold for each pump/ plant.
+*/
+
 import 'package:flutter/material.dart';
 
 // * ui import

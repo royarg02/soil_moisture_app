@@ -1,6 +1,11 @@
+/*
+* date_func
+
+* Manipulations and functions to be performed on Date values. 
+*/
+
 import 'package:intl/intl.dart';
 
-// * Manipulations and functions to be performed on Date values
 final DateTime now = DateTime.now();
 DateTime date = now;
 

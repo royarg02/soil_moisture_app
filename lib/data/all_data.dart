@@ -16,8 +16,8 @@ Light nowLight;
 Temp nowTemp;
 Humidity nowHumid;
 
-// * base url for application get/post
-final baseUrl = "https://drip-io.herokuapp.com";
-
 // * for threshold setter
 List<num> thresholdVal;
+
+// * base url for application get/post
+final baseUrl = "https://drip-io.herokuapp.com";

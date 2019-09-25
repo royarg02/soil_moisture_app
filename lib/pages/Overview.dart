@@ -1,10 +1,18 @@
+/*
+* Overview
+
+* The first page upon which the user lands on launching the app, this page displays
+* the CURRENT DATA of moisture of all plants, humidity, lumination(light), and temperature
+* depending upon the availability of such data at the REST API server.
+*/
+
 import 'package:flutter/material.dart';
 
 // * external packages import
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 // * utils import
-import 'package:soil_moisture_app/utils/displayError.dart';
+import 'package:soil_moisture_app/utils/display_error.dart';
 import 'package:soil_moisture_app/utils/json_post_get.dart';
 
 // * Data import
@@ -21,10 +29,6 @@ class Overview extends StatefulWidget {
 
 class _OverviewState extends State<Overview> {
   
-  void initState() {
-    super.initState();
-  }
-
   Future<Null> _refresh() async {
     await fetchLatestData().then((_) {
       Scaffold.of(context).showSnackBar(SuccessOnRefresh().build(context));
@@ -45,12 +49,15 @@ class _OverviewState extends State<Overview> {
         child: FutureBuilder(
           future: latData,
           builder: (context, AsyncSnapshot snapshot) {
+            // Debug print
             print(snapshot);
             if (snapshot.hasError) {
               return Scaffold(
                 body: NoInternet(),
               );
             } else if (snapshot.connectionState == ConnectionState.done) {
+              // * async load full data for Analysis
+              totData = totData ?? fetchTotalData();
               return Page();
             } else {
               return Scaffold(
@@ -162,7 +169,7 @@ class _PageState extends State<Page> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
                           Text(
-                            '💧${nowHumid.getLastValue}${nowHumid.getUnit}', // ! Get API Fix
+                            '💧${nowHumid.getLastValue}${nowHumid.getUnit}',
                             style: Theme.of(context).textTheme.body2.copyWith(
                                 fontSize:
                                     MediaQuery.of(context).size.height * 0.025),

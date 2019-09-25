@@ -1,3 +1,10 @@
+/*
+* analyis_graph
+
+* The graph which is displayed at the Analysis page.
+* This graph has zoom, pan and tooltip features.
+*/
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:math'; // * For max() and min()
@@ -8,11 +15,11 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 // * ui import
 import 'package:soil_moisture_app/ui/colors.dart';
 
+// * This function defines the behaviour and formatting of the chart
 SfCartesianChart displayChart(
     dynamic chartObj, String graph, BuildContext context) {
   num dataMinValue = chartObj.getAllValues.reduce((num a, num b) => min(a, b));
   num dataMaxValue = chartObj.getAllValues.reduce((num a, num b) => max(a, b));
-  print(chartObj.getAllValues.runtimeType);
   return SfCartesianChart(
     zoomPanBehavior: ZoomPanBehavior(
       enablePinching: true,
@@ -50,12 +57,15 @@ SfCartesianChart displayChart(
   );
 }
 
+// * This function returns the series(List) to be displayed in the graph
+// * The graph displays mapped x and y values from Class defined below
 List<LineSeries<dynamic, DateTime>> getLineSeries(
     List<dynamic> chartData, String graph, BuildContext context) {
   // Debug Print
   print(chartData);
   List<_ChartData> data = [];
   for (var i = 0; i < chartData.length; ++i) {
+    // * Datetime provided here is arbitary, actually the hour is required
     data.add(_ChartData(chartData[i], DateTime(2019, 09, 05, i)));
   }
   return <LineSeries<_ChartData, DateTime>>[
@@ -79,6 +89,7 @@ List<LineSeries<dynamic, DateTime>> getLineSeries(
   ];
 }
 
+// * Class for mapping x and y values for the Graph
 class _ChartData {
   dynamic value;
   DateTime index;

@@ -1,3 +1,13 @@
+/*
+* Analysis
+
+* This page displays the plant moisture, lumination(light), humidity, and temperature throughout the day
+* in hourly basis. Of these parameters, only the moisture varies depending upon the plant. The page
+* consists of an interactive graph that displays the same data visually in depth.
+* The user can access this data for multiple days and switch between them, depending upon the availabiity 
+* of required data at the REST API server.
+*/
+
 import 'package:flutter/material.dart';
 
 // * External packages import
@@ -10,7 +20,7 @@ import 'package:soil_moisture_app/ui/plant_card.dart';
 import 'package:soil_moisture_app/ui/refresh_snackbar.dart';
 
 // * utils import
-import 'package:soil_moisture_app/utils/displayError.dart';
+import 'package:soil_moisture_app/utils/display_error.dart';
 import 'package:soil_moisture_app/utils/json_post_get.dart';
 import 'package:soil_moisture_app/utils/date_func.dart';
 
@@ -23,17 +33,13 @@ class Analysis extends StatefulWidget {
 }
 
 class _AnalysisState extends State<Analysis> {
-  void initState() {
-    
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
         future: totData,
         builder: (context, AsyncSnapshot snapshot) {
+          // Debug print
           print(snapshot);
           if (snapshot.hasError) {
             return Scaffold(
@@ -62,20 +68,21 @@ class Page extends StatefulWidget {
 class _PageState extends State<Page> {
   int _cardCount;
   int _selCard;
-  bool _isLoading;
+  Future _loadState;
   String _measure;
   dynamic _chartObj;
 
   void initState() {
     _cardCount = plantList.length;
     _selCard = 0;
-    _isLoading = false;
+    _loadState = totData;
     _changeMeasure('Moisture');
     super.initState();
   }
 
   void _changeMeasure(String newMeasure) {
     setState(() {
+      _cardCount = plantList.length;
       this._measure = newMeasure;
       if (isDataGot) {
         switch (_measure) {
@@ -100,18 +107,9 @@ class _PageState extends State<Page> {
     });
   }
 
-  Future<Null> _fetchForDate() async {
-    setState(() {
-      _isLoading = true;
-    });
-    Scaffold.of(context).removeCurrentSnackBar();
-    await _refresh();
-    setState(() {
-      _cardCount = plantList.length;
-      _isLoading = false;
-      // Debug Print
-      print(_cardCount);
-    });
+  void _fetchForDate() {
+    _loadState = _refresh();
+    setState(() {});
   }
 
   Future<Null> _refresh() async {
@@ -150,49 +148,61 @@ class _PageState extends State<Page> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    (isDataGot && !_isLoading)
-                        ? Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Row(
-                                children: <Widget>[
-                                  Text(
-                                    '${_chartObj.getLastValue.toDouble() * ((_measure == 'Moisture') ? 100 : 1)}',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .display3
-                                        .copyWith(
-                                          color: appSecondaryDarkColor,
-                                          fontSize: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.1,
+                    FutureBuilder(
+                      future: _loadState,
+                      builder: (context, AsyncSnapshot snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          return (isDataGot)
+                              ? Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Row(
+                                      children: <Widget>[
+                                        Text(
+                                          '${_chartObj.getLastValue.toDouble() * ((_measure == 'Moisture') ? 100 : 1)}',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .display3
+                                              .copyWith(
+                                                color: appSecondaryDarkColor,
+                                                fontSize: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.1,
+                                              ),
                                         ),
-                                  ),
-                                  Text(
-                                    '${_chartObj.getUnit}',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .body1
-                                        .copyWith(
-                                          fontSize: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.07,
+                                        Text(
+                                          '${_chartObj.getUnit}',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .body1
+                                              .copyWith(
+                                                fontSize: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.07,
+                                              ),
                                         ),
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                'Latest recorded $_measure on $fetchDateEEE_MMM_d',
-                                style: Theme.of(context).textTheme.body2,
-                              ),
-                            ],
-                          )
-                        : Container(
+                                      ],
+                                    ),
+                                    Text(
+                                      'Latest recorded $_measure on $fetchDateEEE_MMM_d',
+                                      style: Theme.of(context).textTheme.body2,
+                                    ),
+                                  ],
+                                )
+                              : Container(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.087,
+                                );
+                        } else {
+                          return Container(
                             height: MediaQuery.of(context).size.height * 0.087,
-                          ),
+                          );
+                        }
+                      },
+                    ),
                     Container(
                       padding: EdgeInsets.only(right: 10.0),
                       child: Theme(
@@ -215,7 +225,6 @@ class _PageState extends State<Page> {
                                 value: option,
                                 child: Container(
                                   alignment: Alignment.center,
-                                  
                                   width:
                                       MediaQuery.of(context).size.width * 0.25,
                                   child: Text(
@@ -251,14 +260,22 @@ class _PageState extends State<Page> {
               Container(
                 height: MediaQuery.of(context).size.height * 0.35,
                 child: Card(
-                  child: (_isLoading)
-                      ? Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : (isDataGot)
-                          ? displayChart(_chartObj, _measure, context)
-                          : NoData(),
-                ),
+                    child: FutureBuilder(
+                        future: _loadState,
+                        builder: (context, AsyncSnapshot snapshot) {
+                          // Debug Print
+                          print(snapshot);
+                          if (snapshot.connectionState ==
+                              ConnectionState.done) {
+                            return (isDataGot)
+                                ? displayChart(_chartObj, _measure, context)
+                                : NoData();
+                          } else {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                        })),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -267,7 +284,7 @@ class _PageState extends State<Page> {
                     icon: Icon(Icons.chevron_left),
                     onPressed: () async {
                       prevDate();
-                      await _fetchForDate();
+                      _fetchForDate();
                     },
                   ),
                   Container(
@@ -292,9 +309,9 @@ class _PageState extends State<Page> {
                     icon: Icon(Icons.chevron_right),
                     onPressed: (isNow())
                         ? null
-                        : () async {
+                        : () {
                             nextDate();
-                            await _fetchForDate();
+                            _fetchForDate();
                           },
                   )
                 ],
@@ -302,27 +319,37 @@ class _PageState extends State<Page> {
               SizedBox(
                 height: 10.0,
               ),
-              (isDataGot)
-                  ? GridView.builder(
-                      shrinkWrap: true,
-                      physics: ScrollPhysics(),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing:
-                            MediaQuery.of(context).size.height * 0.005,
-                        mainAxisSpacing:
-                            MediaQuery.of(context).size.height * 0.005,
-                      ),
-                      itemCount: _cardCount,
-                      itemBuilder: (context, position) {
-                        return PlantCard(
-                          plant: plantList[position],
-                          isSelected: (position == _selCard),
-                          onTap: () => _selectPlant(position),
-                        );
-                      },
-                    )
-                  : SizedBox(),
+              FutureBuilder(
+                future: _loadState,
+                builder: (context, AsyncSnapshot snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return (isDataGot)
+                        ? GridView.builder(
+                            shrinkWrap: true,
+                            physics: ScrollPhysics(),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              crossAxisSpacing:
+                                  MediaQuery.of(context).size.height * 0.005,
+                              mainAxisSpacing:
+                                  MediaQuery.of(context).size.height * 0.005,
+                            ),
+                            itemCount: _cardCount,
+                            itemBuilder: (context, position) {
+                              return PlantCard(
+                                plant: plantList[position],
+                                isSelected: (position == _selCard),
+                                onTap: () => _selectPlant(position),
+                              );
+                            },
+                          )
+                        : SizedBox();
+                  } else {
+                    return SizedBox();
+                  }
+                },
+              ),
             ],
           ),
         ),

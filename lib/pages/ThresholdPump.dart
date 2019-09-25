@@ -1,12 +1,23 @@
+/*
+* ThresholdPump (Pump Threshold Control)
+
+* //TODO: Aritra please add details
+
+* Currently, the availability of controls depends on whether there is any data available
+* for today or not. If not, this will display an empty page.
+* This feature could be expanded to save the set values(and POST to API)to be instantly got(GET from API)
+* next time this page is brought up.
+*/
+
 import 'package:flutter/material.dart';
 
 // * ui import
-import 'package:soil_moisture_app/ui/thresholdSlider.dart';
+import 'package:soil_moisture_app/ui/threshold_slider.dart';
 import 'package:soil_moisture_app/ui/colors.dart';
 
 // * utils import
 import 'package:soil_moisture_app/utils/json_post_get.dart';
-import 'package:soil_moisture_app/utils/displayError.dart';
+import 'package:soil_moisture_app/utils/display_error.dart';
 
 // * data import
 import 'package:soil_moisture_app/data/all_data.dart';

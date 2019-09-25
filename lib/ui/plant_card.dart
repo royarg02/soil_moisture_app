@@ -1,3 +1,12 @@
+/*
+* plant_card
+
+* Cards displayed around the bottom of the Overview/ Analysis page which displays
+* the name and the moisture of the plant depending on context.
+* Also includes a common fancy plant image.
+* 'Selecting'the card shows the corresponding moisture value for the respective plant.
+*/
+
 import 'package:flutter/material.dart';
 
 // * External Packages Import

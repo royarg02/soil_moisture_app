@@ -1,8 +1,15 @@
+/*
+* display_error
+
+* Widgets to be displayed upon unsuccessful/ empty fetching data from REST API.
+*/
+
 import 'package:flutter/material.dart';
 
 // * utils import
 import 'package:soil_moisture_app/utils/date_func.dart';
 
+// * No Internet Available upon Startup
 class NoInternet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -18,6 +25,7 @@ class NoInternet extends StatelessWidget {
   }
 }
 
+// * No Data/ Empty Data
 class NoData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -35,6 +43,7 @@ class NoData extends StatelessWidget {
   }
 }
 
+// * No Current Data/ Empty Current Data
 class NoDataToday extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
