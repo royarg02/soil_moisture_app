@@ -92,24 +92,21 @@ class Home extends StatelessWidget {
       systemNavigationBarIconBrightness: Brightness.light, //bottom icons color
     ));
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(appWidth * 0.12),
-        child: AppBar(
-          title: Image.asset(
-            './assets/images/Soif_sk.png',
-            height: appWidth * 0.08,
-          ),
-          centerTitle: true,
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(FontAwesomeIcons.slidersH),
-              onPressed: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ThresholdPump())),
-              tooltip: 'Pump Threshold Control',
-              iconSize: appWidth * 0.05,
-            )
-          ],
+      appBar: AppBar(
+        title: Image.asset(
+          './assets/images/Soif_sk.png',
+          height: appWidth * 0.08,
         ),
+        centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(FontAwesomeIcons.slidersH),
+            onPressed: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ThresholdPump())),
+            tooltip: 'Pump Threshold Control',
+            iconSize: appWidth * 0.05,
+          )
+        ],
       ),
       body: TabBarView(
         children: _children,

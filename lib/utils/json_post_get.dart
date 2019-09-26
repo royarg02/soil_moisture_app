@@ -19,8 +19,8 @@ import 'package:soil_moisture_app/data/temp_data.dart';
 import 'package:soil_moisture_app/data/all_data.dart';
 
 // * determines if any data is got from the API
-bool isDataGot;
-bool isCurrentDataGot;
+bool isDataGot = false;
+bool isCurrentDataGot = false;
 
 // * variables for caching response
 Future latData = fetchLatestData();
@@ -63,14 +63,14 @@ Future<Map<String, dynamic>> postThreshold(Map<String, dynamic> data) async {
 
 // * Add total data for a day received from API
 void addData(Map<String, dynamic> data) {
-  isDataGot = true;
+  isDataGot = false;
   // Debug print
   print(data);
   plantList = [];
   if (data['records'].isEmpty) {
-    isDataGot = false;
     return null;
   }
+  isDataGot = true;
   data['records'][0]['moisture'].forEach((k, v) {
     plantList.add(Plant.createElement(k, v.cast<num>()));
   });
@@ -81,14 +81,14 @@ void addData(Map<String, dynamic> data) {
 
 // * Add current data received from API
 void addLatestData(Map<String, dynamic> data) {
-  isCurrentDataGot = true;
+  isCurrentDataGot = false;
   // Debug print
   print(data);
   nowPlantList = [];
   if (data == null) {
-    isCurrentDataGot = false;
     return null;
   }
+  isCurrentDataGot = true;
   data['moisture'].forEach((k, v) {
     nowPlantList.add(Plant.createLatest(k, double.parse(v.toString())));
   });

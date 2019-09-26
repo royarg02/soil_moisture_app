@@ -29,21 +29,59 @@ class ThresholdPump extends StatefulWidget {
 }
 
 class _ThresholdPumpState extends State<ThresholdPump> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: BackButton(),
+        title: Text(
+          'Pump threshold Control',
+          style: Theme.of(context).textTheme.title.copyWith(
+                fontSize: appWidth * 0.055,
+              ),
+        ),
+        centerTitle: true,
+      ),
+      body: FutureBuilder(
+        future: latData,
+        builder: (context, AsyncSnapshot snapshot) {
+          // Debug print
+          print(snapshot);
+          if (snapshot.hasError) {
+            return Scaffold(
+              body: NoInternet(),
+            );
+          } else if (snapshot.connectionState == ConnectionState.done) {
+            return Page();
+          } else {
+            return Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+        },
+      ),
+    );
+  }
+}
+
+class Page extends StatefulWidget {
+  @override
+  _PageState createState() => _PageState();
+}
+
+class _PageState extends State<Page> {
   Map<String, dynamic> postData;
   Map<String, dynamic> status;
   bool _isLoading;
 
   void initState() {
+    _isLoading = false;
+
     // ! Replace with current threshold fetch when implemented
     thresholdVal = List.filled(nowPlantList.length, 0.0);
-    _isLoading = false;
     super.initState();
-  }
-
-  void _setThreshold({int position, num value}) {
-    setState(() {
-      thresholdVal[position] = value;
-    });
   }
 
   void _postThreshold() async {
@@ -65,58 +103,10 @@ class _ThresholdPumpState extends State<ThresholdPump> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(appWidth * 0.12),
-        child: AppBar(
-          leading: BackButton(),
-          title: Text(
-            'Pump threshold Control',
-            style: Theme.of(context).textTheme.title.copyWith(
-                  fontSize: appWidth * 0.055,
-                ),
-          ),
-          centerTitle: true,
-        ),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: appWidth * 0.03),
-          child: (isCurrentDataGot)
-              ? ListView.builder(
-                  physics: AlwaysScrollableScrollPhysics(
-                      parent: BouncingScrollPhysics()),
-                  itemCount: thresholdVal.length,
-                  itemBuilder: (context, position) {
-                    return ThresholdSlider(
-                      label: '${nowPlantList[position].getLabel}',
-                      threshold: thresholdVal[position],
-                      position: position,
-                      thresholdChanger: _setThreshold,
-                    );
-                  })
-              : NoDataToday(),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton.extended(
-        label: (_isLoading)
-            ? CircularProgressIndicator(
-                backgroundColor: appPrimaryLightColor,
-              )
-            : Text(
-                'Set',
-                style: Theme.of(context).textTheme.button.copyWith(
-                      color: appPrimaryLightColor,
-                      fontSize: appWidth * 0.04,
-                    ),
-              ),
-        onPressed:
-            (isCurrentDataGot) ? (_isLoading) ? null : _postThreshold : null,
-      ),
-    );
+  void _setThreshold({int position, num value}) {
+    setState(() {
+      thresholdVal[position] = value;
+    });
   }
 
   void _showStatus(BuildContext context, String status) {
@@ -144,5 +134,48 @@ class _ThresholdPumpState extends State<ThresholdPump> {
             content: Text(status),
           );
         });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: appWidth * 0.03),
+          child: (isCurrentDataGot)
+              ? ListView.builder(
+                  physics: AlwaysScrollableScrollPhysics(
+                      parent: BouncingScrollPhysics()),
+                  itemCount: thresholdVal.length,
+                  itemBuilder: (context, position) {
+                    return ThresholdSlider(
+                      label: '${nowPlantList[position].getLabel}',
+                      threshold: thresholdVal[position],
+                      position: position,
+                      thresholdChanger: _setThreshold,
+                    );
+                  })
+              : NoDataToday(),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Visibility(
+        visible: isCurrentDataGot,
+        child: FloatingActionButton.extended(
+          label: (_isLoading)
+              ? CircularProgressIndicator(
+                  backgroundColor: appPrimaryLightColor,
+                )
+              : Text(
+                  'Set',
+                  style: Theme.of(context).textTheme.button.copyWith(
+                        color: appPrimaryLightColor,
+                        fontSize: appWidth * 0.04,
+                      ),
+                ),
+          onPressed: (_isLoading) ? null : _postThreshold,
+        ),
+      ),
+    );
   }
 }
