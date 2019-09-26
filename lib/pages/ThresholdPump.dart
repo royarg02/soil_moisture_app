@@ -18,6 +18,7 @@ import 'package:soil_moisture_app/ui/colors.dart';
 // * utils import
 import 'package:soil_moisture_app/utils/json_post_get.dart';
 import 'package:soil_moisture_app/utils/display_error.dart';
+import 'package:soil_moisture_app/utils/sizes.dart';
 
 // * data import
 import 'package:soil_moisture_app/data/all_data.dart';
@@ -67,17 +68,22 @@ class _ThresholdPumpState extends State<ThresholdPump> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: BackButton(),
-        title: Text(
-          'Pump threshold Control',
-          style: Theme.of(context).textTheme.title,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(appWidth * 0.12),
+        child: AppBar(
+          leading: BackButton(),
+          title: Text(
+            'Pump threshold Control',
+            style: Theme.of(context).textTheme.title.copyWith(
+                  fontSize: appWidth * 0.055,
+                ),
+          ),
+          centerTitle: true,
         ),
-        centerTitle: true,
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          padding: EdgeInsets.symmetric(horizontal: appWidth * 0.03),
           child: (isCurrentDataGot)
               ? ListView.builder(
                   physics: AlwaysScrollableScrollPhysics(
@@ -104,7 +110,7 @@ class _ThresholdPumpState extends State<ThresholdPump> {
                 'Set',
                 style: Theme.of(context).textTheme.button.copyWith(
                       color: appPrimaryLightColor,
-                      fontSize: MediaQuery.of(context).size.width * 0.05,
+                      fontSize: appWidth * 0.04,
                     ),
               ),
         onPressed:
@@ -118,17 +124,21 @@ class _ThresholdPumpState extends State<ThresholdPump> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Threshold Set Status'),
+            title: Text(
+              'Threshold Set Status',
+              textAlign: TextAlign.center,
+            ),
             actions: <Widget>[
               FlatButton(
                 color: appSecondaryDarkColor,
                 textTheme: ButtonTextTheme.primary,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(14.0)),
+                  borderRadius:
+                      BorderRadius.all(Radius.circular(appWidth * 0.1)),
                 ),
                 child: Text('OK'),
                 onPressed: () => Navigator.of(context).pop(),
-                padding: EdgeInsets.all(12.0),
+                padding: EdgeInsets.all(appWidth * 0.02),
               )
             ],
             content: Text(status),

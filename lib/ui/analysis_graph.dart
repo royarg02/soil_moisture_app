@@ -15,6 +15,9 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 // * ui import
 import 'package:soil_moisture_app/ui/colors.dart';
 
+// * utils Import
+import 'package:soil_moisture_app/utils/sizes.dart';
+
 // * This function defines the behaviour and formatting of the chart
 SfCartesianChart displayChart(
     dynamic chartObj, String graph, BuildContext context) {
@@ -34,6 +37,7 @@ SfCartesianChart displayChart(
       majorGridLines: MajorGridLines(width: 1),
       labelStyle: ChartTextStyle(
         fontFamily: 'Ocrb',
+        fontSize: appWidth * 0.027,
       ),
     ),
     primaryYAxis: NumericAxis(
@@ -44,6 +48,7 @@ SfCartesianChart displayChart(
       labelFormat: '{value}${chartObj.getUnit}',
       isVisible: true,
       labelStyle: ChartTextStyle(
+        fontSize: appWidth * 0.027,
         fontFamily: 'Ocrb',
       ),
     ),
@@ -82,8 +87,8 @@ List<LineSeries<dynamic, DateTime>> getLineSeries(
       markerSettings: MarkerSettings(
         isVisible: true,
         color: appPrimaryLightColor,
-        height: MediaQuery.of(context).size.width * 0.015,
-        width: MediaQuery.of(context).size.width * 0.015,
+        height: appWidth * 0.015,
+        width: appWidth * 0.015,
       ),
     ),
   ];

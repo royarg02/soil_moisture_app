@@ -23,6 +23,7 @@ import 'package:soil_moisture_app/ui/refresh_snackbar.dart';
 import 'package:soil_moisture_app/utils/display_error.dart';
 import 'package:soil_moisture_app/utils/json_post_get.dart';
 import 'package:soil_moisture_app/utils/date_func.dart';
+import 'package:soil_moisture_app/utils/sizes.dart';
 
 // * Data import
 import 'package:soil_moisture_app/data/all_data.dart';
@@ -112,6 +113,19 @@ class _PageState extends State<Page> {
     setState(() {});
   }
 
+  Future<Null> _pickDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: date,
+      firstDate: DateTime(date.year),
+      lastDate: now,
+    );
+    if (picked != null && picked != date) {
+      date = picked;
+      _fetchForDate();
+    }
+  }
+
   Future<Null> _refresh() async {
     await fetchTotalData().then((_) {}, onError: (_) {
       Scaffold.of(context).showSnackBar(FailureOnRefresh().build(context));
@@ -138,13 +152,13 @@ class _PageState extends State<Page> {
       onRefresh: _refresh,
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+          padding: EdgeInsets.symmetric(horizontal: appWidth * 0.03),
           child: ListView(
             physics:
                 AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12.0),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: appWidth * 0.03),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -153,58 +167,62 @@ class _PageState extends State<Page> {
                       builder: (context, AsyncSnapshot snapshot) {
                         if (snapshot.connectionState == ConnectionState.done) {
                           return (isDataGot)
-                              ? Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Row(
-                                      children: <Widget>[
-                                        Text(
-                                          '${_chartObj.getLastValue.toDouble() * ((_measure == 'Moisture') ? 100 : 1)}',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .display3
-                                              .copyWith(
-                                                color: appSecondaryDarkColor,
-                                                fontSize: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.1,
-                                              ),
-                                        ),
-                                        Text(
-                                          '${_chartObj.getUnit}',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .body1
-                                              .copyWith(
-                                                fontSize: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.07,
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                    Text(
-                                      'Latest recorded $_measure on $fetchDateEEE_MMM_d',
-                                      style: Theme.of(context).textTheme.body2,
-                                    ),
-                                  ],
+                              ? Container(
+                                height: appWidth * 0.215,
+                                alignment: Alignment.center,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Row(
+                                        children: <Widget>[
+                                          Text(
+                                            '${_chartObj.getLastValue.toDouble() * ((_measure == 'Moisture') ? 100 : 1)}',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .display2
+                                                .copyWith(
+                                                  color: appSecondaryDarkColor,
+                                                  fontSize: appWidth * 0.09,
+                                                ),
+                                          ),
+                                          Text(
+                                            '${_chartObj.getUnit}',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .body1
+                                                .copyWith(
+                                                  fontSize: appWidth * 0.06,
+                                                ),
+                                          ),
+                                        ],
+                                      ),
+                                      Text(
+                                        'On $fetchDateEEE_MMM_d',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .body2
+                                            .copyWith(
+                                              fontSize: appWidth * 0.025,
+                                            ),
+                                      ),
+                                    ],
+                                  ),
                                 )
-                              : Container(
-                                  height: MediaQuery.of(context).size.height *
-                                      0.087,
+                              : SizedBox(
+                                  height: appWidth * 0.215,
                                 );
                         } else {
-                          return Container(
-                            height: MediaQuery.of(context).size.height * 0.087,
+                          return SizedBox(
+                            height: appWidth * 0.215,
                           );
                         }
                       },
                     ),
                     Container(
-                      padding: EdgeInsets.only(right: 10.0),
+                      padding: EdgeInsets.only(right: appWidth * 0.02),
+                      height: appWidth * 0.1,
                       child: Theme(
                         data: Theme.of(context).copyWith(
                           canvasColor: appPrimaryLightColor,
@@ -212,7 +230,7 @@ class _PageState extends State<Page> {
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
                             icon: Icon(FontAwesomeIcons.chevronDown),
-                            iconSize: 18.0,
+                            iconSize: appWidth * 0.03,
                             value: _measure,
                             onChanged: _changeMeasure,
                             items: <String>[
@@ -225,18 +243,13 @@ class _PageState extends State<Page> {
                                 value: option,
                                 child: Container(
                                   alignment: Alignment.center,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.25,
+                                  width: appWidth * 0.31,
                                   child: Text(
                                     option,
                                     style: Theme.of(context)
                                         .textTheme
                                         .body2
-                                        .copyWith(
-                                            fontSize: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.035),
+                                        .copyWith(fontSize: appWidth * 0.035),
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
@@ -250,7 +263,7 @@ class _PageState extends State<Page> {
                           width: 2.0,
                           color: appPrimaryDarkColor,
                         ),
-                        borderRadius: BorderRadius.circular(25.0),
+                        borderRadius: BorderRadius.circular(appWidth * 0.1),
                         shape: BoxShape.rectangle,
                       ),
                     ),
@@ -258,7 +271,7 @@ class _PageState extends State<Page> {
                 ),
               ),
               Container(
-                height: MediaQuery.of(context).size.height * 0.35,
+                height: appWidth * 0.6,
                 child: Card(
                     child: FutureBuilder(
                         future: _loadState,
@@ -287,22 +300,20 @@ class _PageState extends State<Page> {
                       _fetchForDate();
                     },
                   ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.4,
-                    alignment: Alignment.center,
+                  FlatButton(
+                    onPressed: () => _pickDate(context),
                     child: Text(
                       '$fetchDateEEE_MMM_d',
                       style: Theme.of(context).textTheme.body2.copyWith(
-                            fontSize: MediaQuery.of(context).size.width * 0.05,
+                            fontSize: appWidth * 0.05,
                           ),
                     ),
-                    decoration: BoxDecoration(
-                      border: Border.all(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(appWidth * 0.1),
+                      side: BorderSide(
                         width: 2.0,
                         color: appPrimaryDarkColor,
                       ),
-                      borderRadius: BorderRadius.circular(25.0),
-                      shape: BoxShape.rectangle,
                     ),
                   ),
                   IconButton(
@@ -317,7 +328,7 @@ class _PageState extends State<Page> {
                 ],
               ),
               SizedBox(
-                height: 10.0,
+                height: appWidth * 0.01,
               ),
               FutureBuilder(
                 future: _loadState,
@@ -329,11 +340,9 @@ class _PageState extends State<Page> {
                             physics: ScrollPhysics(),
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3,
-                              crossAxisSpacing:
-                                  MediaQuery.of(context).size.height * 0.005,
-                              mainAxisSpacing:
-                                  MediaQuery.of(context).size.height * 0.005,
+                              crossAxisCount: (appWidth < 600) ? 3 : 5,
+                              crossAxisSpacing: appWidth * 0.005,
+                              mainAxisSpacing: appWidth * 0.005,
                             ),
                             itemCount: _cardCount,
                             itemBuilder: (context, position) {

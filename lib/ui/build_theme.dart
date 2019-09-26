@@ -35,6 +35,11 @@ ThemeData buildLightTheme() {
         fontFamily: 'Ocrb',
       ),
     ),
+    tabBarTheme: base.tabBarTheme.copyWith(
+      labelColor: appPrimaryLightColor,
+      unselectedLabelColor: appSecondaryDarkColor,
+      indicatorSize: TabBarIndicatorSize.label,
+    ),
     cardTheme: base.cardTheme.copyWith(
       color: appPrimaryLightColor,
       elevation: 3.0,

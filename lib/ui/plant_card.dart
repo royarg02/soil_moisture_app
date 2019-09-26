@@ -15,6 +15,9 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 // * ui import
 import 'package:soil_moisture_app/ui/colors.dart';
 
+// * utils import
+import 'package:soil_moisture_app/utils/sizes.dart';
+
 // * Data import
 import 'package:soil_moisture_app/data/plant_class.dart';
 
@@ -57,14 +60,14 @@ class PlantCard extends StatelessWidget {
               Text(
                 '${this.plant.getLabel}',
                 style: Theme.of(context).textTheme.body2.copyWith(
-                      fontSize: MediaQuery.of(context).size.width * 0.05,
+                      fontSize: appWidth * 0.05,
                     ),
+                    textAlign: TextAlign.center,
               ),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.07,
-                width: MediaQuery.of(context).size.height * 0.07,
-                child: Image.asset(
-                    './assets/images/plant.png'), //* Place Image Asset Here
+              Image.asset(
+                './assets/images/plant.png',
+                height: appWidth * 0.1,
+                width: appWidth * 0.1,
               ),
               LinearPercentIndicator(
                 addAutomaticKeepAlive: false,

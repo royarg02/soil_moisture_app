@@ -10,6 +10,9 @@ import 'package:flutter/material.dart';
 // * ui import
 import 'package:soil_moisture_app/ui/colors.dart';
 
+// * utils import
+import 'package:soil_moisture_app/utils/sizes.dart';
+
 class ThresholdSlider extends StatefulWidget {
   final String label;
   final num threshold;
@@ -26,17 +29,17 @@ class _ThresholdSliderState extends State<ThresholdSlider> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      padding: EdgeInsets.symmetric(vertical: appWidth * 0.01),
       child: Card(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              padding: EdgeInsets.symmetric(horizontal: appWidth * 0.02),
               child: Text(
                 this.widget.label,
                 style: Theme.of(context).textTheme.body2.copyWith(
-                      fontSize: MediaQuery.of(context).size.width * 0.045,
+                      fontSize: appWidth * 0.045,
                     ),
               ),
             ),
@@ -58,7 +61,7 @@ class _ThresholdSliderState extends State<ThresholdSlider> {
               child: Text(
                 '${widget.threshold}',
                 style: Theme.of(context).textTheme.caption.copyWith(
-                      fontSize: MediaQuery.of(context).size.width * 0.03,
+                      fontSize: appWidth * 0.03,
                     ),
                 textAlign: TextAlign.center,
               ),

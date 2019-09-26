@@ -14,6 +14,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 // * utils import
 import 'package:soil_moisture_app/utils/display_error.dart';
 import 'package:soil_moisture_app/utils/json_post_get.dart';
+import 'package:soil_moisture_app/utils/sizes.dart';
 
 // * Data import
 import 'package:soil_moisture_app/data/all_data.dart';
@@ -28,7 +29,6 @@ class Overview extends StatefulWidget {
 }
 
 class _OverviewState extends State<Overview> {
-  
   Future<Null> _refresh() async {
     await fetchLatestData().then((_) {
       Scaffold.of(context).showSnackBar(SuccessOnRefresh().build(context));
@@ -100,7 +100,7 @@ class _PageState extends State<Page> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+        padding: EdgeInsets.symmetric(horizontal: appWidth * 0.03),
         child: (isCurrentDataGot)
             // * would show only if today's data is available
             ? ListView(
@@ -108,11 +108,11 @@ class _PageState extends State<Page> {
                     parent: BouncingScrollPhysics()),
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 35.0),
+                    padding: EdgeInsets.symmetric(vertical: appWidth * 0.03),
                     child: CircularPercentIndicator(
                       addAutomaticKeepAlive: false,
                       animationDuration: 600,
-                      radius: MediaQuery.of(context).size.width * 0.55,
+                      radius: appWidth * 0.6,
                       animation: true,
                       percent: nowPlantList[_selCard].getLastValue,
                       circularStrokeCap: CircularStrokeCap.round,
@@ -122,86 +122,77 @@ class _PageState extends State<Page> {
                           : (nowPlantList[_selCard].isMoreThanNormal()
                               ? Colors.blue
                               : Colors.green),
-                      lineWidth: MediaQuery.of(context).size.width * 0.02,
+                      lineWidth: appWidth * 0.02,
                       center: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Text(
-                            '${(nowPlantList[_selCard].getLastValue * 100).toInt()}${nowPlantList[_selCard].getUnit}',
-                            style: Theme.of(context)
-                                .textTheme
-                                .display4
-                                .copyWith(
-                                  fontSize:
-                                      MediaQuery.of(context).size.width * 0.2,
-                                ),
-                          ),
-                          Text(
                             '${nowPlantList[_selCard].getLabel}',
-                            style: Theme.of(context)
-                                .textTheme
-                                .display1
-                                .copyWith(
-                                  fontSize:
-                                      MediaQuery.of(context).size.width * 0.05,
+                            style: Theme.of(context).textTheme.body2.copyWith(
+                                  fontSize: appWidth * 0.03,
                                 ),
+                            textAlign: TextAlign.center,
                           ),
                           Text(
-                            'Current Moisture',
-                            style: Theme.of(context)
-                                .textTheme
-                                .display1
-                                .copyWith(
-                                  fontSize:
-                                      MediaQuery.of(context).size.width * 0.035,
-                                ),
-                          )
+                            '${(nowPlantList[_selCard].getLastValue * 100).toInt()}${nowPlantList[_selCard].getUnit}',
+                            style:
+                                Theme.of(context).textTheme.display4.copyWith(
+                                      fontSize: appWidth * 0.2,
+                                    ),
+                          ),
                         ],
                       ),
                     ),
                   ),
+                  Text(
+                    'Current Moisture',
+                    style: Theme.of(context).textTheme.caption.copyWith(
+                          fontSize: appWidth * 0.03,
+                        ),
+                    textAlign: TextAlign.center,
+                  ),
                   Container(
-                    height: MediaQuery.of(context).size.width * 0.12,
-                    margin: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.width * 0.07),
+                    height: appWidth * 0.12,
+                    margin: EdgeInsets.symmetric(horizontal: appWidth * 0.07),
                     child: Card(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
                           Text(
                             '💧${nowHumid.getLastValue}${nowHumid.getUnit}',
-                            style: Theme.of(context).textTheme.body2.copyWith(
-                                fontSize:
-                                    MediaQuery.of(context).size.height * 0.025),
+                            style: Theme.of(context)
+                                .textTheme
+                                .body2
+                                .copyWith(fontSize: appWidth * 0.04),
                           ),
                           Text(
                             '💡${(nowLight.getLastValue < 1000) ? nowLight.getLastValue.toInt() : (nowLight.getLastValue ~/ 1000).toString() + 'K'} ${nowLight.getUnit}',
-                            style: Theme.of(context).textTheme.body2.copyWith(
-                                fontSize:
-                                    MediaQuery.of(context).size.height * 0.025),
+                            style: Theme.of(context)
+                                .textTheme
+                                .body2
+                                .copyWith(fontSize: appWidth * 0.04),
                           ),
                           Text(
                             '🌡${nowTemp.getLastValue}${nowTemp.getUnit}',
-                            style: Theme.of(context).textTheme.body2.copyWith(
-                                fontSize:
-                                    MediaQuery.of(context).size.height * 0.025),
+                            style: Theme.of(context)
+                                .textTheme
+                                .body2
+                                .copyWith(fontSize: appWidth * 0.04),
                           ),
                         ],
                       ),
                     ),
                   ),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.02,
+                    height: appWidth * 0.02,
                   ),
                   GridView.builder(
                     physics: ScrollPhysics(),
                     shrinkWrap: true,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing:
-                          MediaQuery.of(context).size.height * 0.005,
-                      mainAxisSpacing:
-                          MediaQuery.of(context).size.height * 0.005,
+                      crossAxisCount: (appWidth < 600) ? 3 : 5,
+                      crossAxisSpacing: appWidth * 0.005,
+                      mainAxisSpacing: appWidth * 0.005,
                     ),
                     itemCount: _cardCount,
                     itemBuilder: (context, position) {
