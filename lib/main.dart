@@ -62,11 +62,7 @@ class _StartupState extends State<Startup> {
           getQuery(snapshot.data);
           return DefaultTabController(length: 2, child: Home(widget.title));
         } else {
-          return Scaffold(
-            body: Center(
-              child: LinearProgressIndicator(),
-            ),
-          );
+          return FetchingQuery();
         }
       },
     );
@@ -145,6 +141,27 @@ class Home extends StatelessWidget {
         ),
       ),
       backgroundColor: Theme.of(context).canvasColor,
+    );
+  }
+}
+
+class FetchingQuery extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Center(
+            child: Image.asset('assets/images/soif_launch.png'),
+          ),
+          SizedBox(
+            width: 192.0,
+            child: LinearProgressIndicator(),
+          ),
+        ],
+      ),
+      backgroundColor: appPrimaryColor,
     );
   }
 }

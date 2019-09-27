@@ -49,6 +49,7 @@ flutter:
    - assets/images/plant.png
    - assets/images/Soif.png
    - assets/images/Soif_sk.png
+   - assets/images/soif_launch.png
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
