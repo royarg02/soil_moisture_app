@@ -6,21 +6,17 @@ Color Theme: [Material.io](https://material.io/resources/color/#!/?view.left=0&v
 
 ### Screenshots
 
-<img src="assets/readme/splash.png" height=500>
+<img src="assets/readme/splash.png" height=500>|
 
-<img src="assets/readme/overview.png" height=500>
+<img src="assets/readme/overview.png" height=500>|<img src="assets/readme/analysis.png" height=500>
 
-<img src="assets/readme/drawer.png" height=500>
-
-<img src="assets/readme/graph.png" height=500>
+<img src="assets/readme/datepicker.png" height=500>|<img src="assets/readme/threshold.png" height=500>
 
 ### Description
 
-The app gets its name from its purpose, which is to detect moisture content of soil from sensors.
+The app gets its name from the _French word_ for `Thirst`. Its purpose, is to detect moisture content of soil from sensors.
 
 Moisture was the main motif, but later it rolled to collecting ambient temperature, humidity and light too.
-
-`Thirst of the soil`
 
 ### API endpoints
 
@@ -28,14 +24,17 @@ The base URL for the application is `https://drip-io.herokuapp.com/`
 
 The various endpoints are:
 
-* /getdata/<currentdate in dd-mm-yyyy>
-* /getdata/now
-* /setthreshold
-* /getthreshold
+- ```/getdata/<currentdate in dd-mm-yyyy>```
+
+- ```/getdata/now```
+
+- ```/setthreshold```
+
+- ```/getthreshold```
 
 ### Contributions:
 
-We would love to see some feedback in the form of issues raised and PRs. If you need an `IoT` project with application integration, this project can serve as the baseline application. Show your appreciation by :star: ing this repository.​ ​
+We would love to see some feedback in the form of issues raised and PRs. If you need an `IoT` project with application integration, this project can serve as the baseline application. Show your appreciation by :star: ing and this repository.​ ​
 
 ### Team Members:
 
