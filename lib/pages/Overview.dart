@@ -1,15 +1,27 @@
+/*
+* Overview
+
+* The first page upon which the user lands on launching the app, this page displays
+* the CURRENT DATA of moisture of all plants, humidity, lumination(light), and temperature
+* depending upon the availability of such data at the REST API server.
+*/
+
 import 'package:flutter/material.dart';
 
 // * external packages import
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 // * utils import
-import 'package:soil_moisture_app/ui/plant_card.dart';
+import 'package:soil_moisture_app/utils/display_error.dart';
+import 'package:soil_moisture_app/utils/json_post_get.dart';
+import 'package:soil_moisture_app/utils/sizes.dart';
+
+// * Data import
+import 'package:soil_moisture_app/data/all_data.dart';
 
 // * ui import
-import 'package:soil_moisture_app/utils/gettingJson.dart';
+import 'package:soil_moisture_app/ui/plant_card.dart';
 import 'package:soil_moisture_app/ui/refresh_snackbar.dart';
-import 'package:soil_moisture_app/utils/all_data.dart';
 
 class Overview extends StatefulWidget {
   @override
@@ -17,23 +29,63 @@ class Overview extends StatefulWidget {
 }
 
 class _OverviewState extends State<Overview> {
-  int _cardCount;
-  int _selCard;
-
-  void initState() {
-    _cardCount = plantList.length;
-    _selCard = 0;
-    super.initState();
-  }
-
   Future<Null> _refresh() async {
-    await addLatestData().then((_) {
+    await fetchLatestData().then((_) {
       Scaffold.of(context).showSnackBar(SuccessOnRefresh().build(context));
     }, onError: (_) {
       Scaffold.of(context).showSnackBar(FailureOnRefresh().build(context));
     });
     // Debug Print
-    print('Overview refresh got: ${plantList[0].getLastValue}');
+    if (isCurrentDataGot) {
+      print('Overview refresh got: ${nowPlantList[0].getLastValue}');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: RefreshIndicator(
+        onRefresh: _refresh,
+        child: FutureBuilder(
+          future: latData,
+          builder: (context, AsyncSnapshot snapshot) {
+            // Debug print
+            print(snapshot);
+            if (snapshot.hasError) {
+              return Scaffold(
+                body: NoInternet(),
+              );
+            } else if (snapshot.connectionState == ConnectionState.done) {
+              // * async load full data for Analysis
+              totData = totData ?? fetchTotalData();
+              return Page();
+            } else {
+              return Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            }
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class Page extends StatefulWidget {
+  @override
+  _PageState createState() => _PageState();
+}
+
+class _PageState extends State<Page> {
+  int _cardCount;
+  int _selCard;
+
+  void initState() {
+    _cardCount = nowPlantList.length;
+    _selCard = 0;
+    super.initState();
   }
 
   void _selectPlant(int value) {
@@ -46,114 +98,114 @@ class _OverviewState extends State<Overview> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: RefreshIndicator(
-        onRefresh: _refresh,
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-            child: ListView(
-              physics: AlwaysScrollableScrollPhysics(
-                  parent: BouncingScrollPhysics()),
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 35.0),
-                  child: CircularPercentIndicator(
-                    animationDuration: 600,
-                    radius: MediaQuery.of(context).size.width * 0.55,
-                    animation: true,
-                    percent: plantList[_selCard].getLastValue,
-                    circularStrokeCap: CircularStrokeCap.round,
-                    backgroundColor: Colors.grey[300],
-                    progressColor: (plantList[_selCard].isCritical())
-                        ? Colors.red
-                        : (plantList[_selCard].isMoreThanNormal()
-                            ? Colors.blue
-                            : Colors.green),
-                    lineWidth: MediaQuery.of(context).size.width * 0.02,
-                    center: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          '${(plantList[_selCard].getLastValue * 100).toInt()}${plantList[_selCard].getUnit}',
-                          style: Theme.of(context).textTheme.display4.copyWith(
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.2,
-                              ),
-                        ),
-                        Text(
-                          '${plantList[_selCard].getLabel}',
-                          style: Theme.of(context).textTheme.display1.copyWith(
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.05,
-                              ),
-                        ),
-                        Text(
-                          'Current Moisture',
-                          style: Theme.of(context).textTheme.display1.copyWith(
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.035,
-                              ),
-                        )
-                      ],
+    return SafeArea(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: appWidth * 0.03),
+        child: (isCurrentDataGot)
+            // * would show only if today's data is available
+            ? ListView(
+                physics: AlwaysScrollableScrollPhysics(
+                    parent: BouncingScrollPhysics()),
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: appWidth * 0.03),
+                    child: CircularPercentIndicator(
+                      addAutomaticKeepAlive: false,
+                      animationDuration: 600,
+                      radius: appWidth * 0.6,
+                      animation: true,
+                      percent: nowPlantList[_selCard].getLastValue,
+                      circularStrokeCap: CircularStrokeCap.round,
+                      backgroundColor: Colors.grey[300],
+                      progressColor: (nowPlantList[_selCard].isCritical())
+                          ? Colors.red
+                          : (nowPlantList[_selCard].isMoreThanNormal()
+                              ? Colors.blue
+                              : Colors.green),
+                      lineWidth: appWidth * 0.02,
+                      center: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            '${nowPlantList[_selCard].getLabel}',
+                            style: Theme.of(context).textTheme.body2.copyWith(
+                                  fontSize: appWidth * 0.03,
+                                ),
+                            textAlign: TextAlign.center,
+                          ),
+                          Text(
+                            '${(nowPlantList[_selCard].getLastValue * 100).toInt()}${nowPlantList[_selCard].getUnit}',
+                            style:
+                                Theme.of(context).textTheme.display4.copyWith(
+                                      fontSize: appWidth * 0.2,
+                                    ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  height: MediaQuery.of(context).size.width * 0.12,
-                  margin: EdgeInsets.symmetric(
-                      horizontal: MediaQuery.of(context).size.width * 0.07),
-                  child: Card(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        Text(
-                          '💧${dayHumid.getLastValue}${dayHumid.getUnit}', // ! Get API Fix
-                          style: Theme.of(context).textTheme.body2.copyWith(
-                              fontSize:
-                                  MediaQuery.of(context).size.height * 0.025),
+                  Text(
+                    'Current Moisture',
+                    style: Theme.of(context).textTheme.caption.copyWith(
+                          fontSize: appWidth * 0.03,
                         ),
-                        Text(
-                          '💡${(dayLight.getLastValue < 1000) ? dayLight.getLastValue.toInt() : (dayLight.getLastValue ~/ 1000).toString() + 'K'} ${dayLight.getUnit}',
-                          style: Theme.of(context).textTheme.body2.copyWith(
-                              fontSize:
-                                  MediaQuery.of(context).size.height * 0.025),
-                        ),
-                        Text(
-                          '🌡${dayTemp.getLastValue}${dayTemp.getUnit}',
-                          style: Theme.of(context).textTheme.body2.copyWith(
-                              fontSize:
-                                  MediaQuery.of(context).size.height * 0.025),
-                        ),
-                      ],
+                    textAlign: TextAlign.center,
+                  ),
+                  Container(
+                    height: appWidth * 0.12,
+                    margin: EdgeInsets.symmetric(horizontal: appWidth * 0.07),
+                    child: Card(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Text(
+                            '💧${nowHumid.getLastValue}${nowHumid.getUnit}',
+                            style: Theme.of(context)
+                                .textTheme
+                                .body2
+                                .copyWith(fontSize: appWidth * 0.04),
+                          ),
+                          Text(
+                            '💡${(nowLight.getLastValue < 1000) ? nowLight.getLastValue.toInt() : (nowLight.getLastValue ~/ 1000).toString() + 'K'} ${nowLight.getUnit}',
+                            style: Theme.of(context)
+                                .textTheme
+                                .body2
+                                .copyWith(fontSize: appWidth * 0.04),
+                          ),
+                          Text(
+                            '🌡${nowTemp.getLastValue}${nowTemp.getUnit}',
+                            style: Theme.of(context)
+                                .textTheme
+                                .body2
+                                .copyWith(fontSize: appWidth * 0.04),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.02,
-                ),
-                GridView.builder(
-                  physics: ScrollPhysics(),
-                  shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing:
-                        MediaQuery.of(context).size.height * 0.005,
-                    mainAxisSpacing: MediaQuery.of(context).size.height * 0.005,
+                  SizedBox(
+                    height: appWidth * 0.02,
                   ),
-                  itemCount: _cardCount,
-                  itemBuilder: (context, position) {
-                    return PlantCard(
-                      plant: plantList[position],
-                      isSelected: position == _selCard,
-                      onTap: () => _selectPlant(position),
-                    );
-                  },
-                ),
-              ],
-            ),
-          ),
-        ),
+                  GridView.builder(
+                    physics: ScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: (appWidth < 600) ? 3 : 5,
+                      crossAxisSpacing: appWidth * 0.005,
+                      mainAxisSpacing: appWidth * 0.005,
+                    ),
+                    itemCount: _cardCount,
+                    itemBuilder: (context, position) {
+                      return PlantCard(
+                        plant: nowPlantList[position],
+                        isSelected: position == _selCard,
+                        onTap: () => _selectPlant(position),
+                      );
+                    },
+                  ),
+                ],
+              )
+            : NoDataToday(),
       ),
     );
   }

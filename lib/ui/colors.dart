@@ -1,3 +1,9 @@
+/*
+* Colors
+
+* Colour values to be used throughout the app
+*/
+
 import 'package:flutter/material.dart';
 
 const appPrimaryColor = const Color(0xFFe6ee9c);

@@ -1,8 +1,15 @@
+/*
+* build_theme
+
+* Defines the theme to be used in throughout the app
+*/
+
 import 'package:flutter/material.dart';
 
 // * ui import
 import 'package:soil_moisture_app/ui/colors.dart';
 
+// * Light Theme
 ThemeData buildLightTheme() {
   ThemeData base = ThemeData(
     brightness: Brightness.light,
@@ -27,6 +34,11 @@ ThemeData buildLightTheme() {
         color: appSecondaryColor,
         fontFamily: 'Ocrb',
       ),
+    ),
+    tabBarTheme: base.tabBarTheme.copyWith(
+      labelColor: appPrimaryLightColor,
+      unselectedLabelColor: appSecondaryDarkColor,
+      indicatorSize: TabBarIndicatorSize.label,
     ),
     cardTheme: base.cardTheme.copyWith(
       color: appPrimaryLightColor,
