@@ -6,11 +6,15 @@ Color Theme: [Material.io](https://material.io/resources/color/#!/?view.left=0&v
 
 ### Screenshots
 
-<img src="assets/readme/splash.png" height=500>|
-
-<img src="assets/readme/overview.png" height=500>|<img src="assets/readme/analysis.png" height=500>
-
-<img src="assets/readme/datepicker.png" height=500>|<img src="assets/readme/threshold.png" height=500>
+<p align = "middle">
+  <img src="assets/readme/splash.png" height=500>
+  <br><br>
+  <img src="assets/readme/overview.png" height=500>
+  <img src="assets/readme/analysis.png" height=500>
+  <br><br>
+  <img src="assets/readme/datepicker.png" height=500>
+  <img src="assets/readme/threshold.png" height=500>
+</p>
 
 ### Description
 
