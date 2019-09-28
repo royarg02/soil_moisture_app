@@ -1,11 +1,12 @@
 /*
 * ThresholdPump (Pump Threshold Control)
 
-* //TODO: Aritra please add details
-
-* Currently, the availability of controls depends on whether there is any data available
-* for today or not. If not, this will display an empty page.
-* This feature could be expanded to save the set values(and POST to API)to be instantly got(GET from API)
+* This page provides the controls to set the threshold of the pumps which in turn, control the
+* availability of water and moisture of the plant.
+* The availability of current data from overview determines the presence of any new entry for
+* controlling the threshold in case the API for storing threshold values has not been updated
+* to include the new entry.
+* 'Setting' the values saves the values to be posted to API and can be instantly obtained(GET from API)
 * next time this page is brought up.
 */
 
@@ -43,7 +44,7 @@ class _ThresholdPumpState extends State<ThresholdPump> {
         centerTitle: true,
       ),
       body: FutureBuilder(
-        future: latData,
+        future: threshData,
         builder: (context, AsyncSnapshot snapshot) {
           // Debug print
           print(snapshot);
@@ -78,9 +79,6 @@ class _PageState extends State<Page> {
 
   void initState() {
     _isLoading = false;
-
-    // ! Replace with current threshold fetch when implemented
-    thresholdVal = List.filled(nowPlantList.length, 0.0);
     super.initState();
   }
 
@@ -88,10 +86,8 @@ class _PageState extends State<Page> {
     setState(() {
       _isLoading = true;
     });
-    postData = {};
-    for (var i = 0; i < thresholdVal.length; ++i) {
-      postData['pump$i'] = thresholdVal[i];
-    }
+    postData = Map.fromIterable(pumpList,
+        key: (item) => item.getLabel, value: (item) => item.getVal);
     status = await postThreshold(postData);
     if (status['success']) {
       _showStatus(context, 'Threshold successfully set.');
@@ -105,7 +101,7 @@ class _PageState extends State<Page> {
 
   void _setThreshold({int position, num value}) {
     setState(() {
-      thresholdVal[position] = value;
+      pumpList[position].setVal = value;
     });
   }
 
@@ -142,15 +138,15 @@ class _PageState extends State<Page> {
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: appWidth * 0.03),
-          child: (isCurrentDataGot)
+          child: (pumpList.length != 0)
               ? ListView.builder(
                   physics: AlwaysScrollableScrollPhysics(
                       parent: BouncingScrollPhysics()),
-                  itemCount: thresholdVal.length,
+                  itemCount: pumpList.length,
                   itemBuilder: (context, position) {
                     return ThresholdSlider(
-                      label: '${nowPlantList[position].getLabel}',
-                      threshold: thresholdVal[position],
+                      label: pumpList[position].getLabel,
+                      threshold: pumpList[position].getVal,
                       position: position,
                       thresholdChanger: _setThreshold,
                     );
@@ -160,7 +156,7 @@ class _PageState extends State<Page> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Visibility(
-        visible: isCurrentDataGot,
+        visible: (pumpList.length != 0),
         child: FloatingActionButton.extended(
           label: (_isLoading)
               ? CircularProgressIndicator(

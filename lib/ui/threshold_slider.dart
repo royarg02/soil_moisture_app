@@ -1,7 +1,6 @@
 /*
 * threshold_slider
 
-* //TODO: Aritra please add details
 * The controls for controlling the moisture threshold for each pump/ plant.
 */
 
@@ -28,23 +27,25 @@ class ThresholdSlider extends StatefulWidget {
 class _ThresholdSliderState extends State<ThresholdSlider> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: appWidth * 0.01),
-      child: Card(
+    return Card(
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+            horizontal: appWidth * 0.01, vertical: appWidth * 0.01),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: appWidth * 0.02),
+            Expanded(
+              flex: 3,
               child: Text(
                 this.widget.label,
                 style: Theme.of(context).textTheme.body2.copyWith(
                       fontSize: appWidth * 0.045,
                     ),
+                textAlign: TextAlign.center,
               ),
             ),
             Expanded(
-              flex: 12,
+              flex: 14,
               child: Slider(
                 value: widget.threshold,
                 onChanged: (val) => widget.thresholdChanger(

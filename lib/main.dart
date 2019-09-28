@@ -23,7 +23,7 @@ void main() async {
   ]).then((_) => runApp(MaterialApp(
         title: title,
         debugShowCheckedModeBanner: false,
-        home: Startup(title),
+        home: Startup(),
         theme: buildLightTheme(),
       )));
 }
@@ -35,8 +35,6 @@ void main() async {
 */
 
 class Startup extends StatefulWidget {
-  final String title;
-  Startup(this.title);
   @override
   _StartupState createState() => _StartupState();
 }
@@ -45,7 +43,7 @@ class _StartupState extends State<Startup> {
   Future<MediaQueryData> whenNotZero(Stream<MediaQueryData> source) async {
     await for (MediaQueryData value in source) {
       print("Width: ${value.size.width}");
-      // * Return only whhen MediaQuery has non - zero value
+      // * Return only when MediaQuery has non - zero value
       if (value.size.width > 0) {
         return value;
       }
@@ -60,7 +58,7 @@ class _StartupState extends State<Startup> {
       builder: (context, AsyncSnapshot snapshot) {
         if (snapshot.hasData) {
           getQuery(snapshot.data);
-          return DefaultTabController(length: 2, child: Home(widget.title));
+          return DefaultTabController(length: 2, child: Home());
         } else {
           return FetchingQuery();
         }
@@ -70,9 +68,6 @@ class _StartupState extends State<Startup> {
 }
 
 class Home extends StatelessWidget {
-  final String title;
-  Home(this.title);
-
   final List<Widget> _children = [
     Overview(),
     Analysis(),

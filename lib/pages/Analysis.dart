@@ -168,8 +168,8 @@ class _PageState extends State<Page> {
                         if (snapshot.connectionState == ConnectionState.done) {
                           return (isDataGot)
                               ? Container(
-                                height: appWidth * 0.215,
-                                alignment: Alignment.center,
+                                  height: appWidth * 0.215,
+                                  alignment: Alignment.center,
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment:
@@ -300,19 +300,22 @@ class _PageState extends State<Page> {
                       _fetchForDate();
                     },
                   ),
-                  FlatButton(
-                    onPressed: () => _pickDate(context),
-                    child: Text(
-                      '$fetchDateEEE_MMM_d',
-                      style: Theme.of(context).textTheme.body2.copyWith(
-                            fontSize: appWidth * 0.05,
-                          ),
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(appWidth * 0.1),
-                      side: BorderSide(
-                        width: 2.0,
-                        color: appPrimaryDarkColor,
+                  Tooltip(
+                    message: 'Jump to date',
+                    child: FlatButton(
+                      onPressed: () => _pickDate(context),
+                      child: Text(
+                        '$fetchDateEEE_MMM_d',
+                        style: Theme.of(context).textTheme.body2.copyWith(
+                              fontSize: appWidth * 0.05,
+                            ),
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(appWidth * 0.1),
+                        side: BorderSide(
+                          width: 2.0,
+                          color: appPrimaryDarkColor,
+                        ),
                       ),
                     ),
                   ),

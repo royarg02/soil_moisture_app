@@ -56,6 +56,8 @@ class _OverviewState extends State<Overview> {
                 body: NoInternet(),
               );
             } else if (snapshot.connectionState == ConnectionState.done) {
+              // * async load threshold data
+              threshData = threshData ?? fetchThresholdData();
               // * async load full data for Analysis
               totData = totData ?? fetchTotalData();
               return Page();
@@ -123,6 +125,13 @@ class _PageState extends State<Page> {
                               ? Colors.blue
                               : Colors.green),
                       lineWidth: appWidth * 0.02,
+                      footer: Text(
+                        'Current Moisture',
+                        style: Theme.of(context).textTheme.caption.copyWith(
+                              fontSize: appWidth * 0.03,
+                            ),
+                        textAlign: TextAlign.center,
+                      ),
                       center: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
@@ -144,13 +153,6 @@ class _PageState extends State<Page> {
                       ),
                     ),
                   ),
-                  Text(
-                    'Current Moisture',
-                    style: Theme.of(context).textTheme.caption.copyWith(
-                          fontSize: appWidth * 0.03,
-                        ),
-                    textAlign: TextAlign.center,
-                  ),
                   Container(
                     height: appWidth * 0.12,
                     margin: EdgeInsets.symmetric(horizontal: appWidth * 0.07),
@@ -158,26 +160,35 @@ class _PageState extends State<Page> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
-                          Text(
-                            '💧${nowHumid.getLastValue}${nowHumid.getUnit}',
-                            style: Theme.of(context)
-                                .textTheme
-                                .body2
-                                .copyWith(fontSize: appWidth * 0.04),
+                          Tooltip(
+                            message: 'Current Humidity',
+                            child: Text(
+                              '💧${nowHumid.getLastValue}${nowHumid.getUnit}',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .body2
+                                  .copyWith(fontSize: appWidth * 0.04),
+                            ),
                           ),
-                          Text(
-                            '💡${(nowLight.getLastValue < 1000) ? nowLight.getLastValue.toInt() : (nowLight.getLastValue ~/ 1000).toString() + 'K'} ${nowLight.getUnit}',
-                            style: Theme.of(context)
-                                .textTheme
-                                .body2
-                                .copyWith(fontSize: appWidth * 0.04),
+                          Tooltip(
+                            message: 'Current Light',
+                            child: Text(
+                              '💡${(nowLight.getLastValue < 1000) ? nowLight.getLastValue.toInt() : (nowLight.getLastValue ~/ 1000).toString() + 'K'} ${nowLight.getUnit}',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .body2
+                                  .copyWith(fontSize: appWidth * 0.04),
+                            ),
                           ),
-                          Text(
-                            '🌡${nowTemp.getLastValue}${nowTemp.getUnit}',
-                            style: Theme.of(context)
-                                .textTheme
-                                .body2
-                                .copyWith(fontSize: appWidth * 0.04),
+                          Tooltip(
+                            message: 'Current Temperature',
+                            child: Text(
+                              '🌡${nowTemp.getLastValue}${nowTemp.getUnit}',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .body2
+                                  .copyWith(fontSize: appWidth * 0.04),
+                            ),
                           ),
                         ],
                       ),

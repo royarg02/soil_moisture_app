@@ -16,6 +16,7 @@ import 'package:soil_moisture_app/data/humidity_data.dart';
 import 'package:soil_moisture_app/data/light_data.dart';
 import 'package:soil_moisture_app/data/plant_class.dart';
 import 'package:soil_moisture_app/data/temp_data.dart';
+import 'package:soil_moisture_app/data/threshold_data.dart';
 import 'package:soil_moisture_app/data/all_data.dart';
 
 // * determines if any data is got from the API
@@ -25,10 +26,18 @@ bool isCurrentDataGot = false;
 // * variables for caching response
 Future latData = fetchLatestData();
 Future totData = fetchTotalData();
+Future threshData = fetchThresholdData();
 
 // * Fetch from API
-Future<Map<String, dynamic>> fetchJsonData({bool latest = false}) async {
-  String url = "$baseUrl/getdata/${(latest) ? 'now' : fetchDatedd_mm_yyyy}";
+Future<Map<String, dynamic>> fetchJsonData(
+    {String altUrl, bool latest = false}) async {
+  /*
+      * 'altUrl' is invoked for requesting data if provided (used for fetching threshold values)
+      * otherwise, the default url is invoked with the route determined by the
+      * 'latest' boolean by fetching the current data (now) if true, full data if false
+      */
+  String url =
+      altUrl ?? "$baseUrl/getdata/${(latest) ? 'now' : fetchDatedd_mm_yyyy}";
   // Debug print
   print(url);
   final response = await http.get(url);
@@ -39,7 +48,7 @@ Future<Map<String, dynamic>> fetchJsonData({bool latest = false}) async {
   return parsed;
 }
 
-// * Post to API
+// * Threshold Post to API
 Future<Map<String, dynamic>> postThreshold(Map<String, dynamic> data) async {
   String url = "$baseUrl/setthreshold";
   Map<String, dynamic> postResult;
@@ -97,6 +106,24 @@ void addLatestData(Map<String, dynamic> data) {
   nowTemp = Temp.createLatest(data['temparature']);
 }
 
+void addThresholdData(Map<String, dynamic> data) {
+  // Debug Print
+  print(data);
+  pumpList = [];
+  /*
+  * Compares the lengths of 'nowPlantList' and fetched threshold map to determine if there are any new entries.
+  * If the threshold value API has not been updated and the current data includes a new entry/ plant, then a new
+  * entry(object) is appended to the 'pumpList' with a value of '0.0'. If current data is not available, the
+  * fetched threshold data itself is used.
+  */
+  var length = (isCurrentDataGot && (nowPlantList.length > data.length))
+      ? nowPlantList.length
+      : data.length;
+  for (var i = 0; i < length; i++) {
+    pumpList.add(Threshold(i, data['pump$i']));
+  }
+}
+
 // * fetch total data from API
 Future<Null> fetchTotalData() async {
   print(fetchDatedd_mm_yyyy);
@@ -107,4 +134,11 @@ Future<Null> fetchTotalData() async {
 Future<Null> fetchLatestData() async {
   print('Fetching Now');
   await fetchJsonData(latest: true).then((onValue) => addLatestData(onValue));
+}
+
+// * get Threshold values from API
+Future<Null> fetchThresholdData() async {
+  print('Fetching Threshold Values');
+  await fetchJsonData(altUrl: '$baseUrl/getthreshold')
+      .then((onValue) => addThresholdData(onValue));
 }
