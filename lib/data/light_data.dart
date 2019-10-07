@@ -1,16 +1,16 @@
 /*
 * Light Class
-* This class contains the 24 hr values of the lumination of any day
+* This class contains the 24 hr values of the illumination of any day
 */
 class Light {
-  // * List containing the values of lumination for every hour
+  // * List containing the values of illumination for every hour
   List<num> _values;
 
-  // * Lumination of last hour/ latest hour
+  // * Illumination of last hour/ latest hour
   num _latestVal;
 
   // * Unit to be displayed alongside the value
-  final String _unit = 'Lux';
+  final String _unit = 'lx';
 
   Light() {
     this._values = [];

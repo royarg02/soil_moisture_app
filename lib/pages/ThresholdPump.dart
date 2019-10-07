@@ -136,23 +136,21 @@ class _PageState extends State<Page> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: appWidth * 0.03),
-          child: (pumpList.length != 0)
-              ? ListView.builder(
-                  physics: AlwaysScrollableScrollPhysics(
-                      parent: BouncingScrollPhysics()),
-                  itemCount: pumpList.length,
-                  itemBuilder: (context, position) {
-                    return ThresholdSlider(
-                      label: pumpList[position].getLabel,
-                      threshold: pumpList[position].getVal,
-                      position: position,
-                      thresholdChanger: _setThreshold,
-                    );
-                  })
-              : NoDataToday(),
-        ),
+        minimum: EdgeInsets.symmetric(horizontal: appWidth * 0.03),
+        child: (pumpList.length != 0)
+            ? ListView.builder(
+                physics: AlwaysScrollableScrollPhysics(
+                    parent: BouncingScrollPhysics()),
+                itemCount: pumpList.length,
+                itemBuilder: (context, position) {
+                  return ThresholdSlider(
+                    label: pumpList[position].getLabel,
+                    threshold: pumpList[position].getVal,
+                    position: position,
+                    thresholdChanger: _setThreshold,
+                  );
+                })
+            : NoDataToday(),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Visibility(

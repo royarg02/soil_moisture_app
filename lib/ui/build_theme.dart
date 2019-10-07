@@ -17,6 +17,7 @@ ThemeData buildLightTheme() {
   );
   return base.copyWith(
     appBarTheme: base.appBarTheme.copyWith(
+      brightness: Brightness.light,
       color: appPrimaryColor,
       textTheme: TextTheme(
         title: TextStyle(

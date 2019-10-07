@@ -17,6 +17,7 @@ import 'package:soil_moisture_app/ui/colors.dart';
 
 // * utils Import
 import 'package:soil_moisture_app/utils/sizes.dart';
+import 'package:soil_moisture_app/utils/date_func.dart';
 
 // * This function defines the behaviour and formatting of the chart
 SfCartesianChart displayChart(
@@ -31,6 +32,8 @@ SfCartesianChart displayChart(
     ),
     plotAreaBorderWidth: 0,
     primaryXAxis: DateTimeAxis(
+      minimum: DateTime(date.year, date.month, date.day, 0),
+      maximum: DateTime(date.year, date.month, date.day, 23),
       axisLine: AxisLine(width: 1),
       interval: 3,
       dateFormat: DateFormat.jm(),
@@ -70,8 +73,8 @@ List<LineSeries<dynamic, DateTime>> getLineSeries(
   print(chartData);
   List<_ChartData> data = [];
   for (var i = 0; i < chartData.length; ++i) {
-    // * Datetime provided here is arbitary, actually the hour is required
-    data.add(_ChartData(chartData[i], DateTime(2019, 09, 05, i)));
+    data.add(
+        _ChartData(chartData[i], DateTime(date.year, date.month, date.day, i)));
   }
   return <LineSeries<_ChartData, DateTime>>[
     LineSeries<_ChartData, DateTime>(

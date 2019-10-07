@@ -10,12 +10,19 @@ import 'package:soil_moisture_app/ui/colors.dart';
 import 'package:soil_moisture_app/utils/sizes.dart';
 
 // * Pages Import
+import 'pages/Credits.dart';
 import 'pages/Analysis.dart';
 import 'pages/Overview.dart';
 import 'pages/ThresholdPump.dart';
 
 void main() async {
   String title = 'Soif';
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: appPrimaryColor,
+    statusBarIconBrightness: Brightness.dark,
+    systemNavigationBarColor: appSecondaryLightColor,
+    systemNavigationBarIconBrightness: Brightness.light,
+  ));
   // * Lock orientation to only portrait
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -75,67 +82,69 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.black, //top bar color
-      systemNavigationBarColor: Colors.black, //bottom bar color
-
-      statusBarIconBrightness: Brightness.light, //top icon color
-      systemNavigationBarIconBrightness: Brightness.light, //bottom icons color
-    ));
-    return Scaffold(
-      appBar: AppBar(
-        title: Image.asset(
-          './assets/images/Soif_sk.png',
-          height: appWidth * 0.08,
+    return SafeArea(
+      child: Scaffold(
+        drawer: Drawer(
+          child: Credits(),
         ),
-        centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(FontAwesomeIcons.slidersH),
-            onPressed: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ThresholdPump())),
-            tooltip: 'Pump Threshold Control',
-            iconSize: appWidth * 0.05,
-          )
-        ],
-      ),
-      body: TabBarView(
-        children: _children,
-        physics: NeverScrollableScrollPhysics(),
-      ),
-      bottomNavigationBar: PreferredSize(
-        preferredSize: Size.fromHeight(appWidth * 0.18),
-        child: Container(
-          height: appWidth * 0.18,
-          child: TabBar(
-            tabs: <Widget>[
-              Tab(
-                icon: Icon(
-                  Icons.remove_red_eye,
-                ),
-                text: 'Overview',
+        appBar: AppBar(
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: Icon(Icons.info),
+                iconSize: appWidth * 0.05,
+                tooltip: 'About',
+                onPressed: () => Scaffold.of(context).openDrawer(),
+              );
+            },
+          ),
+          title: Image.asset(
+            './assets/images/Soif_sk.png',
+            height: appWidth * 0.08,
+          ),
+          centerTitle: true,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(FontAwesomeIcons.slidersH),
+              onPressed: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ThresholdPump())),
+              tooltip: 'Pump Threshold Control',
+              iconSize: appWidth * 0.05,
+            )
+          ],
+        ),
+        body: TabBarView(
+          children: _children,
+          physics: NeverScrollableScrollPhysics(),
+        ),
+        bottomNavigationBar: TabBar(
+          tabs: <Widget>[
+            Tab(
+              icon: Icon(
+                Icons.remove_red_eye,
               ),
-              Tab(
-                icon: Icon(
-                  Icons.linear_scale,
-                ),
-                text: 'Analysis',
-              )
-            ],
-            indicatorPadding: EdgeInsets.all(appWidth * 0.01),
-            indicatorColor: appSecondaryLightColor,
-            unselectedLabelStyle: TextStyle(
-              fontSize: appWidth * 0.025,
-              fontFamily: 'Ocrb',
+              text: 'Overview',
             ),
-            labelStyle: TextStyle(
-              fontSize: appWidth * 0.035,
-              fontFamily: 'Ocrb',
-            ),
+            Tab(
+              icon: Icon(
+                Icons.linear_scale,
+              ),
+              text: 'Analysis',
+            )
+          ],
+          indicatorPadding: EdgeInsets.all(appWidth * 0.01),
+          indicatorColor: appSecondaryLightColor,
+          unselectedLabelStyle: TextStyle(
+            fontSize: appWidth * 0.025,
+            fontFamily: 'Ocrb',
+          ),
+          labelStyle: TextStyle(
+            fontSize: appWidth * 0.035,
+            fontFamily: 'Ocrb',
           ),
         ),
+        backgroundColor: Theme.of(context).canvasColor,
       ),
-      backgroundColor: Theme.of(context).canvasColor,
     );
   }
 }

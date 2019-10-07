@@ -21,4 +21,4 @@ Humidity nowHumid;
 List<Threshold> pumpList = [];
 
 // * base url for application get/post
-final baseUrl = "https://drip-io.herokuapp.com";
+final baseUrl = "https://soif.herokuapp.com";
