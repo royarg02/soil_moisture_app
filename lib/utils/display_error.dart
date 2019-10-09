@@ -10,18 +10,29 @@ import 'package:flutter/material.dart';
 import 'package:soil_moisture_app/utils/date_func.dart';
 import 'package:soil_moisture_app/utils/sizes.dart';
 
-// * No Internet Available upon Startup
-class NoInternet extends StatelessWidget {
+// * No Latest Data Available upon Startup (due to actually no data or no internet)
+class NoNowData extends StatelessWidget {
+  final bool haveInternet;
+  NoNowData({this.haveInternet = false});
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'Couldn\'t connect to internet.\nCheck your internet connection and restart the App.',
-        textAlign: TextAlign.center,
-        style: Theme.of(context).textTheme.display1.copyWith(
-              fontSize: appWidth * 0.04,
-            ),
-      ),
+    return ListView(
+      physics: AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+      children: [
+        Container(
+          padding: EdgeInsets.all(appWidth * 0.03),
+          alignment: Alignment.center,
+          child: Text(
+            (this.haveInternet)
+                ? 'No Data for $fetchNowDate'
+                : 'Couldn\'t connect.\nCheck your internet connection and refresh.',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.display1.copyWith(
+                  fontSize: appWidth * 0.04,
+                ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -40,29 +51,6 @@ class NoData extends StatelessWidget {
               fontSize: appWidth * 0.04,
             ),
       ),
-    );
-  }
-}
-
-// * No Current Data/ Empty Current Data
-class NoDataToday extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      physics: AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-      children: <Widget>[
-        Container(
-          padding: EdgeInsets.all(appWidth * 0.03),
-          alignment: Alignment.center,
-          child: Text(
-            'No Data for $fetchNowDate',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.display1.copyWith(
-                  fontSize: appWidth * 0.04,
-                ),
-          ),
-        ),
-      ],
     );
   }
 }

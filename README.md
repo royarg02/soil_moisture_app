@@ -1,6 +1,6 @@
 # SOIF
 
-This is a Flutter project, which will serve as the dashboard for the `Soil Moisture` content of a particular area.
+This is a Flutter project, which will serve as the dashboard for the **Soil Moisture** content of a particular area.
 
 Color Theme: [Material.io](https://material.io/resources/color/#!/?view.left=0&view.right=0&primary.color=E6EE9C&secondary.color=827717)
 
@@ -22,23 +22,25 @@ The app gets its name from the _French word_ for `Thirst`. Its purpose, is to de
 
 Moisture was the main motif, but later it rolled to collecting ambient temperature, humidity and light too.
 
-### API endpoints
+### API endpoints and repository
 
-The base URL for the application is `https://drip-io.herokuapp.com/`
+The API implementation of this project can be found [in this repository](https://github.com/forkbomb-666/drip_irrigation_server).
 
-The various endpoints are:
+The base URL for the application is `https://soif.herokuapp.com/`
+
+The various endpoints used by this app are:
 
 - ```/getdata/<currentdate in dd-mm-yyyy>```
 
 - ```/getdata/now```
 
-- ```/setthreshold```
+- ```/setpump```
 
-- ```/getthreshold```
+- ```/getpump```
 
 ### Contributions:
 
-We would love to see some feedback in the form of issues raised and PRs. If you need an `IoT` project with application integration, this project can serve as the baseline application. Show your appreciation by :star: ing and this repository.​ ​
+We would love to see some feedback in the form of issues raised and PRs. If you need an **IoT** project with application integration, this project can serve as the baseline application. Show your appreciation by :star:ing this repository!​ ​
 
 ### Team Members:
 

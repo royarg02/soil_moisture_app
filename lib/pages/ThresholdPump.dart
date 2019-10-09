@@ -32,37 +32,31 @@ class ThresholdPump extends StatefulWidget {
 class _ThresholdPumpState extends State<ThresholdPump> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: BackButton(),
-        title: Text(
-          'Pump threshold Control',
-          style: Theme.of(context).textTheme.title.copyWith(
-                fontSize: appWidth * 0.055,
+    return FutureBuilder(
+      future: threshData,
+      builder: (context, AsyncSnapshot snapshot) {
+        // Debug print
+        print(snapshot);
+        if (snapshot.hasError) {
+          return Scaffold(
+            appBar: AppBar(
+              leading: BackButton(),
+              title: Text(
+                'Pump threshold Control',
+                style: Theme.of(context).textTheme.title.copyWith(
+                      fontSize: appWidth * 0.055,
+                    ),
               ),
-        ),
-        centerTitle: true,
-      ),
-      body: FutureBuilder(
-        future: threshData,
-        builder: (context, AsyncSnapshot snapshot) {
-          // Debug print
-          print(snapshot);
-          if (snapshot.hasError) {
-            return Scaffold(
-              body: NoInternet(),
-            );
-          } else if (snapshot.connectionState == ConnectionState.done) {
-            return Page();
-          } else {
-            return Scaffold(
-              body: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-          }
-        },
-      ),
+              centerTitle: true,
+            ),
+            body: NoNowData(),
+          );
+        } else if (snapshot.connectionState == ConnectionState.done) {
+          return Page();
+        } else {
+          return Skeleton();
+        }
+      },
     );
   }
 }
@@ -135,6 +129,16 @@ class _PageState extends State<Page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: BackButton(),
+        title: Text(
+          'Pump threshold Control',
+          style: Theme.of(context).textTheme.title.copyWith(
+                fontSize: appWidth * 0.055,
+              ),
+        ),
+        centerTitle: true,
+      ),
       body: SafeArea(
         minimum: EdgeInsets.symmetric(horizontal: appWidth * 0.03),
         child: (pumpList.length != 0)
@@ -150,7 +154,9 @@ class _PageState extends State<Page> {
                     thresholdChanger: _setThreshold,
                   );
                 })
-            : NoDataToday(),
+            : NoNowData(
+                haveInternet: true,
+              ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Visibility(
@@ -169,6 +175,39 @@ class _PageState extends State<Page> {
                 ),
           onPressed: (_isLoading) ? null : _postThreshold,
         ),
+      ),
+    );
+  }
+}
+
+class Skeleton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: BackButton(),
+        title: Text(
+          'Pump threshold Control',
+          style: Theme.of(context).textTheme.title.copyWith(
+                fontSize: appWidth * 0.055,
+              ),
+        ),
+        centerTitle: true,
+      ),
+      body: SafeArea(
+        minimum: EdgeInsets.symmetric(horizontal: appWidth * 0.03),
+        child: ListView.builder(
+            physics:
+                AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+            itemCount: 2,
+            itemBuilder: (context, position) {
+              return Card(
+                child: Padding(
+                  padding: EdgeInsets.all(appWidth * 0.045),
+                  child: LinearProgressIndicator(),
+                ),
+              );
+            }),
       ),
     );
   }

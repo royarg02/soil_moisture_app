@@ -24,4 +24,4 @@ void nextDate() {
   date = date.add(Duration(days: 1));
 }
 
-bool isNow() => date == now;
+bool isNow() => now.difference(date) < Duration(days: 1);

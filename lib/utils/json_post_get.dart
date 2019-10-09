@@ -50,7 +50,7 @@ Future<Map<String, dynamic>> fetchJsonData(
 
 // * Threshold Post to API
 Future<Map<String, dynamic>> postThreshold(Map<String, dynamic> data) async {
-  String url = "$baseUrl/setthreshold";
+  String url = '$baseUrl/setpump';
   Map<String, dynamic> postResult;
   // Debug print
   print(data);
@@ -120,25 +120,25 @@ void addThresholdData(Map<String, dynamic> data) {
       ? nowPlantList.length
       : data.length;
   for (var i = 0; i < length; i++) {
-    pumpList.add(Threshold(i, data['pump$i']));
+    pumpList.add(Threshold(i, data['settings']['pump$i']));
   }
 }
 
 // * fetch total data from API
-Future<Null> fetchTotalData() async {
+Future<void> fetchTotalData() async {
   print(fetchDatedd_mm_yyyy);
   await fetchJsonData().then((onValue) => addData(onValue));
 }
 
 // * fetch current data from API
-Future<Null> fetchLatestData() async {
+Future<void> fetchLatestData() async {
   print('Fetching Now');
   await fetchJsonData(latest: true).then((onValue) => addLatestData(onValue));
 }
 
 // * get Threshold values from API
-Future<Null> fetchThresholdData() async {
+Future<void> fetchThresholdData() async {
   print('Fetching Threshold Values');
-  await fetchJsonData(altUrl: '$baseUrl/getthreshold')
+  await fetchJsonData(altUrl: '$baseUrl/getpump')
       .then((onValue) => addThresholdData(onValue));
 }

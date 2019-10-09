@@ -82,42 +82,47 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        drawer: Drawer(
-          child: Credits(),
-        ),
-        appBar: AppBar(
-          leading: Builder(
-            builder: (BuildContext context) {
-              return IconButton(
-                icon: Icon(Icons.info),
-                iconSize: appWidth * 0.05,
-                tooltip: 'About',
-                onPressed: () => Scaffold.of(context).openDrawer(),
-              );
-            },
-          ),
-          title: Image.asset(
-            './assets/images/Soif_sk.png',
-            height: appWidth * 0.08,
-          ),
-          centerTitle: true,
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(FontAwesomeIcons.slidersH),
-              onPressed: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ThresholdPump())),
-              tooltip: 'Pump Threshold Control',
+    return Scaffold(
+      // ! Implement Credits Here
+      // drawer: Drawer(
+      //   child: Credits(),
+      // ),
+      appBar: AppBar(
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: Icon(Icons.info),
               iconSize: appWidth * 0.05,
-            )
-          ],
+              tooltip: 'About',
+              onPressed: () => Scaffold.of(context).openDrawer(),
+            );
+          },
         ),
-        body: TabBarView(
+        title: Image.asset(
+          './assets/images/Soif_sk.png',
+          height: appWidth * 0.08,
+        ),
+        centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(FontAwesomeIcons.slidersH),
+            onPressed: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ThresholdPump())),
+            tooltip: 'Pump Threshold Control',
+            iconSize: appWidth * 0.05,
+          )
+        ],
+      ),
+      body: SafeArea(
+        minimum: EdgeInsets.symmetric(horizontal: appWidth * 0.03),
+        child: TabBarView(
           children: _children,
           physics: NeverScrollableScrollPhysics(),
         ),
-        bottomNavigationBar: TabBar(
+      ),
+      bottomNavigationBar: Container(
+        color: Theme.of(context).canvasColor,
+        child: TabBar(
           tabs: <Widget>[
             Tab(
               icon: Icon(
@@ -133,7 +138,7 @@ class Home extends StatelessWidget {
             )
           ],
           indicatorPadding: EdgeInsets.all(appWidth * 0.01),
-          indicatorColor: appSecondaryLightColor,
+          indicatorColor: appPrimaryLightColor,
           unselectedLabelStyle: TextStyle(
             fontSize: appWidth * 0.025,
             fontFamily: 'Ocrb',
@@ -143,7 +148,6 @@ class Home extends StatelessWidget {
             fontFamily: 'Ocrb',
           ),
         ),
-        backgroundColor: Theme.of(context).canvasColor,
       ),
     );
   }

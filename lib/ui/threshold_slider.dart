@@ -29,13 +29,12 @@ class _ThresholdSliderState extends State<ThresholdSlider> {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: appWidth * 0.01, vertical: appWidth * 0.01),
+        padding: EdgeInsets.all(appWidth * 0.01),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Expanded(
-              flex: 3,
+              flex: 5,
               child: Text(
                 this.widget.label,
                 style: Theme.of(context).textTheme.body2.copyWith(
@@ -45,7 +44,7 @@ class _ThresholdSliderState extends State<ThresholdSlider> {
               ),
             ),
             Expanded(
-              flex: 14,
+              flex: 12,
               child: Slider(
                 value: widget.threshold,
                 onChanged: (val) => widget.thresholdChanger(
