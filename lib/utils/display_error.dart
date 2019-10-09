@@ -13,11 +13,14 @@ import 'package:soil_moisture_app/utils/sizes.dart';
 // * No Latest Data Available upon Startup (due to actually no data or no internet)
 class NoNowData extends StatelessWidget {
   final bool haveInternet;
-  NoNowData({this.haveInternet = false});
+  final bool isScrollable;
+  NoNowData({this.isScrollable = true, this.haveInternet = false});
   @override
   Widget build(BuildContext context) {
     return ListView(
-      physics: AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+      physics: (isScrollable)
+          ? AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics())
+          : NeverScrollableScrollPhysics(),
       children: [
         Container(
           padding: EdgeInsets.all(appWidth * 0.03),

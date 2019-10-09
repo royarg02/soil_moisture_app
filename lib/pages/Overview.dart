@@ -149,8 +149,8 @@ class _PageState extends State<Page> {
         ),
         Container(
           height: appWidth * 0.12,
-          margin: EdgeInsets.symmetric(horizontal: appWidth * 0.07),
           child: Card(
+            margin: EdgeInsets.symmetric(horizontal: appWidth * 0.07),
             child: (isCurrentDataGot)
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -208,8 +208,7 @@ class _PageState extends State<Page> {
 class Skeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      physics: AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+    return Column(
       children: <Widget>[
         Padding(
           padding: EdgeInsets.symmetric(vertical: appWidth * 0.03),
@@ -224,8 +223,8 @@ class Skeleton extends StatelessWidget {
         ),
         Container(
           height: appWidth * 0.12,
-          margin: EdgeInsets.symmetric(horizontal: appWidth * 0.07),
           child: Card(
+            margin: EdgeInsets.symmetric(horizontal: appWidth * 0.07),
             child: Padding(
               padding: EdgeInsets.all(appWidth * 0.07),
               child: LinearProgressIndicator(),

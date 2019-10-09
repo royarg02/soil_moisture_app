@@ -252,7 +252,7 @@ class _AnalysisState extends State<Analysis> {
                     // Debug Print
                     print(snapshot);
                     if (snapshot.hasError) {
-                      return NoNowData();
+                      return NoNowData(isScrollable:false);
                     } else if (snapshot.connectionState ==
                         ConnectionState.done) {
                       return (isDataGot)

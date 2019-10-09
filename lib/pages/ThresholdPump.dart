@@ -202,6 +202,7 @@ class Skeleton extends StatelessWidget {
             itemCount: 2,
             itemBuilder: (context, position) {
               return Card(
+                margin: EdgeInsets.only(top: appWidth * 0.03),
                 child: Padding(
                   padding: EdgeInsets.all(appWidth * 0.045),
                   child: LinearProgressIndicator(),
