@@ -51,25 +51,28 @@ class _OverviewState extends State<Overview> {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: _refresh,
-      child: FutureBuilder(
-        future: latData,
-        builder: (context, AsyncSnapshot snapshot) {
-          // Debug print
-          print(snapshot);
-          if (snapshot.hasError) {
-            return NoNowData();
-          } else if (snapshot.connectionState == ConnectionState.done) {
-            // * async load threshold data
-            threshData = threshData ?? fetchThresholdData();
-            // * async load full data for Analysis
-            totData = totData ?? fetchTotalData();
-            return Page();
-          } else {
-            return Skeleton();
-          }
-        },
+    return SafeArea(
+      minimum: EdgeInsets.symmetric(horizontal: appWidth * 0.03),
+      child: RefreshIndicator(
+        onRefresh: _refresh,
+        child: FutureBuilder(
+          future: latData,
+          builder: (context, AsyncSnapshot snapshot) {
+            // Debug print
+            print(snapshot);
+            if (snapshot.hasError) {
+              return NoNowData();
+            } else if (snapshot.connectionState == ConnectionState.done) {
+              // * async load threshold data
+              threshData = threshData ?? fetchThresholdData();
+              // * async load full data for Analysis
+              totData = totData ?? fetchTotalData();
+              return Page();
+            } else {
+              return Skeleton();
+            }
+          },
+        ),
       ),
     );
   }
@@ -149,10 +152,10 @@ class _PageState extends State<Page> {
         ),
         Container(
           height: appWidth * 0.12,
-          child: Card(
-            margin: EdgeInsets.symmetric(horizontal: appWidth * 0.07),
-            child: (isCurrentDataGot)
-                ? Row(
+          child: (isCurrentDataGot)
+              ? Card(
+                  margin: EdgeInsets.symmetric(horizontal: appWidth * 0.07),
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       AvatarData(
@@ -174,9 +177,9 @@ class _PageState extends State<Page> {
                           FontAwesomeIcons.thermometerHalf,
                           Colors.red[400])
                     ],
-                  )
-                : SizedBox(),
-          ),
+                  ),
+                )
+              : SizedBox(),
         ),
         SizedBox(
           height: appWidth * 0.02,
@@ -217,7 +220,7 @@ class Skeleton extends StatelessWidget {
             backgroundColor: Colors.grey[300],
             center: CircularProgressIndicator(),
             footer: SizedBox(
-              height: appWidth * 0.03,
+              height: appWidth * 0.05,
             ),
           ),
         ),
@@ -226,7 +229,7 @@ class Skeleton extends StatelessWidget {
           child: Card(
             margin: EdgeInsets.symmetric(horizontal: appWidth * 0.07),
             child: Padding(
-              padding: EdgeInsets.all(appWidth * 0.07),
+              padding: EdgeInsets.all(appWidth * 0.055),
               child: LinearProgressIndicator(),
             ),
           ),

@@ -6,10 +6,15 @@
 
 import 'package:flutter/material.dart';
 
-const appPrimaryColor = const Color(0xFFe6ee9c);
-const appPrimaryLightColor = const Color(0xFFffffce);
-const appPrimaryDarkColor = const Color(0xFFb3bc6d);
+// * Converts hexadecimal color string to Material Color
+Color hexToColor(String code) {
+  return Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
+}
 
-const appSecondaryColor = const Color(0xFF827717);
-const appSecondaryLightColor = const Color(0xFFb4a647);
-const appSecondaryDarkColor = const Color(0xFF524c00);
+final appPrimaryColor = hexToColor('#e6ee9c');
+final appPrimaryLightColor = hexToColor('#ffffce');
+final appPrimaryDarkColor = hexToColor('#b3bc6d');
+
+final appSecondaryColor = hexToColor('#827717');
+final appSecondaryLightColor = hexToColor('#b4a647');
+final appSecondaryDarkColor = hexToColor('#524c00');

@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:soil_moisture_app/utils/date_func.dart';
 import 'package:soil_moisture_app/utils/sizes.dart';
 
-// * No Latest Data Available upon Startup (due to actually no data or no internet)
+// * No Latest Data Available upon Startup (due to empty data or no internet)
 class NoNowData extends StatelessWidget {
   final bool haveInternet;
   final bool isScrollable;
@@ -21,14 +21,16 @@ class NoNowData extends StatelessWidget {
       physics: (isScrollable)
           ? AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics())
           : NeverScrollableScrollPhysics(),
+      shrinkWrap: (haveInternet) ? true : false,
       children: [
         Container(
-          padding: EdgeInsets.all(appWidth * 0.03),
+          padding: EdgeInsets.symmetric(
+              vertical: appWidth * 0.1, horizontal: appWidth * 0.01),
           alignment: Alignment.center,
           child: Text(
             (this.haveInternet)
                 ? 'No Data for $fetchNowDate'
-                : 'Couldn\'t connect.\nCheck your internet connection and refresh.',
+                : 'Couldn\'t connect to Internet.\nRefresh to try again.',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.display1.copyWith(
                   fontSize: appWidth * 0.04,
@@ -40,7 +42,7 @@ class NoNowData extends StatelessWidget {
   }
 }
 
-// * No Data/ Empty Data
+// * No Data/ Empty detailed Data
 class NoData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

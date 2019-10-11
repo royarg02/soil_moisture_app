@@ -83,7 +83,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // ! Implement Credits Here
+      // TODO: Implement Credits
       // drawer: Drawer(
       //   child: Credits(),
       // ),
@@ -113,12 +113,9 @@ class Home extends StatelessWidget {
           )
         ],
       ),
-      body: SafeArea(
-        minimum: EdgeInsets.symmetric(horizontal: appWidth * 0.03),
-        child: TabBarView(
-          children: _children,
-          physics: NeverScrollableScrollPhysics(),
-        ),
+      body: TabBarView(
+        children: _children,
+        physics: NeverScrollableScrollPhysics(),
       ),
       bottomNavigationBar: Container(
         color: Theme.of(context).canvasColor,

@@ -117,227 +117,232 @@ class _AnalysisState extends State<Analysis> {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: _refresh,
-      child: ListView(
-        physics: AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-        children: [
-          Container(
-            margin: EdgeInsets.symmetric(vertical: appWidth * 0.03),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                FutureBuilder(
-                  future: totData,
-                  builder: (context, AsyncSnapshot snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      _initChart(this._measure);
-                      return (isDataGot)
-                          ? Container(
-                              height: appWidth * 0.215,
-                              alignment: Alignment.center,
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Row(
-                                    children: <Widget>[
-                                      Text(
-                                        (_chartObj.getLastValue *
-                                                ((_measure == 'Moisture')
-                                                    ? 100
-                                                    : 1))
-                                            .toStringAsFixed(1),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .display2
-                                            .copyWith(
-                                              color: appSecondaryDarkColor,
-                                              fontSize: appWidth * 0.09,
-                                            ),
-                                      ),
-                                      Text(
-                                        '${_chartObj.getUnit}',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .body1
-                                            .copyWith(
-                                              fontSize: appWidth * 0.06,
-                                            ),
-                                      ),
-                                    ],
-                                  ),
-                                  Text(
-                                    'On $fetchDateEEE_MMM_d',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .body2
-                                        .copyWith(
-                                          fontSize: appWidth * 0.025,
+    return SafeArea(
+      minimum: EdgeInsets.symmetric(horizontal: appWidth * 0.03),
+      child: RefreshIndicator(
+        onRefresh: _refresh,
+        child: ListView(
+          physics:
+              AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+          children: [
+            Container(
+              margin: EdgeInsets.symmetric(vertical: appWidth * 0.03),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  FutureBuilder(
+                    future: totData,
+                    builder: (context, AsyncSnapshot snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        _initChart(this._measure);
+                        return (isDataGot)
+                            ? Container(
+                                height: appWidth * 0.215,
+                                alignment: Alignment.center,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Row(
+                                      children: <Widget>[
+                                        Text(
+                                          (_chartObj.getLastValue *
+                                                  ((_measure == 'Moisture')
+                                                      ? 100
+                                                      : 1))
+                                              .toStringAsFixed(1),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .display2
+                                              .copyWith(
+                                                color: appSecondaryDarkColor,
+                                                fontSize: appWidth * 0.09,
+                                              ),
                                         ),
-                                  ),
-                                ],
+                                        Text(
+                                          '${_chartObj.getUnit}',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .body1
+                                              .copyWith(
+                                                fontSize: appWidth * 0.06,
+                                              ),
+                                        ),
+                                      ],
+                                    ),
+                                    Text(
+                                      'On $fetchDateEEE_MMM_d',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .body2
+                                          .copyWith(
+                                            fontSize: appWidth * 0.025,
+                                          ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : SizedBox(
+                                height: appWidth * 0.215,
+                              );
+                      } else {
+                        return SizedBox(
+                          height: appWidth * 0.215,
+                        );
+                      }
+                    },
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(right: appWidth * 0.02),
+                    height: appWidth * 0.1,
+                    child: Theme(
+                      data: Theme.of(context).copyWith(
+                        canvasColor: appPrimaryLightColor,
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          icon: Icon(FontAwesomeIcons.chevronDown),
+                          iconSize: appWidth * 0.03,
+                          value: _measure,
+                          onChanged: (String measure) {
+                            setState(() {
+                              _initChart(measure);
+                            });
+                          },
+                          items: <String>[
+                            'Moisture',
+                            'Light',
+                            'Humidity',
+                            'Temperature'
+                          ].map<DropdownMenuItem<String>>((String option) {
+                            return DropdownMenuItem<String>(
+                              value: option,
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: appWidth * 0.31,
+                                child: Text(
+                                  option,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .body2
+                                      .copyWith(fontSize: appWidth * 0.035),
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
-                            )
-                          : SizedBox(
-                              height: appWidth * 0.215,
                             );
-                    } else {
-                      return SizedBox(
-                        height: appWidth * 0.215,
-                      );
-                    }
+                          }).toList(),
+                        ),
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 2.0,
+                        color: appPrimaryDarkColor,
+                      ),
+                      borderRadius: BorderRadius.circular(appWidth * 0.1),
+                      shape: BoxShape.rectangle,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              height: appWidth * 0.6,
+              child: Card(
+                child: FutureBuilder(
+                    future: totData,
+                    builder: (context, AsyncSnapshot snapshot) {
+                      // Debug Print
+                      print(snapshot);
+                      if (snapshot.hasError) {
+                        return NoNowData(isScrollable: false);
+                      } else if (snapshot.connectionState ==
+                          ConnectionState.done) {
+                        return (isDataGot)
+                            ? displayChart(_chartObj, _measure, context)
+                            : NoData();
+                      } else {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    }),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.chevron_left),
+                  onPressed: () {
+                    prevDate();
+                    _fetchForDate();
                   },
                 ),
-                Container(
-                  padding: EdgeInsets.only(right: appWidth * 0.02),
-                  height: appWidth * 0.1,
-                  child: Theme(
-                    data: Theme.of(context).copyWith(
-                      canvasColor: appPrimaryLightColor,
+                Tooltip(
+                  message: 'Jump to date',
+                  child: FlatButton(
+                    onPressed: () => _pickDate(context),
+                    child: Text(
+                      '$fetchDateEEE_MMM_d',
+                      style: Theme.of(context).textTheme.body2.copyWith(
+                            fontSize: appWidth * 0.05,
+                          ),
                     ),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                        icon: Icon(FontAwesomeIcons.chevronDown),
-                        iconSize: appWidth * 0.03,
-                        value: _measure,
-                        onChanged: (String measure) {
-                          setState(() {
-                            _initChart(measure);
-                          });
-                        },
-                        items: <String>[
-                          'Moisture',
-                          'Light',
-                          'Humidity',
-                          'Temperature'
-                        ].map<DropdownMenuItem<String>>((String option) {
-                          return DropdownMenuItem<String>(
-                            value: option,
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: appWidth * 0.31,
-                              child: Text(
-                                option,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .body2
-                                    .copyWith(fontSize: appWidth * 0.035),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          );
-                        }).toList(),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(appWidth * 0.1),
+                      side: BorderSide(
+                        width: 2.0,
+                        color: appPrimaryDarkColor,
                       ),
                     ),
                   ),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      width: 2.0,
-                      color: appPrimaryDarkColor,
-                    ),
-                    borderRadius: BorderRadius.circular(appWidth * 0.1),
-                    shape: BoxShape.rectangle,
-                  ),
                 ),
+                IconButton(
+                  icon: Icon(Icons.chevron_right),
+                  onPressed: (isNow())
+                      ? null
+                      : () {
+                          nextDate();
+                          _fetchForDate();
+                        },
+                )
               ],
             ),
-          ),
-          Container(
-            height: appWidth * 0.6,
-            child: Card(
-              child: FutureBuilder(
-                  future: totData,
-                  builder: (context, AsyncSnapshot snapshot) {
-                    // Debug Print
-                    print(snapshot);
-                    if (snapshot.hasError) {
-                      return NoNowData(isScrollable:false);
-                    } else if (snapshot.connectionState ==
-                        ConnectionState.done) {
-                      return (isDataGot)
-                          ? displayChart(_chartObj, _measure, context)
-                          : NoData();
-                    } else {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                  }),
+            SizedBox(
+              height: appWidth * 0.01,
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              IconButton(
-                icon: Icon(Icons.chevron_left),
-                onPressed: () {
-                  prevDate();
-                  _fetchForDate();
-                },
-              ),
-              Tooltip(
-                message: 'Jump to date',
-                child: FlatButton(
-                  onPressed: () => _pickDate(context),
-                  child: Text(
-                    '$fetchDateEEE_MMM_d',
-                    style: Theme.of(context).textTheme.body2.copyWith(
-                          fontSize: appWidth * 0.05,
-                        ),
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(appWidth * 0.1),
-                    side: BorderSide(
-                      width: 2.0,
-                      color: appPrimaryDarkColor,
-                    ),
-                  ),
-                ),
-              ),
-              IconButton(
-                icon: Icon(Icons.chevron_right),
-                onPressed: (isNow())
-                    ? null
-                    : () {
-                        nextDate();
-                        _fetchForDate();
-                      },
-              )
-            ],
-          ),
-          SizedBox(
-            height: appWidth * 0.01,
-          ),
-          FutureBuilder(
-            future: totData,
-            builder: (context, AsyncSnapshot snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return (isDataGot)
-                    ? GridView.builder(
-                        shrinkWrap: true,
-                        physics: ScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: (appWidth < 600) ? 3 : 5,
-                          crossAxisSpacing: appWidth * 0.005,
-                          mainAxisSpacing: appWidth * 0.005,
-                        ),
-                        itemCount: plantList.length,
-                        itemBuilder: (context, position) {
-                          return PlantCard(
-                            plant: plantList[position],
-                            isSelected: (position == _selCard),
-                            onTap: () => _selectPlant(position),
-                          );
-                        },
-                      )
-                    : SizedBox();
-              } else {
-                return SizedBox();
-              }
-            },
-          ),
-        ],
+            FutureBuilder(
+              future: totData,
+              builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return (isDataGot)
+                      ? GridView.builder(
+                          shrinkWrap: true,
+                          physics: ScrollPhysics(),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: (appWidth < 600) ? 3 : 5,
+                            crossAxisSpacing: appWidth * 0.005,
+                            mainAxisSpacing: appWidth * 0.005,
+                          ),
+                          itemCount: plantList.length,
+                          itemBuilder: (context, position) {
+                            return PlantCard(
+                              plant: plantList[position],
+                              isSelected: (position == _selCard),
+                              onTap: () => _selectPlant(position),
+                            );
+                          },
+                        )
+                      : SizedBox();
+                } else {
+                  return SizedBox();
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

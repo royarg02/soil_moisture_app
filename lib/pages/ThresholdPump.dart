@@ -43,9 +43,7 @@ class _ThresholdPumpState extends State<ThresholdPump> {
               leading: BackButton(),
               title: Text(
                 'Pump threshold Control',
-                style: Theme.of(context).textTheme.title.copyWith(
-                      fontSize: appWidth * 0.055,
-                    ),
+                style: Theme.of(context).textTheme.title,
               ),
               centerTitle: true,
             ),
