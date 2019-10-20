@@ -37,7 +37,7 @@ Future<Map<String, dynamic>> fetchJsonData(
       * 'latest' boolean by fetching the current data (now) if true, full data if false
       */
   String url =
-      altUrl ?? "$baseUrl/getdata/${(latest) ? 'now' : fetchDatedd_mm_yyyy}";
+      altUrl ?? "$baseUrl/getdata/${(latest) ? 'now' : fetchDateddmmyyyy}";
   // Debug print
   print(url);
   final response = await http.get(url);
@@ -126,7 +126,7 @@ void addThresholdData(Map<String, dynamic> data) {
 
 // * fetch total data from API
 Future<void> fetchTotalData() async {
-  print(fetchDatedd_mm_yyyy);
+  print(fetchDateddmmyyyy);
   await fetchJsonData().then((onValue) => addData(onValue));
 }
 

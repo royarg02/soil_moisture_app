@@ -118,7 +118,7 @@ class _AnalysisState extends State<Analysis> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      minimum: EdgeInsets.symmetric(horizontal: appWidth * 0.03),
+      minimum: EdgeInsets.symmetric(horizontal: appWidth(context) * 0.03),
       child: RefreshIndicator(
         onRefresh: _refresh,
         child: ListView(
@@ -126,7 +126,7 @@ class _AnalysisState extends State<Analysis> {
               AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
           children: [
             Container(
-              margin: EdgeInsets.symmetric(vertical: appWidth * 0.03),
+              margin: EdgeInsets.symmetric(vertical: appWidth(context) * 0.03),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -137,7 +137,7 @@ class _AnalysisState extends State<Analysis> {
                         _initChart(this._measure);
                         return (isDataGot)
                             ? Container(
-                                height: appWidth * 0.215,
+                                height: appWidth(context) * 0.215,
                                 alignment: Alignment.center,
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
@@ -156,7 +156,8 @@ class _AnalysisState extends State<Analysis> {
                                               .display2
                                               .copyWith(
                                                 color: appSecondaryDarkColor,
-                                                fontSize: appWidth * 0.09,
+                                                fontSize:
+                                                    appWidth(context) * 0.09,
                                               ),
                                         ),
                                         Text(
@@ -165,44 +166,45 @@ class _AnalysisState extends State<Analysis> {
                                               .textTheme
                                               .body1
                                               .copyWith(
-                                                fontSize: appWidth * 0.06,
+                                                fontSize:
+                                                    appWidth(context) * 0.06,
                                               ),
                                         ),
                                       ],
                                     ),
                                     Text(
-                                      'On $fetchDateEEE_MMM_d',
+                                      'On $fetchDateEEEMMMd',
                                       style: Theme.of(context)
                                           .textTheme
                                           .body2
                                           .copyWith(
-                                            fontSize: appWidth * 0.025,
+                                            fontSize: appWidth(context) * 0.025,
                                           ),
                                     ),
                                   ],
                                 ),
                               )
                             : SizedBox(
-                                height: appWidth * 0.215,
+                                height: appWidth(context) * 0.215,
                               );
                       } else {
                         return SizedBox(
-                          height: appWidth * 0.215,
+                          height: appWidth(context) * 0.215,
                         );
                       }
                     },
                   ),
                   Container(
-                    padding: EdgeInsets.only(right: appWidth * 0.02),
-                    height: appWidth * 0.1,
+                    padding: EdgeInsets.only(right: appWidth(context) * 0.02),
+                    height: appWidth(context) * 0.1,
                     child: Theme(
                       data: Theme.of(context).copyWith(
-                        canvasColor: appPrimaryLightColor,
+                        canvasColor: appPrimaryColor,
                       ),
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
                           icon: Icon(FontAwesomeIcons.chevronDown),
-                          iconSize: appWidth * 0.03,
+                          iconSize: appWidth(context) * 0.03,
                           value: _measure,
                           onChanged: (String measure) {
                             setState(() {
@@ -219,13 +221,14 @@ class _AnalysisState extends State<Analysis> {
                               value: option,
                               child: Container(
                                 alignment: Alignment.center,
-                                width: appWidth * 0.31,
+                                width: appWidth(context) * 0.31,
                                 child: Text(
                                   option,
                                   style: Theme.of(context)
                                       .textTheme
                                       .body2
-                                      .copyWith(fontSize: appWidth * 0.035),
+                                      .copyWith(
+                                          fontSize: appWidth(context) * 0.035),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -239,7 +242,8 @@ class _AnalysisState extends State<Analysis> {
                         width: 2.0,
                         color: appPrimaryDarkColor,
                       ),
-                      borderRadius: BorderRadius.circular(appWidth * 0.1),
+                      borderRadius:
+                          BorderRadius.circular(appWidth(context) * 0.1),
                       shape: BoxShape.rectangle,
                     ),
                   ),
@@ -247,7 +251,7 @@ class _AnalysisState extends State<Analysis> {
               ),
             ),
             Container(
-              height: appWidth * 0.6,
+              height: appWidth(context) * 0.6,
               child: Card(
                 child: FutureBuilder(
                     future: totData,
@@ -284,13 +288,14 @@ class _AnalysisState extends State<Analysis> {
                   child: FlatButton(
                     onPressed: () => _pickDate(context),
                     child: Text(
-                      '$fetchDateEEE_MMM_d',
+                      '$fetchDateEEEMMMd',
                       style: Theme.of(context).textTheme.body2.copyWith(
-                            fontSize: appWidth * 0.05,
+                            fontSize: appWidth(context) * 0.05,
                           ),
                     ),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(appWidth * 0.1),
+                      borderRadius:
+                          BorderRadius.circular(appWidth(context) * 0.1),
                       side: BorderSide(
                         width: 2.0,
                         color: appPrimaryDarkColor,
@@ -310,37 +315,41 @@ class _AnalysisState extends State<Analysis> {
               ],
             ),
             SizedBox(
-              height: appWidth * 0.01,
+              height: appWidth(context) * 0.01,
             ),
             FutureBuilder(
               future: totData,
               builder: (context, AsyncSnapshot snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  return (isDataGot)
-                      ? GridView.builder(
-                          shrinkWrap: true,
-                          physics: ScrollPhysics(),
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: (appWidth < 600) ? 3 : 5,
-                            crossAxisSpacing: appWidth * 0.005,
-                            mainAxisSpacing: appWidth * 0.005,
-                          ),
-                          itemCount: plantList.length,
-                          itemBuilder: (context, position) {
-                            return PlantCard(
-                              plant: plantList[position],
-                              isSelected: (position == _selCard),
-                              onTap: () => _selectPlant(position),
-                            );
-                          },
-                        )
-                      : SizedBox();
+                if (snapshot.connectionState == ConnectionState.done &&
+                    isDataGot) {
+                  return GridView.builder(
+                    shrinkWrap: true,
+                    physics: ScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount:
+                          (appWidth(context) < 600 && isPortrait(context))
+                              ? 3
+                              : 5,
+                      crossAxisSpacing: appWidth(context) * 0.005,
+                      mainAxisSpacing: appWidth(context) * 0.005,
+                    ),
+                    itemCount: plantList.length,
+                    itemBuilder: (context, position) {
+                      return PlantCard(
+                        plant: plantList[position],
+                        isSelected: (position == _selCard),
+                        onTap: () => _selectPlant(position),
+                      );
+                    },
+                  );
                 } else {
                   return SizedBox();
                 }
               },
             ),
+            SizedBox(
+              height: appWidth(context) * 0.03,
+            )
           ],
         ),
       ),

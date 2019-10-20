@@ -52,7 +52,7 @@ class _OverviewState extends State<Overview> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      minimum: EdgeInsets.symmetric(horizontal: appWidth * 0.03),
+      minimum: EdgeInsets.symmetric(horizontal: appWidth(context) * 0.03),
       child: RefreshIndicator(
         onRefresh: _refresh,
         child: FutureBuilder(
@@ -105,13 +105,13 @@ class _PageState extends State<Page> {
       physics: AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.symmetric(vertical: appWidth * 0.03),
+          padding: EdgeInsets.symmetric(vertical: appWidth(context) * 0.03),
           child: (isCurrentDataGot)
               // * would show only if today's data is available
               ? CircularPercentIndicator(
                   addAutomaticKeepAlive: false,
                   animationDuration: 600,
-                  radius: appWidth * 0.6,
+                  radius: appWidth(context) * 0.6,
                   animation: true,
                   percent: nowPlantList[_selCard].getLastValue,
                   circularStrokeCap: CircularStrokeCap.round,
@@ -121,11 +121,11 @@ class _PageState extends State<Page> {
                       : (nowPlantList[_selCard].isMoreThanNormal()
                           ? Colors.blue
                           : Colors.green),
-                  lineWidth: appWidth * 0.02,
+                  lineWidth: appWidth(context) * 0.02,
                   footer: Text(
                     'Current Moisture',
                     style: Theme.of(context).textTheme.caption.copyWith(
-                          fontSize: appWidth * 0.03,
+                          fontSize: appWidth(context) * 0.03,
                         ),
                     textAlign: TextAlign.center,
                   ),
@@ -135,14 +135,14 @@ class _PageState extends State<Page> {
                       Text(
                         '${nowPlantList[_selCard].getLabel}',
                         style: Theme.of(context).textTheme.body2.copyWith(
-                              fontSize: appWidth * 0.03,
+                              fontSize: appWidth(context) * 0.03,
                             ),
                         textAlign: TextAlign.center,
                       ),
                       Text(
                         '${(nowPlantList[_selCard].getLastValue * 100).toStringAsFixed(0)}${nowPlantList[_selCard].getUnit}',
                         style: Theme.of(context).textTheme.display4.copyWith(
-                              fontSize: appWidth * 0.2,
+                              fontSize: appWidth(context) * 0.2,
                             ),
                       ),
                     ],
@@ -151,10 +151,11 @@ class _PageState extends State<Page> {
               : NoNowData(haveInternet: true),
         ),
         Container(
-          height: appWidth * 0.12,
+          height: appWidth(context) * 0.12,
           child: (isCurrentDataGot)
               ? Card(
-                  margin: EdgeInsets.symmetric(horizontal: appWidth * 0.07),
+                  margin: EdgeInsets.symmetric(
+                      horizontal: appWidth(context) * 0.07),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
@@ -182,16 +183,17 @@ class _PageState extends State<Page> {
               : SizedBox(),
         ),
         SizedBox(
-          height: appWidth * 0.02,
+          height: appWidth(context) * 0.02,
         ),
         (isCurrentDataGot)
             ? GridView.builder(
                 physics: ScrollPhysics(),
                 shrinkWrap: true,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: (appWidth < 600) ? 3 : 5,
-                  crossAxisSpacing: appWidth * 0.005,
-                  mainAxisSpacing: appWidth * 0.005,
+                  crossAxisCount:
+                      (appWidth(context) < 600 && isPortrait(context)) ? 3 : 5,
+                  crossAxisSpacing: appWidth(context) * 0.005,
+                  mainAxisSpacing: appWidth(context) * 0.005,
                 ),
                 itemCount: nowPlantList.length,
                 itemBuilder: (context, position) {
@@ -203,6 +205,9 @@ class _PageState extends State<Page> {
                 },
               )
             : SizedBox(),
+        SizedBox(
+          height: appWidth(context) * 0.03,
+        )
       ],
     );
   }
@@ -211,25 +216,26 @@ class _PageState extends State<Page> {
 class Skeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return ListView(
+      physics: AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.symmetric(vertical: appWidth * 0.03),
+          padding: EdgeInsets.symmetric(vertical: appWidth(context) * 0.03),
           child: CircularPercentIndicator(
-            radius: appWidth * 0.6,
+            radius: appWidth(context) * 0.6,
             backgroundColor: Colors.grey[300],
             center: CircularProgressIndicator(),
             footer: SizedBox(
-              height: appWidth * 0.05,
+              height: appWidth(context) * 0.05,
             ),
           ),
         ),
         Container(
-          height: appWidth * 0.12,
+          height: appWidth(context) * 0.12,
           child: Card(
-            margin: EdgeInsets.symmetric(horizontal: appWidth * 0.07),
+            margin: EdgeInsets.symmetric(horizontal: appWidth(context) * 0.07),
             child: Padding(
-              padding: EdgeInsets.all(appWidth * 0.055),
+              padding: EdgeInsets.all(appWidth(context) * 0.055),
               child: LinearProgressIndicator(),
             ),
           ),
@@ -254,14 +260,14 @@ class AvatarData extends StatelessWidget {
       child: Row(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.all(appWidth * 0.01),
+            padding: EdgeInsets.all(appWidth(context) * 0.01),
             child: CircleAvatar(
               backgroundColor: this._bkgrndColor,
               child: Icon(
                 this._icon,
-                size: appWidth * 0.05,
+                size: appWidth(context) * 0.05,
               ),
-              radius: appWidth * 0.035,
+              radius: appWidth(context) * 0.035,
             ),
           ),
           Text(
@@ -269,7 +275,7 @@ class AvatarData extends StatelessWidget {
             style: Theme.of(context)
                 .textTheme
                 .body2
-                .copyWith(fontSize: appWidth * 0.03),
+                .copyWith(fontSize: appWidth(context) * 0.03),
           )
         ],
       ),

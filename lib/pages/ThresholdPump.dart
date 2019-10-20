@@ -112,11 +112,11 @@ class _PageState extends State<Page> {
                 textTheme: ButtonTextTheme.primary,
                 shape: RoundedRectangleBorder(
                   borderRadius:
-                      BorderRadius.all(Radius.circular(appWidth * 0.1)),
+                      BorderRadius.all(Radius.circular(appWidth(context) * 0.1)),
                 ),
                 child: Text('OK'),
                 onPressed: () => Navigator.of(context).pop(),
-                padding: EdgeInsets.all(appWidth * 0.02),
+                padding: EdgeInsets.all(appWidth(context) * 0.02),
               )
             ],
             content: Text(status),
@@ -132,13 +132,13 @@ class _PageState extends State<Page> {
         title: Text(
           'Pump threshold Control',
           style: Theme.of(context).textTheme.title.copyWith(
-                fontSize: appWidth * 0.055,
+                fontSize: appWidth(context) * 0.055,
               ),
         ),
         centerTitle: true,
       ),
       body: SafeArea(
-        minimum: EdgeInsets.symmetric(horizontal: appWidth * 0.03),
+        minimum: EdgeInsets.symmetric(horizontal: appWidth(context) * 0.03),
         child: (pumpList.length != 0)
             ? ListView.builder(
                 physics: AlwaysScrollableScrollPhysics(
@@ -168,7 +168,7 @@ class _PageState extends State<Page> {
                   'Set',
                   style: Theme.of(context).textTheme.button.copyWith(
                         color: appPrimaryLightColor,
-                        fontSize: appWidth * 0.04,
+                        fontSize: appWidth(context) * 0.04,
                       ),
                 ),
           onPressed: (_isLoading) ? null : _postThreshold,
@@ -187,22 +187,22 @@ class Skeleton extends StatelessWidget {
         title: Text(
           'Pump threshold Control',
           style: Theme.of(context).textTheme.title.copyWith(
-                fontSize: appWidth * 0.055,
+                fontSize: appWidth(context) * 0.055,
               ),
         ),
         centerTitle: true,
       ),
       body: SafeArea(
-        minimum: EdgeInsets.symmetric(horizontal: appWidth * 0.03),
+        minimum: EdgeInsets.symmetric(horizontal: appWidth(context) * 0.03),
         child: ListView.builder(
             physics:
                 AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
             itemCount: 2,
             itemBuilder: (context, position) {
               return Card(
-                margin: EdgeInsets.only(top: appWidth * 0.03),
+                margin: EdgeInsets.only(top: appWidth(context) * 0.03),
                 child: Padding(
-                  padding: EdgeInsets.all(appWidth * 0.045),
+                  padding: EdgeInsets.all(appWidth(context) * 0.045),
                   child: LinearProgressIndicator(),
                 ),
               );

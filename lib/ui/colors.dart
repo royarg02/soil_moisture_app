@@ -18,3 +18,6 @@ final appPrimaryDarkColor = hexToColor('#b3bc6d');
 final appSecondaryColor = hexToColor('#827717');
 final appSecondaryLightColor = hexToColor('#b4a647');
 final appSecondaryDarkColor = hexToColor('#524c00');
+
+// * brand colors
+final twitterBlue = hexToColor('#38A1F3');  

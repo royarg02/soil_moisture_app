@@ -30,22 +30,18 @@ The base URL for the application is `https://soif.herokuapp.com/`
 
 The various endpoints used by this app are:
 
-- ```/getdata/<currentdate in dd-mm-yyyy>```
+  - ```/getdata/<currentdate in dd-mm-yyyy>```
+  - ```/getdata/now```
+  - ```/setpump```
+  - ```/getpump```
 
-- ```/getdata/now```
-
-- ```/setpump```
-
-- ```/getpump```
-
-### Contributions:
+### Contributions
 
 We would love to see some feedback in the form of issues raised and PRs. If you need an **IoT** project with application integration, this project can serve as the baseline application. Show your appreciation by :star:ing this repository!​ ​
 
-### Team Members:
+### Team Members
 
-* Anurag Roy - [Github](https://github.com/RoyARG02) [Twitter](https://twitter.com/_royarg)
-* Ayush Thakur - [Github](https://github.com/ayulockin) [Twitter](https://twitter.com/ayushthakur0)
-* Snehangshu Bhattacharya - [Github](https://github.com/forkbomb-666) [Twitter](https://twitter.com/JohnDoe68522490)
-* Aritra Roy Gosthipaty - [Github](https://github.com/ariG23498) [Twitter](https://twitter.com/ariG23498)
-
+  - Anurag Roy - [Github](https://github.com/RoyARG02) [Twitter](https://twitter.com/_royarg)
+  - Ayush Thakur - [Github](https://github.com/ayulockin) [Twitter](https://twitter.com/ayushthakur0)
+  - Snehangshu Bhattacharya - [Github](https://github.com/forkbomb-666) [Twitter](https://twitter.com/snehangshu_)
+  - Aritra Roy Gosthipaty - [Github](https://github.com/ariG23498) [Twitter](https://twitter.com/ariG23498)

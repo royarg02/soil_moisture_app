@@ -22,19 +22,15 @@ import 'package:soil_moisture_app/utils/sizes.dart';
 import 'package:soil_moisture_app/data/plant_class.dart';
 
 class PlantCard extends StatelessWidget {
-  Function onTap;
+  final Function onTap;
   final Plant plant;
-  bool isSelected;
+  final bool isSelected;
 
   PlantCard({
     this.plant,
-    this.onTap,
+    @required this.onTap,
     this.isSelected,
-  }) {
-    if (this.onTap == null) {
-      this.onTap = () => print(plant.getLabel);
-    }
-  }
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -60,14 +56,14 @@ class PlantCard extends StatelessWidget {
               Text(
                 '${this.plant.getLabel}',
                 style: Theme.of(context).textTheme.body2.copyWith(
-                      fontSize: appWidth * 0.05,
+                      fontSize: appWidth(context) * 0.045,
                     ),
-                    textAlign: TextAlign.center,
+                textAlign: TextAlign.center,
               ),
               Image.asset(
                 './assets/images/plant.png',
-                height: appWidth * 0.1,
-                width: appWidth * 0.1,
+                height: appWidth(context) * 0.1,
+                width: appWidth(context) * 0.1,
               ),
               LinearPercentIndicator(
                 addAutomaticKeepAlive: false,

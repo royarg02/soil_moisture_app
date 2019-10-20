@@ -28,7 +28,7 @@ class _ThresholdSliderState extends State<ThresholdSlider> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.only(top: appWidth * 0.03),
+      margin: EdgeInsets.only(top: appWidth(context) * 0.03),
       child: Row(
         children: <Widget>[
           Expanded(
@@ -36,7 +36,7 @@ class _ThresholdSliderState extends State<ThresholdSlider> {
             child: Text(
               this.widget.label,
               style: Theme.of(context).textTheme.body2.copyWith(
-                    fontSize: appWidth * 0.045,
+                    fontSize: appWidth(context) * 0.045,
                   ),
               textAlign: TextAlign.center,
             ),
@@ -59,7 +59,7 @@ class _ThresholdSliderState extends State<ThresholdSlider> {
             child: Text(
               '${widget.threshold}',
               style: Theme.of(context).textTheme.caption.copyWith(
-                    fontSize: appWidth * 0.03,
+                    fontSize: appWidth(context) * 0.03,
                   ),
               textAlign: TextAlign.center,
             ),

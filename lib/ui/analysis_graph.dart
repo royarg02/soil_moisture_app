@@ -40,7 +40,7 @@ SfCartesianChart displayChart(
       majorGridLines: MajorGridLines(width: 1),
       labelStyle: ChartTextStyle(
         fontFamily: 'Ocrb',
-        fontSize: appWidth * 0.027,
+        fontSize: appWidth(context) * 0.027,
       ),
     ),
     primaryYAxis: NumericAxis(
@@ -51,7 +51,7 @@ SfCartesianChart displayChart(
       labelFormat: '{value}${chartObj.getUnit}',
       isVisible: true,
       labelStyle: ChartTextStyle(
-        fontSize: appWidth * 0.027,
+        fontSize: appWidth(context) * 0.027,
         fontFamily: 'Ocrb',
       ),
     ),
@@ -90,8 +90,8 @@ List<LineSeries<dynamic, DateTime>> getLineSeries(
       markerSettings: MarkerSettings(
         isVisible: true,
         color: appPrimaryLightColor,
-        height: appWidth * 0.015,
-        width: appWidth * 0.015,
+        height: appWidth(context) * 0.015,
+        width: appWidth(context) * 0.015,
       ),
     ),
   ];

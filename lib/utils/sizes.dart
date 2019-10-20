@@ -1,16 +1,18 @@
 /* 
 * sizes
 
-* Determines the sizes of the widgets depending on screen size
+* Determines the sizes of the widgets depending on screen size and orientation
 */
 
 import 'package:flutter/material.dart';
 
-MediaQueryData appQuery;
+bool isPortrait(context) =>
+    MediaQuery.of(context).orientation == Orientation.portrait;
 
-getQuery(MediaQueryData mediaQuery) {
-  appQuery = mediaQuery;
-}
+double appHeight(context) => (isPortrait(context))
+    ? MediaQuery.of(context).size.height
+    : MediaQuery.of(context).size.width;
 
-double appWidth = appQuery.size.width;
-double appHeight = appQuery.size.height;
+double appWidth(context) => (isPortrait(context))
+    ? MediaQuery.of(context).size.width
+    : MediaQuery.of(context).size.height;

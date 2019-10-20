@@ -56,5 +56,8 @@ ThemeData buildLightTheme() {
     floatingActionButtonTheme: base.floatingActionButtonTheme.copyWith(
       backgroundColor: appSecondaryDarkColor,
     ),
+    bottomSheetTheme: base.bottomSheetTheme.copyWith(
+      backgroundColor: appSecondaryLightColor,
+    ),
   );
 }

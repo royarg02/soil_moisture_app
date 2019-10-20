@@ -12,8 +12,8 @@ DateTime date = now;
 var _formatter = DateFormat('dd-MM-yyyy');
 var _showFormatter = DateFormat('EEE, MMM d');
 
-String get fetchDatedd_mm_yyyy => _formatter.format(date);
-String get fetchDateEEE_MMM_d => _showFormatter.format(date);
+String get fetchDateddmmyyyy => _formatter.format(date);
+String get fetchDateEEEMMMd => _showFormatter.format(date);
 String get fetchNowDate => _showFormatter.format(now);
 
 void prevDate() {

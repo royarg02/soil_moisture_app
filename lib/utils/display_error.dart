@@ -25,7 +25,7 @@ class NoNowData extends StatelessWidget {
       children: [
         Container(
           padding: EdgeInsets.symmetric(
-              vertical: appWidth * 0.1, horizontal: appWidth * 0.01),
+              vertical: appWidth(context) * 0.1, horizontal: appWidth(context) * 0.01),
           alignment: Alignment.center,
           child: Text(
             (this.haveInternet)
@@ -33,7 +33,7 @@ class NoNowData extends StatelessWidget {
                 : 'Couldn\'t connect to Internet.\nRefresh to try again.',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.display1.copyWith(
-                  fontSize: appWidth * 0.04,
+                  fontSize: appWidth(context) * 0.04,
                 ),
           ),
         ),
@@ -47,13 +47,13 @@ class NoData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(appWidth * 0.01),
+      padding: EdgeInsets.all(appWidth(context) * 0.01),
       alignment: Alignment.center,
       child: Text(
         'No Data Found.\nRefresh to try again or choose another date.',
         textAlign: TextAlign.center,
         style: Theme.of(context).textTheme.display1.copyWith(
-              fontSize: appWidth * 0.04,
+              fontSize: appWidth(context) * 0.04,
             ),
       ),
     );
