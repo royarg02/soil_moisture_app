@@ -14,6 +14,8 @@ dependencies:
   font_awesome_flutter: ^8.5.0
   url_launcher: ^5.2.1
   flutter_image: ^2.0.1
+  provider: ^3.1.0+1
+  shared_preferences: ^0.5.3+5
 
   cupertino_icons: ^0.1.2
   http:
@@ -28,9 +30,8 @@ flutter:
 
   assets:
    - assets/images/plant.png
-   - assets/images/Soif.png
    - assets/images/Soif_sk.png
-   - assets/images/soif_launch.png
+   - assets/images/Soif_sk_dark.png
 
   fonts:
     - family: Ocrb

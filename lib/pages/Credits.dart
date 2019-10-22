@@ -7,12 +7,16 @@
 */
 
 import 'package:flutter/material.dart';
-import 'package:flutter_image/network.dart';
+
+// * States import
+import 'package:soil_moisture_app/states/theme_state.dart';
 
 // * ui import
 import 'package:soil_moisture_app/ui/colors.dart';
 
 // * External Packages import
+import 'package:flutter_image/network.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -43,7 +47,7 @@ class _CreditsState extends State<Credits> {
           horizontal: appWidth(context) * 0.03,
           vertical: appWidth(context) * 0.01),
       leading: CircleAvatar(
-        backgroundColor: appSecondaryLightColor,
+        backgroundColor: Theme.of(context).accentColor,
         backgroundImage: NetworkImageWithRetry(
           'https://avatars.githubusercontent.com/${devDetails[index]['Github']}',
         ),
@@ -57,7 +61,7 @@ class _CreditsState extends State<Credits> {
             TextSpan(
                 text: ' ${devDetails[index]['Github']}',
                 style: Theme.of(context).textTheme.body2.copyWith(
-                      color: Colors.black54,
+                      color: subtleBlackTextColor,
                     ))
           ],
         ),
@@ -77,7 +81,7 @@ class _CreditsState extends State<Credits> {
                 _launchUrl('http://github.com/${devDetails[index]['Github']}'),
             icon: Icon(
               FontAwesomeIcons.github,
-              color: Colors.black,
+              color: githubBlack,
             ),
           ),
           IconButton(
@@ -117,7 +121,9 @@ class _CreditsState extends State<Credits> {
               height: appWidth(context) * 0.03,
             ),
             Image.asset(
-              './assets/images/Soif.png',
+              (Provider.of<ThemeState>(context).isDarkTheme)
+                  ? './assets/images/Soif_sk_dark.png'
+                  : './assets/images/Soif_sk.png',
               height: appWidth(context) * 0.25,
             ),
             Padding(

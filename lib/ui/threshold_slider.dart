@@ -50,8 +50,8 @@ class _ThresholdSliderState extends State<ThresholdSlider> {
               min: 0,
               max: 1,
               divisions: 20,
-              activeColor: appSecondaryLightColor,
-              inactiveColor: appPrimaryColor,
+              activeColor: Theme.of(context).accentColor,
+              inactiveColor: Theme.of(context).primaryColor,
             ),
           ),
           Expanded(

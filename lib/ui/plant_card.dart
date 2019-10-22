@@ -39,11 +39,11 @@ class PlantCard extends StatelessWidget {
         cardTheme: Theme.of(context).cardTheme.copyWith(
               color: (isSelected)
                   ? this.plant.isCritical()
-                      ? Color(0xffff8282)
-                      : appPrimaryColor
+                      ? Theme.of(context).errorColor
+                      : Theme.of(context).primaryColor
                   : this.plant.isCritical()
-                      ? Colors.red[100]
-                      : appPrimaryLightColor,
+                      ? appLightErrorColor
+                      : Theme.of(context).cardColor,
               elevation: (isSelected) ? 15.0 : 2.0,
             ),
       ),
@@ -69,12 +69,14 @@ class PlantCard extends StatelessWidget {
                 addAutomaticKeepAlive: false,
                 percent: this.plant.getLastValue,
                 progressColor: plant.isCritical()
-                    ? Colors.red
-                    : plant.isMoreThanNormal() ? Colors.blue : Colors.green,
+                    ? criticalPlantColor
+                    : plant.isMoreThanNormal()
+                        ? moreThanNormalPlantColor
+                        : normalPlantColor,
                 animateFromLastPercent: true,
                 animationDuration: 600,
                 animation: true,
-                backgroundColor: Colors.blueGrey[200],
+                backgroundColor: appProgressIndicatorBackgroundColor,
               )
             ],
           ),

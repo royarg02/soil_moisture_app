@@ -19,5 +19,16 @@ final appSecondaryColor = hexToColor('#827717');
 final appSecondaryLightColor = hexToColor('#b4a647');
 final appSecondaryDarkColor = hexToColor('#524c00');
 
+final appProgressIndicatorBackgroundColor = Colors.grey[300];
+final appDarkErrorColor = hexToColor('#FF8282');
+final appLightErrorColor = Colors.red[100];
+
+final moreThanNormalPlantColor = Colors.blue;
+final criticalPlantColor = Colors.red;
+final normalPlantColor = Colors.green;
+
+final subtleBlackTextColor = Colors.black54;
+
 // * brand colors
-final twitterBlue = hexToColor('#38A1F3');  
+final twitterBlue = hexToColor('#38A1F3');
+final githubBlack = Colors.black;

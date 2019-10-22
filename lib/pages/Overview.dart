@@ -11,6 +11,11 @@ import 'package:flutter/material.dart';
 // * external packages import
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+
+// * States import
+import 'package:soil_moisture_app/states/selected_card_state.dart';
+import 'package:soil_moisture_app/ui/colors.dart';
 
 // * utils import
 import 'package:soil_moisture_app/utils/date_func.dart';
@@ -22,7 +27,7 @@ import 'package:soil_moisture_app/utils/sizes.dart';
 import 'package:soil_moisture_app/data/all_data.dart';
 
 // * ui import
-import 'package:soil_moisture_app/ui/plant_card.dart';
+import 'package:soil_moisture_app/ui/plant_grid_view.dart';
 import 'package:soil_moisture_app/ui/refresh_snackbar.dart';
 
 class Overview extends StatefulWidget {
@@ -78,27 +83,7 @@ class _OverviewState extends State<Overview> {
   }
 }
 
-class Page extends StatefulWidget {
-  @override
-  _PageState createState() => _PageState();
-}
-
-class _PageState extends State<Page> {
-  int _selCard;
-
-  void initState() {
-    _selCard = 0;
-    super.initState();
-  }
-
-  void _selectPlant(int value) {
-    setState(() {
-      _selCard = value;
-    });
-    // Debug print
-    print('Selected -> $_selCard');
-  }
-
+class Page extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -108,46 +93,7 @@ class _PageState extends State<Page> {
           padding: EdgeInsets.symmetric(vertical: appWidth(context) * 0.03),
           child: (isCurrentDataGot)
               // * would show only if today's data is available
-              ? CircularPercentIndicator(
-                  addAutomaticKeepAlive: false,
-                  animationDuration: 600,
-                  radius: appWidth(context) * 0.6,
-                  animation: true,
-                  percent: nowPlantList[_selCard].getLastValue,
-                  circularStrokeCap: CircularStrokeCap.round,
-                  backgroundColor: Colors.grey[300],
-                  progressColor: (nowPlantList[_selCard].isCritical())
-                      ? Colors.red
-                      : (nowPlantList[_selCard].isMoreThanNormal()
-                          ? Colors.blue
-                          : Colors.green),
-                  lineWidth: appWidth(context) * 0.02,
-                  footer: Text(
-                    'Current Moisture',
-                    style: Theme.of(context).textTheme.caption.copyWith(
-                          fontSize: appWidth(context) * 0.03,
-                        ),
-                    textAlign: TextAlign.center,
-                  ),
-                  center: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        '${nowPlantList[_selCard].getLabel}',
-                        style: Theme.of(context).textTheme.body2.copyWith(
-                              fontSize: appWidth(context) * 0.03,
-                            ),
-                        textAlign: TextAlign.center,
-                      ),
-                      Text(
-                        '${(nowPlantList[_selCard].getLastValue * 100).toStringAsFixed(0)}${nowPlantList[_selCard].getUnit}',
-                        style: Theme.of(context).textTheme.display4.copyWith(
-                              fontSize: appWidth(context) * 0.2,
-                            ),
-                      ),
-                    ],
-                  ),
-                )
+              ? MoistureRadialIndicator()
               : NoNowData(haveInternet: true),
         ),
         Container(
@@ -185,30 +131,58 @@ class _PageState extends State<Page> {
         SizedBox(
           height: appWidth(context) * 0.02,
         ),
-        (isCurrentDataGot)
-            ? GridView.builder(
-                physics: ScrollPhysics(),
-                shrinkWrap: true,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount:
-                      (appWidth(context) < 600 && isPortrait(context)) ? 3 : 5,
-                  crossAxisSpacing: appWidth(context) * 0.005,
-                  mainAxisSpacing: appWidth(context) * 0.005,
-                ),
-                itemCount: nowPlantList.length,
-                itemBuilder: (context, position) {
-                  return PlantCard(
-                    plant: nowPlantList[position],
-                    isSelected: position == _selCard,
-                    onTap: () => _selectPlant(position),
-                  );
-                },
-              )
-            : SizedBox(),
+        (isCurrentDataGot) ? PlantGridView() : SizedBox(),
         SizedBox(
           height: appWidth(context) * 0.03,
         )
       ],
+    );
+  }
+}
+
+class MoistureRadialIndicator extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    int _selCard = Provider.of<SelectedCardState>(context).selCard;
+    return CircularPercentIndicator(
+      addAutomaticKeepAlive: false,
+      animationDuration: 600,
+      radius: appWidth(context) * 0.6,
+      animation: true,
+      percent: nowPlantList[_selCard].getLastValue,
+      circularStrokeCap: CircularStrokeCap.round,
+      backgroundColor: appProgressIndicatorBackgroundColor,
+      progressColor: (nowPlantList[_selCard].isCritical())
+          ? criticalPlantColor
+          : (nowPlantList[_selCard].isMoreThanNormal()
+              ? moreThanNormalPlantColor
+              : normalPlantColor),
+      lineWidth: appWidth(context) * 0.02,
+      footer: Text(
+        'Current Moisture',
+        style: Theme.of(context).textTheme.caption.copyWith(
+              fontSize: appWidth(context) * 0.03,
+            ),
+        textAlign: TextAlign.center,
+      ),
+      center: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            '${nowPlantList[_selCard].getLabel}',
+            style: Theme.of(context).textTheme.body2.copyWith(
+                  fontSize: appWidth(context) * 0.03,
+                ),
+            textAlign: TextAlign.center,
+          ),
+          Text(
+            '${(nowPlantList[_selCard].getLastValue * 100).toStringAsFixed(0)}${nowPlantList[_selCard].getUnit}',
+            style: Theme.of(context).textTheme.display4.copyWith(
+                  fontSize: appWidth(context) * 0.2,
+                ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -223,7 +197,7 @@ class Skeleton extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: appWidth(context) * 0.03),
           child: CircularPercentIndicator(
             radius: appWidth(context) * 0.6,
-            backgroundColor: Colors.grey[300],
+            backgroundColor: appProgressIndicatorBackgroundColor,
             center: CircularProgressIndicator(),
             footer: SizedBox(
               height: appWidth(context) * 0.05,
@@ -236,7 +210,9 @@ class Skeleton extends StatelessWidget {
             margin: EdgeInsets.symmetric(horizontal: appWidth(context) * 0.07),
             child: Padding(
               padding: EdgeInsets.all(appWidth(context) * 0.055),
-              child: LinearProgressIndicator(),
+              child: LinearProgressIndicator(
+                backgroundColor: appProgressIndicatorBackgroundColor,
+              ),
             ),
           ),
         )

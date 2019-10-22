@@ -89,7 +89,7 @@ List<LineSeries<dynamic, DateTime>> getLineSeries(
       width: 2,
       markerSettings: MarkerSettings(
         isVisible: true,
-        color: appPrimaryLightColor,
+        color: Theme.of(context).cardColor,
         height: appWidth(context) * 0.015,
         width: appWidth(context) * 0.015,
       ),

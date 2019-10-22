@@ -8,10 +8,12 @@ import 'package:flutter/material.dart';
 
 // * External packages import
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 // * Pages Import
 import 'package:soil_moisture_app/pages/Credits.dart';
 import 'package:soil_moisture_app/pages/ThresholdPump.dart';
+import 'package:soil_moisture_app/states/theme_state.dart';
 
 class Options extends StatelessWidget {
   void showOptions(BuildContext context) {
@@ -21,6 +23,17 @@ class Options extends StatelessWidget {
       builder: (context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
+          ListTile(
+            leading: (Provider.of<ThemeState>(context).isDarkTheme)
+                ? Icon(FontAwesomeIcons.solidLightbulb)
+                : Icon(FontAwesomeIcons.lightbulb),
+            title: Text('Dark Theme'),
+            trailing: Switch(
+              value: Provider.of<ThemeState>(context).isDarkTheme,
+              onChanged: (_) => Provider.of<ThemeState>(context).toggleTheme(),
+            ),
+            onTap: () => Provider.of<ThemeState>(context).toggleTheme(),
+          ),
           ListTile(
             leading: Icon(FontAwesomeIcons.slidersH),
             title: Text('Pump Threshold Control'),
