@@ -20,15 +20,26 @@ final appSecondaryLightColor = hexToColor('#b4a647');
 final appSecondaryDarkColor = hexToColor('#524c00');
 
 final appProgressIndicatorBackgroundColor = Colors.grey[300];
-final appDarkErrorColor = hexToColor('#FF8282');
-final appLightErrorColor = Colors.red[100];
+final appErrorDarkColor = hexToColor('#FF8282');
+final appErrorLightColor = Colors.red[100];
 
 final moreThanNormalPlantColor = Colors.blue;
 final criticalPlantColor = Colors.red;
 final normalPlantColor = Colors.green;
 
 final subtleBlackTextColor = Colors.black54;
+final subtleWhiteTextColor = Colors.white54;
+
+final materialDarkGreyColor = hexToColor('#121212');
+final materialBlackColor = Colors.black;
+
+final darkAppPrimaryColor = appPrimaryDarkColor;
+final darkAppPrimaryLightColor = appPrimaryLightColor;
+final darkAppSecondaryDarkColor = appSecondaryDarkColor;
+final darkAppErrorDarkColor = Colors.red[300];
+final darkAppErrorLightColor = Colors.red[200];
 
 // * brand colors
 final twitterBlue = hexToColor('#38A1F3');
 final githubBlack = Colors.black;
+final githubWhite = Colors.white;

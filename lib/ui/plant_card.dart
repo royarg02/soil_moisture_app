@@ -11,6 +11,10 @@ import 'package:flutter/material.dart';
 
 // * External Packages Import
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:provider/provider.dart';
+
+// * States import
+import 'package:soil_moisture_app/states/theme_state.dart';
 
 // * ui import
 import 'package:soil_moisture_app/ui/colors.dart';
@@ -42,7 +46,9 @@ class PlantCard extends StatelessWidget {
                       ? Theme.of(context).errorColor
                       : Theme.of(context).primaryColor
                   : this.plant.isCritical()
-                      ? appLightErrorColor
+                      ? (Provider.of<ThemeState>(context).isDarkTheme)
+                          ? darkAppErrorLightColor
+                          : appErrorLightColor
                       : Theme.of(context).cardColor,
               elevation: (isSelected) ? 15.0 : 2.0,
             ),
@@ -61,7 +67,9 @@ class PlantCard extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               Image.asset(
-                './assets/images/plant.png',
+                (Provider.of<ThemeState>(context).isDarkTheme)
+                    ? './assets/images/plant_dark.png'
+                    : './assets/images/plant.png',
                 height: appWidth(context) * 0.1,
                 width: appWidth(context) * 0.1,
               ),

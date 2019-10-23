@@ -13,7 +13,10 @@ import 'package:flutter/material.dart';
 // * External packages import
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+
+// * State import
 import 'package:soil_moisture_app/states/selected_card_state.dart';
+import 'package:soil_moisture_app/states/theme_state.dart';
 
 // * ui import
 import 'package:soil_moisture_app/ui/analysis_graph.dart';
@@ -146,7 +149,12 @@ class _AnalysisState extends State<Analysis> {
                                               .textTheme
                                               .display2
                                               .copyWith(
-                                                color: appSecondaryDarkColor,
+                                                color: (Provider.of<ThemeState>(
+                                                            context)
+                                                        .isDarkTheme)
+                                                    ? Theme.of(context)
+                                                        .accentColor
+                                                    : appSecondaryDarkColor,
                                                 fontSize:
                                                     appWidth(context) * 0.09,
                                               ),

@@ -59,10 +59,13 @@ class _CreditsState extends State<Credits> {
                 text: devDetails[index]['Name'],
                 style: Theme.of(context).textTheme.subhead),
             TextSpan(
-                text: ' ${devDetails[index]['Github']}',
-                style: Theme.of(context).textTheme.body2.copyWith(
-                      color: subtleBlackTextColor,
-                    ))
+              text: ' ${devDetails[index]['Github']}',
+              style: Theme.of(context).textTheme.body2.copyWith(
+                    color: (Provider.of<ThemeState>(context).isDarkTheme)
+                        ? subtleWhiteTextColor
+                        : subtleBlackTextColor,
+                  ),
+            )
           ],
         ),
       ),
@@ -81,7 +84,9 @@ class _CreditsState extends State<Credits> {
                 _launchUrl('http://github.com/${devDetails[index]['Github']}'),
             icon: Icon(
               FontAwesomeIcons.github,
-              color: githubBlack,
+              color: (Provider.of<ThemeState>(context).isDarkTheme)
+                  ? githubWhite
+                  : githubBlack,
             ),
           ),
           IconButton(

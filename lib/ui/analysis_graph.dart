@@ -85,7 +85,7 @@ List<LineSeries<dynamic, DateTime>> getLineSeries(
       yValueMapper: (point, _) {
         return (graph == 'Moisture') ? point.value * 100 : point.value;
       },
-      pointColorMapper: (x, _) => appSecondaryColor,
+      pointColorMapper: (x, _) => Theme.of(context).accentColor,
       width: 2,
       markerSettings: MarkerSettings(
         isVisible: true,

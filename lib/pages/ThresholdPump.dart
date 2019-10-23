@@ -173,7 +173,6 @@ class _ThresholdSetButtonState extends State<ThresholdSetButton> {
     return Visibility(
       visible: (pumpList.length != 0),
       child: FloatingActionButton.extended(
-        backgroundColor: appSecondaryDarkColor,
         label: (_isLoading)
             ? CircularProgressIndicator(
                 backgroundColor: Theme.of(context).cardColor,

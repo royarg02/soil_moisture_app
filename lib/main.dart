@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // * For SystemChrome
 
 // * External Packages import
 import 'package:provider/provider.dart';
@@ -42,10 +41,6 @@ class Root extends StatelessWidget {
   final String title = 'Soif';
   @override
   Widget build(BuildContext context) {
-    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    //   statusBarColor: appPrimaryColor,
-    //   systemNavigationBarColor: appSecondaryLightColor,
-    // ));
     return MaterialApp(
       title: title,
       debugShowCheckedModeBanner: false,
@@ -98,11 +93,6 @@ class Home extends StatelessWidget {
                     text: 'Analysis',
                   )
                 ],
-                indicatorPadding: EdgeInsets.all(appWidth(context) * 0.01),
-                indicatorColor: Theme.of(context).cardColor,
-                indicatorSize: TabBarIndicatorSize.label,
-                labelColor: Theme.of(context).cardColor,
-                unselectedLabelColor: appSecondaryDarkColor,
                 unselectedLabelStyle: TextStyle(
                   fontSize: appWidth(context) * 0.025,
                   fontFamily: 'Ocrb',

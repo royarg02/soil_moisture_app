@@ -29,9 +29,10 @@ flutter:
   uses-material-design: true
 
   assets:
-   - assets/images/plant.png
    - assets/images/Soif_sk.png
    - assets/images/Soif_sk_dark.png
+   - assets/images/plant.png
+   - assets/images/plant_dark.png
 
   fonts:
     - family: Ocrb
