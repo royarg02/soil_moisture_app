@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 
 // * States import
 import 'package:soil_moisture_app/states/selected_card_state.dart';
+import 'package:soil_moisture_app/states/theme_state.dart';
 import 'package:soil_moisture_app/ui/colors.dart';
 
 // * utils import
@@ -62,6 +63,7 @@ class _OverviewState extends State<Overview> {
         onRefresh: _refresh,
         child: FutureBuilder(
           future: latData,
+          // ! shows error when refreshing with some data at no internet
           builder: (context, AsyncSnapshot snapshot) {
             // Debug print
             print(snapshot);
@@ -151,7 +153,9 @@ class MoistureRadialIndicator extends StatelessWidget {
       animation: true,
       percent: nowPlantList[_selCard].getLastValue,
       circularStrokeCap: CircularStrokeCap.round,
-      backgroundColor: appProgressIndicatorBackgroundColor,
+      backgroundColor: (Provider.of<ThemeState>(context).isDarkTheme)
+          ? darkAppProgressIndicatorBackgroundColor
+          : appProgressIndicatorBackgroundColor,
       progressColor: (nowPlantList[_selCard].isCritical())
           ? criticalPlantColor
           : (nowPlantList[_selCard].isMoreThanNormal()
@@ -197,11 +201,14 @@ class Skeleton extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: appWidth(context) * 0.03),
           child: CircularPercentIndicator(
             radius: appWidth(context) * 0.6,
-            backgroundColor: appProgressIndicatorBackgroundColor,
+            backgroundColor: (Provider.of<ThemeState>(context).isDarkTheme)
+                ? darkAppProgressIndicatorBackgroundColor
+                : appProgressIndicatorBackgroundColor,
             center: CircularProgressIndicator(),
             footer: SizedBox(
               height: appWidth(context) * 0.05,
             ),
+            lineWidth: appWidth(context) * 0.02,
           ),
         ),
         Container(
@@ -211,7 +218,9 @@ class Skeleton extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.all(appWidth(context) * 0.055),
               child: LinearProgressIndicator(
-                backgroundColor: appProgressIndicatorBackgroundColor,
+                backgroundColor: (Provider.of<ThemeState>(context).isDarkTheme)
+                    ? darkAppProgressIndicatorBackgroundColor
+                    : appProgressIndicatorBackgroundColor,
               ),
             ),
           ),

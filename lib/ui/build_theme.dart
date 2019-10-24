@@ -71,8 +71,12 @@ ThemeData buildLightTheme() {
     snackBarTheme: base.snackBarTheme.copyWith(
       backgroundColor: appSecondaryColor,
     ),
-    accentTextTheme: appTextTheme,
-    primaryTextTheme: appTextTheme,
+    accentTextTheme: base.accentTextTheme.apply(
+      fontFamily: 'Ocrb',
+    ),
+    primaryTextTheme: base.accentTextTheme.apply(
+      fontFamily: 'Ocrb',
+    ),
   );
 }
 // ThemeData buildLightTheme() {
@@ -166,7 +170,12 @@ ThemeData buildDarkTheme() {
     snackBarTheme: base.snackBarTheme.copyWith(
       backgroundColor: darkAppPrimaryLightColor,
     ),
-    accentTextTheme: appTextTheme,
-    primaryTextTheme: appTextTheme,
+    accentTextTheme: base.accentTextTheme.apply(
+      fontFamily: 'Ocrb',
+    ),
+    primaryTextTheme: base.accentTextTheme.apply(
+      fontFamily: 'Ocrb',
+    ),
+    toggleableActiveColor: darkAppPrimaryColor,
   );
 }

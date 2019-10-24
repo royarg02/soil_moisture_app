@@ -1,5 +1,5 @@
 /*
-* threshold_data
+* threshold_class
 * This class stores the threshold set for pump controlling the moisture of each plant
 */
 

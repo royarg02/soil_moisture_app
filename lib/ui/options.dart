@@ -10,9 +10,14 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
+// * UI import
+import 'package:soil_moisture_app/ui/colors.dart';
+
 // * Pages Import
 import 'package:soil_moisture_app/pages/Credits.dart';
 import 'package:soil_moisture_app/pages/ThresholdPump.dart';
+
+// * State Import
 import 'package:soil_moisture_app/states/theme_state.dart';
 
 class Options extends StatelessWidget {
@@ -64,7 +69,12 @@ class Options extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.more_vert),
+      icon: Icon(
+        Icons.more_vert,
+        color: (Provider.of<ThemeState>(context).isDarkTheme)
+            ? materialDarkGreyColor
+            : Theme.of(context).iconTheme.color,
+      ),
       onPressed: () => showOptions(context),
     );
   }

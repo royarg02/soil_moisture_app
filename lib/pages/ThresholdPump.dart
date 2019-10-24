@@ -12,6 +12,12 @@
 
 import 'package:flutter/material.dart';
 
+// * Externa Packages Import
+import 'package:provider/provider.dart';
+
+// * State Import
+import 'package:soil_moisture_app/states/theme_state.dart';
+
 // * ui import
 import 'package:soil_moisture_app/ui/threshold_slider.dart';
 import 'package:soil_moisture_app/ui/colors.dart';
@@ -216,7 +222,10 @@ class Skeleton extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.all(appWidth(context) * 0.045),
                   child: LinearProgressIndicator(
-                    backgroundColor: appProgressIndicatorBackgroundColor,
+                    backgroundColor:
+                        (Provider.of<ThemeState>(context).isDarkTheme)
+                            ? darkAppProgressIndicatorBackgroundColor
+                            : appProgressIndicatorBackgroundColor,
                   ),
                 ),
               );

@@ -84,7 +84,9 @@ class PlantCard extends StatelessWidget {
                 animateFromLastPercent: true,
                 animationDuration: 600,
                 animation: true,
-                backgroundColor: appProgressIndicatorBackgroundColor,
+                backgroundColor: (Provider.of<ThemeState>(context).isDarkTheme)
+                    ? darkAppProgressIndicatorBackgroundColor
+                    : appProgressIndicatorBackgroundColor,
               )
             ],
           ),

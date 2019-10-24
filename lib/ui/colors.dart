@@ -33,9 +33,12 @@ final subtleWhiteTextColor = Colors.white54;
 final materialDarkGreyColor = hexToColor('#121212');
 final materialBlackColor = Colors.black;
 
-final darkAppPrimaryColor = appPrimaryDarkColor;
+final darkAppPrimaryColor = appPrimaryColor;
 final darkAppPrimaryLightColor = appPrimaryLightColor;
 final darkAppSecondaryDarkColor = appSecondaryDarkColor;
+
+final darkAppProgressIndicatorBackgroundColor = materialDarkGreyColor;
+
 final darkAppErrorDarkColor = Colors.red[300];
 final darkAppErrorLightColor = Colors.red[200];
 
