@@ -41,7 +41,6 @@ class _OverviewState extends State<Overview> {
     latData = fetchLatestData();
     await latData.then((_) {
       Scaffold.of(context).showSnackBar(SuccessOnRefresh().build(context));
-      // * Async load all data
       if (isNow()) {
         totData = fetchTotalData();
       }
@@ -63,7 +62,6 @@ class _OverviewState extends State<Overview> {
         onRefresh: _refresh,
         child: FutureBuilder(
           future: latData,
-          // ! shows error when refreshing with some data at no internet
           builder: (context, AsyncSnapshot snapshot) {
             // Debug print
             print(snapshot);
@@ -93,7 +91,7 @@ class Page extends StatelessWidget {
       children: <Widget>[
         Padding(
           padding: EdgeInsets.symmetric(vertical: appWidth(context) * 0.03),
-          child: (isCurrentDataGot)
+          child: (nowPlantList.isNotEmpty)
               // * would show only if today's data is available
               ? MoistureRadialIndicator()
               : NoNowData(haveInternet: true),
@@ -133,7 +131,11 @@ class Page extends StatelessWidget {
         SizedBox(
           height: appWidth(context) * 0.02,
         ),
-        (isCurrentDataGot) ? PlantGridView() : SizedBox(),
+        (isCurrentDataGot)
+            ? PlantGridView(
+                plantlist: nowPlantList,
+              )
+            : SizedBox(),
         SizedBox(
           height: appWidth(context) * 0.03,
         )
@@ -251,6 +253,7 @@ class AvatarData extends StatelessWidget {
               child: Icon(
                 this._icon,
                 size: appWidth(context) * 0.05,
+                color: Theme.of(context).scaffoldBackgroundColor,
               ),
               radius: appWidth(context) * 0.035,
             ),

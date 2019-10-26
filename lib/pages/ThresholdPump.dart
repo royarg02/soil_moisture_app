@@ -158,13 +158,18 @@ class _ThresholdSetButtonState extends State<ThresholdSetButton> {
             ),
             actions: <Widget>[
               FlatButton(
-                color: appSecondaryDarkColor,
+                color: (Provider.of<ThemeState>(context).isDarkTheme)
+                    ? Theme.of(context).accentColor
+                    : appSecondaryDarkColor,
                 textTheme: ButtonTextTheme.primary,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(
                       Radius.circular(appWidth(context) * 0.1)),
                 ),
-                child: Text('OK'),
+                child: Text(
+                  'OK',
+                  style: Theme.of(context).accentTextTheme.button,
+                ),
                 onPressed: () => Navigator.of(context).pop(),
                 padding: EdgeInsets.all(appWidth(context) * 0.02),
               )

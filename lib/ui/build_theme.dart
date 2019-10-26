@@ -76,6 +76,8 @@ ThemeData buildLightTheme() {
     ),
     primaryTextTheme: base.accentTextTheme.apply(
       fontFamily: 'Ocrb',
+      bodyColor: appSecondaryDarkColor,
+      displayColor: appSecondaryDarkColor,
     ),
   );
 }
@@ -175,7 +177,12 @@ ThemeData buildDarkTheme() {
     ),
     primaryTextTheme: base.accentTextTheme.apply(
       fontFamily: 'Ocrb',
+      bodyColor: base.accentColor,
+      displayColor: base.accentColor,
     ),
     toggleableActiveColor: darkAppPrimaryColor,
+    iconTheme: base.iconTheme.copyWith(
+      color: base.accentColor,
+    ),
   );
 }

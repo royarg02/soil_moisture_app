@@ -13,7 +13,7 @@ import 'package:soil_moisture_app/states/selected_card_state.dart';
 import 'package:soil_moisture_app/ui/plant_card.dart';
 
 // * data import
-import 'package:soil_moisture_app/data/all_data.dart';
+import 'package:soil_moisture_app/data/plant_class.dart';
 
 // * utils import
 import 'package:soil_moisture_app/utils/sizes.dart';
@@ -22,6 +22,8 @@ import 'package:soil_moisture_app/utils/sizes.dart';
 import 'package:provider/provider.dart';
 
 class PlantGridView extends StatelessWidget {
+  final List<Plant> plantlist;
+  PlantGridView({@required this.plantlist});
   @override
   Widget build(BuildContext context) {
     SelectedCardState selectedCardObj = Provider.of<SelectedCardState>(context);
@@ -34,10 +36,10 @@ class PlantGridView extends StatelessWidget {
         crossAxisSpacing: appWidth(context) * 0.005,
         mainAxisSpacing: appWidth(context) * 0.005,
       ),
-      itemCount: nowPlantList.length,
+      itemCount: this.plantlist.length,
       itemBuilder: (context, position) {
         return PlantCard(
-          plant: nowPlantList[position],
+          plant: plantlist[position],
           isSelected: position == selectedCardObj.selCard,
           onTap: () => selectedCardObj.chooseCard(position),
         );

@@ -50,7 +50,8 @@ class PlantCard extends StatelessWidget {
                           ? darkAppErrorLightColor
                           : appErrorLightColor
                       : Theme.of(context).cardColor,
-              elevation: (isSelected) ? 15.0 : 2.0,
+              elevation:
+                  (isSelected) ? 20.0 : Theme.of(context).cardTheme.elevation,
             ),
       ),
       child: Card(
