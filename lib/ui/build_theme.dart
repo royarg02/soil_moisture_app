@@ -142,7 +142,7 @@ ThemeData buildDarkTheme() {
           darkAppPrimaryLightColor, // completely useless, use surface instead
       secondary: darkAppPrimaryColor,
       surface: materialDarkGreyColor,
-      error: darkAppErrorDarkColor,
+      error: darkAppErrorLightColor,
       onPrimary: Colors.black, // completely useless, use onSurface instead
       onBackground: Colors.white,
       onError: Colors.black,

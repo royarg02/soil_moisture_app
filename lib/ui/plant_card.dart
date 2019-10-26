@@ -47,7 +47,7 @@ class PlantCard extends StatelessWidget {
                       : Theme.of(context).primaryColor
                   : this.plant.isCritical()
                       ? (Provider.of<ThemeState>(context).isDarkTheme)
-                          ? darkAppErrorLightColor
+                          ? darkAppErrorDarkColor
                           : appErrorLightColor
                       : Theme.of(context).cardColor,
               elevation:
