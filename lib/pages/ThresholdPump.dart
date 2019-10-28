@@ -81,6 +81,9 @@ class _PageState extends State<Page> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        brightness: Provider.of<ThemeState>(context).isDarkTheme
+            ? Brightness.dark
+            : Brightness.light,
         leading: BackButton(),
         title: Text(
           'Pump threshold Control',

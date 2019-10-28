@@ -6,9 +6,6 @@
 
 import 'package:flutter/material.dart';
 
-// * ui import
-import 'package:soil_moisture_app/ui/colors.dart';
-
 // * utils import
 import 'package:soil_moisture_app/utils/sizes.dart';
 

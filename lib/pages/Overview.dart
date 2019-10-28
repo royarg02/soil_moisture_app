@@ -40,11 +40,13 @@ class _OverviewState extends State<Overview> {
   Future<void> _refresh() async {
     latData = fetchLatestData();
     await latData.then((_) {
+      Scaffold.of(context).removeCurrentSnackBar();
       Scaffold.of(context).showSnackBar(SuccessOnRefresh().build(context));
       if (isNow()) {
         totData = fetchTotalData();
       }
     }, onError: (_) {
+      Scaffold.of(context).removeCurrentSnackBar();
       Scaffold.of(context).showSnackBar(FailureOnRefresh().build(context));
     });
     setState(() {});

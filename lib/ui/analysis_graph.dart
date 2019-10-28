@@ -12,9 +12,6 @@ import 'dart:math'; // * For max() and min()
 // * External packages import
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-// * ui import
-import 'package:soil_moisture_app/ui/colors.dart';
-
 // * utils Import
 import 'package:soil_moisture_app/utils/sizes.dart';
 import 'package:soil_moisture_app/utils/date_func.dart';

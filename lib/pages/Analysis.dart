@@ -101,6 +101,7 @@ class _AnalysisState extends State<Analysis> {
         latData = fetchLatestData();
       }
     }, onError: (_) {
+      Scaffold.of(context).removeCurrentSnackBar();
       Scaffold.of(context).showSnackBar(FailureOnRefresh().build(context));
     });
     // Debug Print
@@ -273,7 +274,7 @@ class _AnalysisState extends State<Analysis> {
               ),
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 IconButton(
                   icon: Icon(Icons.chevron_left),

@@ -9,10 +9,8 @@ import 'package:soil_moisture_app/states/selected_card_state.dart';
 
 // * State import
 import 'package:soil_moisture_app/states/theme_state.dart';
-import 'package:soil_moisture_app/ui/build_theme.dart';
 
 // * ui import
-import 'package:soil_moisture_app/ui/colors.dart';
 import 'package:soil_moisture_app/ui/options.dart';
 
 // * utils import
