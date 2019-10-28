@@ -12,9 +12,6 @@ import 'dart:math'; // * For max() and min()
 // * External packages import
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-// * ui import
-import 'package:soil_moisture_app/ui/colors.dart';
-
 // * utils Import
 import 'package:soil_moisture_app/utils/sizes.dart';
 import 'package:soil_moisture_app/utils/date_func.dart';
@@ -85,11 +82,11 @@ List<LineSeries<dynamic, DateTime>> getLineSeries(
       yValueMapper: (point, _) {
         return (graph == 'Moisture') ? point.value * 100 : point.value;
       },
-      pointColorMapper: (x, _) => appSecondaryColor,
+      pointColorMapper: (x, _) => Theme.of(context).accentColor,
       width: 2,
       markerSettings: MarkerSettings(
         isVisible: true,
-        color: appPrimaryLightColor,
+        color: Theme.of(context).cardColor,
         height: appWidth(context) * 0.015,
         width: appWidth(context) * 0.015,
       ),

@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // * For SystemChrome
+
+// * External Packages import
+import 'package:provider/provider.dart';
+
+// * Prefs import
+import 'package:soil_moisture_app/prefs/user_prefs.dart';
+import 'package:soil_moisture_app/states/selected_card_state.dart';
+
+// * State import
+import 'package:soil_moisture_app/states/theme_state.dart';
 
 // * ui import
-import 'package:soil_moisture_app/ui/build_theme.dart';
-import 'package:soil_moisture_app/ui/colors.dart';
 import 'package:soil_moisture_app/ui/options.dart';
 
 // * utils import
@@ -14,19 +21,31 @@ import 'pages/Analysis.dart';
 import 'pages/Overview.dart';
 
 void main() async {
-  String title = 'Soif';
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: appPrimaryColor,
-    statusBarIconBrightness: Brightness.dark,
-    systemNavigationBarColor: appSecondaryLightColor,
-    systemNavigationBarIconBrightness: Brightness.light,
+  await loadPrefs();
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider<ThemeState>(
+        builder: (context) => ThemeState(),
+      ),
+      ChangeNotifierProvider<SelectedCardState>(
+        builder: (context) => SelectedCardState(),
+      ),
+    ],
+    child: Root(),
   ));
-  runApp(MaterialApp(
-    title: title,
-    debugShowCheckedModeBanner: false,
-    home: DefaultTabController(length: 2, child: Home()),
-    theme: buildLightTheme(),
-  ));
+}
+
+class Root extends StatelessWidget {
+  final String title = 'Soif';
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: title,
+      debugShowCheckedModeBanner: false,
+      home: DefaultTabController(length: 2, child: Home()),
+      theme: Provider.of<ThemeState>(context).getTheme,
+    );
+  }
 }
 
 class Home extends StatelessWidget {
@@ -41,7 +60,9 @@ class Home extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Image.asset(
-          './assets/images/Soif_sk.png',
+          (Provider.of<ThemeState>(context).isDarkTheme)
+              ? './assets/images/Soif_sk_dark.png'
+              : './assets/images/Soif_sk.png',
           height: appWidth(context) * 0.08,
         ),
         centerTitle: true,
@@ -51,7 +72,7 @@ class Home extends StatelessWidget {
         physics: NeverScrollableScrollPhysics(),
       ),
       bottomNavigationBar: Container(
-        color: Theme.of(context).canvasColor,
+        color: Theme.of(context).accentColor,
         child: Row(
           children: <Widget>[
             Flexible(
@@ -70,8 +91,6 @@ class Home extends StatelessWidget {
                     text: 'Analysis',
                   )
                 ],
-                indicatorPadding: EdgeInsets.all(appWidth(context) * 0.01),
-                indicatorColor: appPrimaryLightColor,
                 unselectedLabelStyle: TextStyle(
                   fontSize: appWidth(context) * 0.025,
                   fontFamily: 'Ocrb',

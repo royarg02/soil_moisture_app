@@ -12,11 +12,11 @@ import 'dart:async';
 import 'package:soil_moisture_app/utils/date_func.dart';
 
 // * Data import
-import 'package:soil_moisture_app/data/humidity_data.dart';
-import 'package:soil_moisture_app/data/light_data.dart';
+import 'package:soil_moisture_app/data/humidity_class.dart';
+import 'package:soil_moisture_app/data/light_class.dart';
 import 'package:soil_moisture_app/data/plant_class.dart';
-import 'package:soil_moisture_app/data/temp_data.dart';
-import 'package:soil_moisture_app/data/threshold_data.dart';
+import 'package:soil_moisture_app/data/temp_class.dart';
+import 'package:soil_moisture_app/data/threshold_class.dart';
 import 'package:soil_moisture_app/data/all_data.dart';
 
 // * determines if any data is got from the API

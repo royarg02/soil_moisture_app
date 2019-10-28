@@ -12,11 +12,16 @@ import 'package:flutter/material.dart';
 
 // * External packages import
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+
+// * State import
+import 'package:soil_moisture_app/states/selected_card_state.dart';
+import 'package:soil_moisture_app/states/theme_state.dart';
 
 // * ui import
 import 'package:soil_moisture_app/ui/analysis_graph.dart';
 import 'package:soil_moisture_app/ui/colors.dart';
-import 'package:soil_moisture_app/ui/plant_card.dart';
+import 'package:soil_moisture_app/ui/plant_grid_view.dart';
 import 'package:soil_moisture_app/ui/refresh_snackbar.dart';
 
 // * utils import
@@ -34,12 +39,10 @@ class Analysis extends StatefulWidget {
 }
 
 class _AnalysisState extends State<Analysis> {
-  int _selCard;
   String _measure;
   dynamic _chartObj;
 
   void initState() {
-    _selCard = 0;
     _measure = 'Moisture';
     super.initState();
   }
@@ -56,10 +59,10 @@ class _AnalysisState extends State<Analysis> {
           break;
         case 'Temperature':
           _chartObj = dayTemp;
-
           break;
         case 'Moisture':
-          _chartObj = plantList[_selCard];
+          _chartObj =
+              plantList[Provider.of<SelectedCardState>(context).selCard];
           break;
       }
       // Debug Print
@@ -98,21 +101,13 @@ class _AnalysisState extends State<Analysis> {
         latData = fetchLatestData();
       }
     }, onError: (_) {
+      Scaffold.of(context).removeCurrentSnackBar();
       Scaffold.of(context).showSnackBar(FailureOnRefresh().build(context));
     });
     // Debug Print
     if (isDataGot) {
       print('analysis refresh got: ${plantList[0].getLastValue}');
     }
-  }
-
-  void _selectPlant(int value) {
-    setState(() {
-      _selCard = value;
-      _initChart(_measure);
-    });
-    // Debug Print
-    print('Selected -> $_selCard');
   }
 
   @override
@@ -155,7 +150,12 @@ class _AnalysisState extends State<Analysis> {
                                               .textTheme
                                               .display2
                                               .copyWith(
-                                                color: appSecondaryDarkColor,
+                                                color: (Provider.of<ThemeState>(
+                                                            context)
+                                                        .isDarkTheme)
+                                                    ? Theme.of(context)
+                                                        .accentColor
+                                                    : appSecondaryDarkColor,
                                                 fontSize:
                                                     appWidth(context) * 0.09,
                                               ),
@@ -199,7 +199,7 @@ class _AnalysisState extends State<Analysis> {
                     height: appWidth(context) * 0.1,
                     child: Theme(
                       data: Theme.of(context).copyWith(
-                        canvasColor: appPrimaryColor,
+                        canvasColor: Theme.of(context).primaryColor,
                       ),
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
@@ -274,7 +274,7 @@ class _AnalysisState extends State<Analysis> {
               ),
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 IconButton(
                   icon: Icon(Icons.chevron_left),
@@ -322,25 +322,8 @@ class _AnalysisState extends State<Analysis> {
               builder: (context, AsyncSnapshot snapshot) {
                 if (snapshot.connectionState == ConnectionState.done &&
                     isDataGot) {
-                  return GridView.builder(
-                    shrinkWrap: true,
-                    physics: ScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount:
-                          (appWidth(context) < 600 && isPortrait(context))
-                              ? 3
-                              : 5,
-                      crossAxisSpacing: appWidth(context) * 0.005,
-                      mainAxisSpacing: appWidth(context) * 0.005,
-                    ),
-                    itemCount: plantList.length,
-                    itemBuilder: (context, position) {
-                      return PlantCard(
-                        plant: plantList[position],
-                        isSelected: (position == _selCard),
-                        onTap: () => _selectPlant(position),
-                      );
-                    },
+                  return PlantGridView(
+                    plantlist: plantList,
                   );
                 } else {
                   return SizedBox();

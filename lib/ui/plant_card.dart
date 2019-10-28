@@ -11,6 +11,10 @@ import 'package:flutter/material.dart';
 
 // * External Packages Import
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:provider/provider.dart';
+
+// * States import
+import 'package:soil_moisture_app/states/theme_state.dart';
 
 // * ui import
 import 'package:soil_moisture_app/ui/colors.dart';
@@ -39,12 +43,15 @@ class PlantCard extends StatelessWidget {
         cardTheme: Theme.of(context).cardTheme.copyWith(
               color: (isSelected)
                   ? this.plant.isCritical()
-                      ? Color(0xffff8282)
-                      : appPrimaryColor
+                      ? Theme.of(context).errorColor
+                      : Theme.of(context).primaryColor
                   : this.plant.isCritical()
-                      ? Colors.red[100]
-                      : appPrimaryLightColor,
-              elevation: (isSelected) ? 15.0 : 2.0,
+                      ? (Provider.of<ThemeState>(context).isDarkTheme)
+                          ? darkAppErrorDarkColor
+                          : appErrorLightColor
+                      : Theme.of(context).cardColor,
+              elevation:
+                  (isSelected) ? 20.0 : Theme.of(context).cardTheme.elevation,
             ),
       ),
       child: Card(
@@ -61,7 +68,9 @@ class PlantCard extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               Image.asset(
-                './assets/images/plant.png',
+                (Provider.of<ThemeState>(context).isDarkTheme)
+                    ? './assets/images/plant_dark.png'
+                    : './assets/images/plant.png',
                 height: appWidth(context) * 0.1,
                 width: appWidth(context) * 0.1,
               ),
@@ -69,12 +78,16 @@ class PlantCard extends StatelessWidget {
                 addAutomaticKeepAlive: false,
                 percent: this.plant.getLastValue,
                 progressColor: plant.isCritical()
-                    ? Colors.red
-                    : plant.isMoreThanNormal() ? Colors.blue : Colors.green,
+                    ? criticalPlantColor
+                    : plant.isMoreThanNormal()
+                        ? moreThanNormalPlantColor
+                        : normalPlantColor,
                 animateFromLastPercent: true,
                 animationDuration: 600,
                 animation: true,
-                backgroundColor: Colors.blueGrey[200],
+                backgroundColor: (Provider.of<ThemeState>(context).isDarkTheme)
+                    ? darkAppProgressIndicatorBackgroundColor
+                    : appProgressIndicatorBackgroundColor,
               )
             ],
           ),

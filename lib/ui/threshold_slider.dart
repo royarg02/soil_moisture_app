@@ -6,9 +6,6 @@
 
 import 'package:flutter/material.dart';
 
-// * ui import
-import 'package:soil_moisture_app/ui/colors.dart';
-
 // * utils import
 import 'package:soil_moisture_app/utils/sizes.dart';
 
@@ -50,8 +47,8 @@ class _ThresholdSliderState extends State<ThresholdSlider> {
               min: 0,
               max: 1,
               divisions: 20,
-              activeColor: appSecondaryLightColor,
-              inactiveColor: appPrimaryColor,
+              activeColor: Theme.of(context).accentColor,
+              inactiveColor: Theme.of(context).primaryColor,
             ),
           ),
           Expanded(
