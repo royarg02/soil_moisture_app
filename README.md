@@ -1,10 +1,12 @@
 # SOIF
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d94e74bd82544d2389ceda65e810ab96)](https://www.codacy.com/manual/RoyARG02/soil_moisture_app?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=RoyARG02/soil_moisture_app&amp;utm_campaign=Badge_Grade)
+
 This is a Flutter project, which will serve as the dashboard for the **Soil Moisture** content of a particular area.
 
 Color Theme: [Material.io](https://material.io/resources/color/#!/?view.left=0&view.right=0&primary.color=E6EE9C&secondary.color=827717)
 
-Font: [**OCRB**](https://github.com/opensourcedesign/fonts/tree/master/OCR)
+Font: [OCRB](https://github.com/opensourcedesign/fonts/tree/master/OCR)
 
 ### Screenshots
 
