@@ -14,9 +14,9 @@ Font: [OCRB](https://github.com/opensourcedesign/fonts/tree/master/OCR)
   <img src="assets/readme/Soif.png" height=100>
   <br><br>
   <img src="assets/readme/overview.png" height=500>
-  <img src="assets/readme/analysis.png" height=500>
+  <img src="assets/readme/analysis_dark.png" height=500>
   <br><br>
-  <img src="assets/readme/datepicker.png" height=500>
+  <img src="assets/readme/datepicker_dark.png" height=500>
   <img src="assets/readme/threshold.png" height=500>
 </p>
 
