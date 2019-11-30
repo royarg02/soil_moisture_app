@@ -58,15 +58,15 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     print(appWidth(context));
     return Scaffold(
-      appBar: AppBar(
-        title: Image.asset(
-          (Provider.of<ThemeState>(context).isDarkTheme)
-              ? './assets/images/Soif_sk_dark.png'
-              : './assets/images/Soif_sk.png',
-          height: appWidth(context) * 0.08,
-        ),
-        centerTitle: true,
-      ),
+      // appBar: AppBar(
+      //   title: Image.asset(
+      //     (Provider.of<ThemeState>(context).isDarkTheme)
+      //         ? './assets/images/Soif_sk_dark.png'
+      //         : './assets/images/Soif_sk.png',
+      //     height: appWidth(context) * 0.08,
+      //   ),
+      //   centerTitle: true,
+      // ),
       body: TabBarView(
         children: _children,
         physics: NeverScrollableScrollPhysics(),

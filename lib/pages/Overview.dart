@@ -26,6 +26,7 @@ import 'package:soil_moisture_app/utils/sizes.dart';
 
 // * Data import
 import 'package:soil_moisture_app/data/all_data.dart';
+import 'package:soil_moisture_app/data/plant_class.dart';
 
 // * ui import
 import 'package:soil_moisture_app/ui/plant_grid_view.dart';
@@ -59,7 +60,6 @@ class _OverviewState extends State<Overview> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      minimum: EdgeInsets.symmetric(horizontal: appWidth(context) * 0.03),
       child: RefreshIndicator(
         onRefresh: _refresh,
         child: FutureBuilder(
@@ -88,59 +88,105 @@ class _OverviewState extends State<Overview> {
 class Page extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return CustomScrollView(
       physics: AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+      slivers: <Widget>[
+        SliverAppBar(
+          primary: true,
+          forceElevated: false,
+          pinned: true,
+          floating: true,
+          snap: true,
+          title: Image.asset(
+            (Provider.of<ThemeState>(context).isDarkTheme)
+                ? './assets/images/Soif_sk_dark.png'
+                : './assets/images/Soif_sk.png',
+            height: appWidth(context) * 0.08,
+          ),
+          expandedHeight: appHeight(context) * 0.45,
+          flexibleSpace: FlexibleSpaceBar(
+            background: Container(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              child: (nowPlantList.isNotEmpty)
+                  // * would show only if today's data is available
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        MoistureRadialIndicator(),
+                        OtherInfoRow(),
+                      ],
+                    )
+                  : SizedBox.shrink(),
+            ),
+          ),
+        ),
+        // Padding(
+        //   padding: EdgeInsets.symmetric(vertical: appWidth(context) * 0.03),
+        //   child: (nowPlantList.isNotEmpty)
+        //       // * would show only if today's data is available
+        //       ? MoistureRadialIndicator()
+        //       : NoNowData(haveInternet: true),
+        // ),
+
+        // Container(
+        //   height: appWidth(context) * 0.12,
+        //   child: (isCurrentDataGot)
+        //       ? Card(
+        //           margin: EdgeInsets.symmetric(
+        //               horizontal: appWidth(context) * 0.07),
+        //           child: Row(
+        //             mainAxisAlignment: MainAxisAlignment.spaceAround,
+        //             children: <Widget>[
+        //               AvatarData(
+        //                   'Current Humidity',
+        //                   nowHumid.getLastValue,
+        //                   nowHumid.getUnit,
+        //                   FontAwesomeIcons.tint,
+        //                   Colors.blue[300]),
+        //               AvatarData(
+        //                   'Current Illuminance',
+        //                   nowLight.getLastValue,
+        //                   nowLight.getUnit,
+        //                   FontAwesomeIcons.lightbulb,
+        //                   Colors.amber[400]),
+        //               AvatarData(
+        //                   'Current Temperature',
+        //                   nowTemp.getLastValue,
+        //                   nowTemp.getUnit,
+        //                   FontAwesomeIcons.thermometerHalf,
+        //                   Colors.red[400])
+        //             ],
+        //           ),
+        //         )
+        //       : SizedBox(),
+        // ),
+        // SizedBox(
+        //   height: appWidth(context) * 0.02,
+        // ),
+        if (isCurrentDataGot)
+          PlantGridView(
+            plantlist: nowPlantList,
+          ),
+        // SizedBox(
+        //   height: appWidth(context) * 0.03,
+        // )
+      ],
+    );
+  }
+}
+
+class OtherInfoRow extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: appWidth(context) * 0.03),
-          child: (nowPlantList.isNotEmpty)
-              // * would show only if today's data is available
-              ? MoistureRadialIndicator()
-              : NoNowData(haveInternet: true),
-        ),
-        Container(
-          height: appWidth(context) * 0.12,
-          child: (isCurrentDataGot)
-              ? Card(
-                  margin: EdgeInsets.symmetric(
-                      horizontal: appWidth(context) * 0.07),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      AvatarData(
-                          'Current Humidity',
-                          nowHumid.getLastValue,
-                          nowHumid.getUnit,
-                          FontAwesomeIcons.tint,
-                          Colors.blue[300]),
-                      AvatarData(
-                          'Current Illuminance',
-                          nowLight.getLastValue,
-                          nowLight.getUnit,
-                          FontAwesomeIcons.lightbulb,
-                          Colors.amber[400]),
-                      AvatarData(
-                          'Current Temperature',
-                          nowTemp.getLastValue,
-                          nowTemp.getUnit,
-                          FontAwesomeIcons.thermometerHalf,
-                          Colors.red[400])
-                    ],
-                  ),
-                )
-              : SizedBox(),
-        ),
-        SizedBox(
-          height: appWidth(context) * 0.02,
-        ),
-        (isCurrentDataGot)
-            ? PlantGridView(
-                plantlist: nowPlantList,
-              )
-            : SizedBox(),
-        SizedBox(
-          height: appWidth(context) * 0.03,
-        )
+        AvatarData('Current Humidity', nowHumid.getLastValue, nowHumid.getUnit,
+            FontAwesomeIcons.tint, Colors.blue[300]),
+        AvatarData('Current Illuminance', nowLight.getLastValue,
+            nowLight.getUnit, FontAwesomeIcons.lightbulb, Colors.amber[400]),
+        AvatarData('Current Temperature', nowTemp.getLastValue, nowTemp.getUnit,
+            FontAwesomeIcons.thermometerHalf, Colors.red[400])
       ],
     );
   }
@@ -150,19 +196,20 @@ class MoistureRadialIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int _selCard = Provider.of<SelectedCardState>(context).selCard;
+    Plant _selPlant = nowPlantList[_selCard];
     return CircularPercentIndicator(
       addAutomaticKeepAlive: false,
       animationDuration: 600,
-      radius: appWidth(context) * 0.6,
+      radius: appWidth(context) * 0.55,
       animation: true,
-      percent: nowPlantList[_selCard].getLastValue,
+      percent: _selPlant.getLastValue,
       circularStrokeCap: CircularStrokeCap.round,
       backgroundColor: (Provider.of<ThemeState>(context).isDarkTheme)
           ? darkAppProgressIndicatorBackgroundColor
           : appProgressIndicatorBackgroundColor,
-      progressColor: (nowPlantList[_selCard].isCritical())
+      progressColor: (_selPlant.isCritical())
           ? criticalPlantColor
-          : (nowPlantList[_selCard].isMoreThanNormal()
+          : (_selPlant.isMoreThanNormal()
               ? moreThanNormalPlantColor
               : normalPlantColor),
       lineWidth: appWidth(context) * 0.02,
@@ -177,14 +224,14 @@ class MoistureRadialIndicator extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            '${nowPlantList[_selCard].getLabel}',
+            '${_selPlant.getLabel}',
             style: Theme.of(context).textTheme.body2.copyWith(
                   fontSize: appWidth(context) * 0.03,
                 ),
             textAlign: TextAlign.center,
           ),
           Text(
-            '${(nowPlantList[_selCard].getLastValue * 100).toStringAsFixed(0)}${nowPlantList[_selCard].getUnit}',
+            '${(_selPlant.getLastValue * 100).toStringAsFixed(0)}${(_selPlant.getLastValue > 0.99) ? '' : _selPlant.getUnit}',
             style: Theme.of(context).textTheme.display4.copyWith(
                   fontSize: appWidth(context) * 0.2,
                 ),

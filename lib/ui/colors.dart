@@ -11,6 +11,12 @@ Color hexToColor(String code) {
   return Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
 }
 
+// * App colors to be used in version 2
+final appLightBackgroundColor = hexToColor('#E9ECE3');
+final darkAppAccentColor = hexToColor('#8Ab982');
+final appLightColor1 = hexToColor('#85B095');
+final darkAppLightColor2 = hexToColor('#5b897c');
+
 final appPrimaryColor = hexToColor('#e6ee9c');
 final appPrimaryLightColor = hexToColor('#ffffce');
 final appPrimaryDarkColor = hexToColor('#b3bc6d');

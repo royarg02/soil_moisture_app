@@ -27,23 +27,49 @@ class PlantGridView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SelectedCardState selectedCardObj = Provider.of<SelectedCardState>(context);
-    return GridView.builder(
-      physics: ScrollPhysics(),
-      shrinkWrap: true,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount:
-            (appWidth(context) < 600 && isPortrait(context)) ? 3 : 5,
-        crossAxisSpacing: appWidth(context) * 0.005,
-        mainAxisSpacing: appWidth(context) * 0.005,
+    // return GridView.builder(
+    //   physics: ScrollPhysics(),
+    //   shrinkWrap: true,
+    //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+    //     crossAxisCount:
+    //         (appWidth(context) < 600 && isPortrait(context)) ? 3 : 5,
+    //     crossAxisSpacing: appWidth(context) * 0.005,
+    //     mainAxisSpacing: appWidth(context) * 0.005,
+    //   ),
+    //   itemCount: this.plantlist.length,
+    //   itemBuilder: (context, position) {
+    //     return PlantCard(
+    //       plant: plantlist[position],
+    //       isSelected: position == selectedCardObj.selCard,
+    //       onTap: () => selectedCardObj.chooseCard(position),
+    //     );
+    //   },
+    // );
+    return SliverPadding(
+      padding: EdgeInsets.fromLTRB(
+        appWidth(context) * 0.03,
+        0.0,
+        appWidth(context) * 0.03,
+        appWidth(context) * 0.03,
       ),
-      itemCount: this.plantlist.length,
-      itemBuilder: (context, position) {
-        return PlantCard(
-          plant: plantlist[position],
-          isSelected: position == selectedCardObj.selCard,
-          onTap: () => selectedCardObj.chooseCard(position),
-        );
-      },
+      sliver: SliverGrid(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount:
+              (appWidth(context) < 600 && isPortrait(context)) ? 3 : 5,
+          crossAxisSpacing: appWidth(context) * 0.005,
+          mainAxisSpacing: appWidth(context) * 0.005,
+        ),
+        delegate: SliverChildBuilderDelegate(
+          (context, position) {
+            return PlantCard(
+              plant: plantlist[position],
+              isSelected: position == selectedCardObj.selCard,
+              onTap: () => selectedCardObj.chooseCard(position),
+            );
+          },
+          childCount: this.plantlist.length,
+        ),
+      ),
     );
   }
 }

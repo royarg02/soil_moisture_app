@@ -322,9 +322,10 @@ class _AnalysisState extends State<Analysis> {
               builder: (context, AsyncSnapshot snapshot) {
                 if (snapshot.connectionState == ConnectionState.done &&
                     isDataGot) {
-                  return PlantGridView(
-                    plantlist: plantList,
-                  );
+                  // return PlantGridView(
+                  //   plantlist: plantList,
+                  // );
+                  return Text('Data Got');
                 } else {
                   return SizedBox();
                 }
