@@ -127,18 +127,18 @@ void addThresholdData(Map<String, dynamic> data) {
 // * fetch total data from API
 Future<void> fetchTotalData() async {
   print(fetchDateddmmyyyy);
-  await fetchJsonData().then((onValue) => addData(onValue));
+  return fetchJsonData().then((onValue) => addData(onValue));
 }
 
 // * fetch current data from API
 Future<void> fetchLatestData() async {
   print('Fetching Now');
-  await fetchJsonData(latest: true).then((onValue) => addLatestData(onValue));
+  return fetchJsonData(latest: true).then((onValue) => addLatestData(onValue));
 }
 
 // * get Threshold values from API
 Future<void> fetchThresholdData() async {
   print('Fetching Threshold Values');
-  await fetchJsonData(altUrl: '$baseUrl/getpump')
+  return fetchJsonData(altUrl: '$baseUrl/getpump')
       .then((onValue) => addThresholdData(onValue));
 }

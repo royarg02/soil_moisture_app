@@ -12,10 +12,11 @@ dependencies:
   percent_indicator: ^2.1.1+1
   syncfusion_flutter_charts: ^1.0.0-beta.4
   font_awesome_flutter: ^8.5.0
-  url_launcher: ^5.2.1
-  flutter_image: ^2.0.1
-  provider: ^3.1.0+1
+  url_launcher: ^5.4.1
+  flutter_image: ^3.0.0
+  provider: ^3.2.0
   shared_preferences: ^0.5.3+5
+  google_fonts: ^0.1.1
 
   cupertino_icons: ^0.1.2
   http:

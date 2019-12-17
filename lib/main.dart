@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 // * External Packages import
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 // * Prefs import
@@ -9,8 +10,10 @@ import 'package:soil_moisture_app/states/selected_card_state.dart';
 
 // * State import
 import 'package:soil_moisture_app/states/theme_state.dart';
+import 'package:soil_moisture_app/ui/custom_tab_indicator.dart';
 
 // * ui import
+import 'package:soil_moisture_app/ui/custom_tab_label.dart';
 import 'package:soil_moisture_app/ui/options.dart';
 
 // * utils import
@@ -21,18 +24,21 @@ import 'pages/Analysis.dart';
 import 'pages/Overview.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); //for awaiting
   await loadPrefs();
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider<ThemeState>(
-        builder: (context) => ThemeState(),
-      ),
-      ChangeNotifierProvider<SelectedCardState>(
-        builder: (context) => SelectedCardState(),
-      ),
-    ],
-    child: Root(),
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeState>(
+          create: (context) => ThemeState(),
+        ),
+        ChangeNotifierProvider<SelectedCardState>(
+          create: (context) => SelectedCardState(),
+        ),
+      ],
+      child: Root(),
+    ),
+  );
 }
 
 class Root extends StatelessWidget {
@@ -58,37 +64,28 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     print(appWidth(context));
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Image.asset(
-      //     (Provider.of<ThemeState>(context).isDarkTheme)
-      //         ? './assets/images/Soif_sk_dark.png'
-      //         : './assets/images/Soif_sk.png',
-      //     height: appWidth(context) * 0.08,
-      //   ),
-      //   centerTitle: true,
-      // ),
       body: TabBarView(
         children: _children,
         physics: NeverScrollableScrollPhysics(),
       ),
-      bottomNavigationBar: Container(
+      bottomNavigationBar: BottomAppBar(
         color: Theme.of(context).accentColor,
         child: Row(
           children: <Widget>[
             Flexible(
               child: TabBar(
                 tabs: <Widget>[
-                  Tab(
+                  AppTab(
                     icon: Icon(
                       Icons.remove_red_eye,
                     ),
-                    text: 'Overview',
+                    text: 'OVERVIEW',
                   ),
-                  Tab(
+                  AppTab(
                     icon: Icon(
                       Icons.timeline,
                     ),
-                    text: 'Analysis',
+                    text: 'ANALYSIS',
                   )
                 ],
                 unselectedLabelStyle: TextStyle(
@@ -98,6 +95,11 @@ class Home extends StatelessWidget {
                 labelStyle: TextStyle(
                   fontSize: appWidth(context) * 0.035,
                   fontFamily: 'Ocrb',
+                ),
+                indicator: RoundedRectTabIndicator(
+                  radius: appWidth(context) * 0.1,
+                  width: 2.0,
+                  color: Theme.of(context).cardColor,
                 ),
               ),
             ),
