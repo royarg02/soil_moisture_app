@@ -61,14 +61,7 @@ ThemeData buildLightTheme() {
       labelColor: base.cardColor,
       unselectedLabelColor: appSecondaryDarkColor,
       indicatorSize: TabBarIndicatorSize.label,
-      indicator: UnderlineTabIndicator(
-        borderSide: BorderSide(
-          width: 3.0,
-          color: base.cardColor,
         ),
-        insets: EdgeInsets.only(bottom: 1.0),
-      ),
-    ),
     cardTheme: base.cardTheme.copyWith(
       elevation: 3.0,
     ),
@@ -114,14 +107,7 @@ ThemeData buildDarkTheme() {
       labelColor: base.cardColor,
       unselectedLabelColor: darkAppSecondaryDarkColor,
       indicatorSize: TabBarIndicatorSize.label,
-      indicator: UnderlineTabIndicator(
-        borderSide: BorderSide(
-          width: 3.0,
-          color: base.cardColor,
         ),
-        insets: EdgeInsets.only(bottom: 1.0),
-      ),
-    ),
     cardTheme: base.cardTheme.copyWith(
       elevation: 3.0,
     ),
@@ -145,11 +131,8 @@ ThemeData buildDarkTheme() {
 
 SystemUiOverlayStyle buildLightSystemUi() => SystemUiOverlayStyle.dark.copyWith(
       statusBarColor: Colors.transparent,
-      systemNavigationBarColor: appSecondaryLightColor,
     );
 
 SystemUiOverlayStyle buildDarkSystemUi() => SystemUiOverlayStyle.light.copyWith(
       statusBarColor: Colors.transparent,
-      systemNavigationBarIconBrightness: Brightness.dark,
-      systemNavigationBarColor: darkAppPrimaryColor,
     );

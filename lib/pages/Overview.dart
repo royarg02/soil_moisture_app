@@ -29,6 +29,7 @@ import 'package:soil_moisture_app/data/all_data.dart';
 import 'package:soil_moisture_app/data/plant_class.dart';
 
 // * ui import
+import 'package:soil_moisture_app/ui/loading_plant_grid_view.dart';
 import 'package:soil_moisture_app/ui/plant_grid_view.dart';
 import 'package:soil_moisture_app/ui/refresh_snackbar.dart';
 
@@ -110,7 +111,7 @@ class Page extends StatelessWidget {
               child: (nowPlantList.isNotEmpty)
                   // * would show only if today's data is available
                   ? Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         MoistureRadialIndicator(),
                         OtherInfoRow(),
@@ -261,34 +262,80 @@ class MoistureRadialIndicator extends StatelessWidget {
 class Skeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: EdgeInsets.symmetric(vertical: appWidth(context) * 0.03),
+    return CustomScrollView(
       physics: AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-      children: [
-        Column(
-          children: <Widget>[
-            Center(
-              child: SizedBox(
-                height: appWidth(context) * 0.54,
-                width: appWidth(context) * 0.54,
-                child: CircularProgressIndicator(
-                  strokeWidth: 6.0,
-                ),
+      slivers: <Widget>[
+        SliverAppBar(
+          primary: true,
+          forceElevated: false,
+          pinned: true,
+          floating: true,
+          snap: true,
+          title: Image.asset(
+            (Provider.of<ThemeState>(context).isDarkTheme)
+                ? './assets/images/Soif_sk_dark.png'
+                : './assets/images/Soif_sk.png',
+            height: appWidth(context) * 0.08,
+          ),
+          expandedHeight: appHeight(context) * 0.45,
+          flexibleSpace: FlexibleSpaceBar(
+            background: Container(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 4.0),
+                    child: SizedBox(
+                      height: appWidth(context) * 0.55,
+                      width: appWidth(context) * 0.55,
+                      child: CircularProgressIndicator(
+                        backgroundColor:
+                            Provider.of<ThemeState>(context).isDarkTheme
+                                ? darkAppProgressIndicatorBackgroundColor
+                                : appProgressIndicatorBackgroundColor,
+                        strokeWidth: 6.0,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    'Getting Data...',
+                    style: Theme.of(context).textTheme.caption.copyWith(
+                          fontSize: appWidth(context) * 0.03,
+                        ),
+                    textAlign: TextAlign.center,
+                  )
+                ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 6.0),
-              child: Text(
-                'Getting Data...',
-                style: Theme.of(context).textTheme.caption.copyWith(
-                      fontSize: appWidth(context) * 0.03,
-                    ),
-                textAlign: TextAlign.center,
-              ),
-            )
-          ],
+          ),
         ),
+        LoadingPlantGridView()
       ],
+      // children: [
+      //   Column(
+      //     children: <Widget>[
+      //       Center(
+      //         child: SizedBox(
+      //           height: appWidth(context) * 0.54,
+      //           width: appWidth(context) * 0.54,
+      //           child: CircularProgressIndicator(
+      //             strokeWidth: 6.0,
+      //           ),
+      //         ),
+      //       ),
+      //       Padding(
+      //         padding: const EdgeInsets.only(top: 6.0),
+      //         child: Text(
+      //           'Getting Data...',
+      //           style: Theme.of(context).textTheme.caption.copyWith(
+      //                 fontSize: appWidth(context) * 0.03,
+      //               ),
+      //           textAlign: TextAlign.center,
+      //         ),
+      //       )
+      //     ],
+      //   ),
+      // ],
     );
     // return ListView(
     //   physics: AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 // * External Packages import
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 // * Prefs import

@@ -34,7 +34,7 @@ final List<Map<String, dynamic>> devDetails = [
   {
     'Name': 'ANURAG ROY',
     'Github': 'RoyARG02',
-    'Bio': 'Programming language nomad | Flutter noob',
+    'Bio': 'Programming language nomad, and a Flutter developer.',
     'Twitter': '_royarg'
   },
   {

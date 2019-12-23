@@ -21,7 +21,6 @@ import 'package:soil_moisture_app/states/theme_state.dart';
 // * ui import
 import 'package:soil_moisture_app/ui/analysis_graph.dart';
 import 'package:soil_moisture_app/ui/colors.dart';
-import 'package:soil_moisture_app/ui/plant_grid_view.dart';
 import 'package:soil_moisture_app/ui/refresh_snackbar.dart';
 
 // * utils import
