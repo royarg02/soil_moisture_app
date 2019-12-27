@@ -11,14 +11,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 // * UI import
-import 'package:soil_moisture_app/ui/colors.dart';
+import 'package:soif/ui/colors.dart';
 
 // * Pages Import
-import 'package:soil_moisture_app/pages/Credits.dart';
-import 'package:soil_moisture_app/pages/ThresholdPump.dart';
+import 'package:soif/pages/Credits.dart';
+import 'package:soif/pages/ThresholdPump.dart';
 
 // * State Import
-import 'package:soil_moisture_app/states/theme_state.dart';
+import 'package:soif/states/theme_state.dart';
 
 class Options extends StatelessWidget {
   void showOptions(BuildContext context) {

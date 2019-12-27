@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 // * ui import
-import 'package:soil_moisture_app/ui/colors.dart';
+import 'package:soif/ui/colors.dart';
 
 // * Text theme to be used throughout the app
 TextTheme appTextTheme = TextTheme(
@@ -61,7 +61,7 @@ ThemeData buildLightTheme() {
       labelColor: base.cardColor,
       unselectedLabelColor: appSecondaryDarkColor,
       indicatorSize: TabBarIndicatorSize.label,
-        ),
+    ),
     cardTheme: base.cardTheme.copyWith(
       elevation: 3.0,
     ),
@@ -75,6 +75,12 @@ ThemeData buildLightTheme() {
       fontFamily: 'Ocrb',
       bodyColor: appSecondaryDarkColor,
       displayColor: appSecondaryDarkColor,
+    ),
+    pageTransitionsTheme: PageTransitionsTheme(
+      builders: {
+        TargetPlatform.android: ZoomPageTransitionsBuilder(),
+        TargetPlatform.iOS: CupertinoPageTransitionsBuilder()
+      },
     ),
   );
 }
@@ -107,7 +113,7 @@ ThemeData buildDarkTheme() {
       labelColor: base.cardColor,
       unselectedLabelColor: darkAppSecondaryDarkColor,
       indicatorSize: TabBarIndicatorSize.label,
-        ),
+    ),
     cardTheme: base.cardTheme.copyWith(
       elevation: 3.0,
     ),
@@ -125,6 +131,12 @@ ThemeData buildDarkTheme() {
     toggleableActiveColor: darkAppPrimaryColor,
     iconTheme: base.iconTheme.copyWith(
       color: base.accentColor,
+    ),
+    pageTransitionsTheme: PageTransitionsTheme(
+      builders: {
+        TargetPlatform.android: ZoomPageTransitionsBuilder(),
+        TargetPlatform.iOS: CupertinoPageTransitionsBuilder()
+      },
     ),
   );
 }

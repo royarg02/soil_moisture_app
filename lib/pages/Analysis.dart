@@ -15,22 +15,22 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 // * State import
-import 'package:soil_moisture_app/states/selected_card_state.dart';
-import 'package:soil_moisture_app/states/theme_state.dart';
+import 'package:soif/states/selected_card_state.dart';
+import 'package:soif/states/theme_state.dart';
 
 // * ui import
-import 'package:soil_moisture_app/ui/analysis_graph.dart';
-import 'package:soil_moisture_app/ui/colors.dart';
-import 'package:soil_moisture_app/ui/refresh_snackbar.dart';
+import 'package:soif/ui/analysis_graph.dart';
+import 'package:soif/ui/colors.dart';
+import 'package:soif/ui/refresh_snackbar.dart';
 
 // * utils import
-import 'package:soil_moisture_app/utils/display_error.dart';
-import 'package:soil_moisture_app/utils/json_post_get.dart';
-import 'package:soil_moisture_app/utils/date_func.dart';
-import 'package:soil_moisture_app/utils/sizes.dart';
+import 'package:soif/utils/display_error.dart';
+import 'package:soif/utils/json_post_get.dart';
+import 'package:soif/utils/date_func.dart';
+import 'package:soif/utils/sizes.dart';
 
 // * Data import
-import 'package:soil_moisture_app/data/all_data.dart';
+import 'package:soif/data/all_data.dart';
 
 class Analysis extends StatefulWidget {
   @override

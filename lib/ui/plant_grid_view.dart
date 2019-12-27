@@ -7,16 +7,16 @@
 import 'package:flutter/material.dart';
 
 // * State import
-import 'package:soil_moisture_app/states/selected_card_state.dart';
+import 'package:soif/states/selected_card_state.dart';
 
 // * ui import
-import 'package:soil_moisture_app/ui/plant_card.dart';
+import 'package:soif/ui/plant_card.dart';
 
 // * data import
-import 'package:soil_moisture_app/data/plant_class.dart';
+import 'package:soif/data/plant_class.dart';
 
 // * utils import
-import 'package:soil_moisture_app/utils/sizes.dart';
+import 'package:soif/utils/sizes.dart';
 
 // * External packages import
 import 'package:provider/provider.dart';

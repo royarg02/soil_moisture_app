@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 // * Utils import
-import 'package:soil_moisture_app/utils/loading_plant_card_animation.dart';
-import 'package:soil_moisture_app/utils/sizes.dart';
+import 'package:soif/utils/loading_plant_card_animation.dart';
+import 'package:soif/utils/sizes.dart';
 
 class LoadingPlantGridView extends StatelessWidget {
   @override

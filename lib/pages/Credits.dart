@@ -9,10 +9,10 @@
 import 'package:flutter/material.dart';
 
 // * States import
-import 'package:soil_moisture_app/states/theme_state.dart';
+import 'package:soif/states/theme_state.dart';
 
 // * ui import
-import 'package:soil_moisture_app/ui/colors.dart';
+import 'package:soif/ui/colors.dart';
 
 // * External Packages import
 import 'package:flutter_image/network.dart';
@@ -21,10 +21,10 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // * utils import
-import 'package:soil_moisture_app/utils/sizes.dart';
+import 'package:soif/utils/sizes.dart';
 
 // * data import
-import 'package:soil_moisture_app/data/all_data.dart';
+import 'package:soif/data/all_data.dart';
 
 class Credits extends StatefulWidget {
   @override

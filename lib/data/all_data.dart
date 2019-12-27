@@ -1,9 +1,9 @@
 // * Import all Data Classes
-import 'package:soil_moisture_app/data/plant_class.dart';
-import 'package:soil_moisture_app/data/temp_class.dart';
-import 'package:soil_moisture_app/data/humidity_class.dart';
-import 'package:soil_moisture_app/data/light_class.dart';
-import 'package:soil_moisture_app/data/threshold_class.dart';
+import 'package:soif/data/plant_class.dart';
+import 'package:soif/data/temp_class.dart';
+import 'package:soif/data/humidity_class.dart';
+import 'package:soif/data/light_class.dart';
+import 'package:soif/data/threshold_class.dart';
 
 // * Define Data Objects to be used throughout the app
 List<Plant> plantList = [];

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/animation.dart';
 
 // * ui import
-import 'package:soil_moisture_app/ui/loading_plant_grid_view.dart';
+import 'package:soif/ui/loading_plant_grid_view.dart';
 
 class LoadingPlantCardAnimation extends StatefulWidget {
   @override

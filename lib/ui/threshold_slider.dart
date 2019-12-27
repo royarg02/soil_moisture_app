@@ -7,7 +7,7 @@
 import 'package:flutter/material.dart';
 
 // * utils import
-import 'package:soil_moisture_app/utils/sizes.dart';
+import 'package:soif/utils/sizes.dart';
 
 class ThresholdSlider extends StatefulWidget {
   final String label;

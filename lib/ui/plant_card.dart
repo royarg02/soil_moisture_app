@@ -14,16 +14,16 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
 // * States import
-import 'package:soil_moisture_app/states/theme_state.dart';
+import 'package:soif/states/theme_state.dart';
 
 // * ui import
-import 'package:soil_moisture_app/ui/colors.dart';
+import 'package:soif/ui/colors.dart';
 
 // * utils import
-import 'package:soil_moisture_app/utils/sizes.dart';
+import 'package:soif/utils/sizes.dart';
 
 // * Data import
-import 'package:soil_moisture_app/data/plant_class.dart';
+import 'package:soif/data/plant_class.dart';
 
 class PlantCard extends StatelessWidget {
   final Function onTap;

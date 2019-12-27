@@ -4,19 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 // * Prefs import
-import 'package:soil_moisture_app/prefs/user_prefs.dart';
-import 'package:soil_moisture_app/states/selected_card_state.dart';
+import 'package:soif/prefs/user_prefs.dart';
+import 'package:soif/states/selected_card_state.dart';
 
 // * State import
-import 'package:soil_moisture_app/states/theme_state.dart';
-import 'package:soil_moisture_app/ui/custom_tab_indicator.dart';
+import 'package:soif/states/theme_state.dart';
+import 'package:soif/ui/custom_tab_indicator.dart';
 
 // * ui import
-import 'package:soil_moisture_app/ui/custom_tab_label.dart';
-import 'package:soil_moisture_app/ui/options.dart';
+import 'package:soif/ui/custom_tab_label.dart';
+import 'package:soif/ui/options.dart';
 
 // * utils import
-import 'package:soil_moisture_app/utils/sizes.dart';
+import 'package:soif/utils/sizes.dart';
 
 // * Pages Import
 import 'pages/Analysis.dart';

@@ -7,8 +7,8 @@
 import 'package:flutter/material.dart';
 
 // * utils import
-import 'package:soil_moisture_app/utils/date_func.dart';
-import 'package:soil_moisture_app/utils/sizes.dart';
+import 'package:soif/utils/date_func.dart';
+import 'package:soif/utils/sizes.dart';
 
 // * No Latest Data Available upon Startup (due to empty data or no internet)
 class NoNowData extends StatelessWidget {

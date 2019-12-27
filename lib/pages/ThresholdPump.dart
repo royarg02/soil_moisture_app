@@ -16,19 +16,19 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 // * State Import
-import 'package:soil_moisture_app/states/theme_state.dart';
+import 'package:soif/states/theme_state.dart';
 
 // * ui import
-import 'package:soil_moisture_app/ui/threshold_slider.dart';
-import 'package:soil_moisture_app/ui/colors.dart';
+import 'package:soif/ui/threshold_slider.dart';
+import 'package:soif/ui/colors.dart';
 
 // * utils import
-import 'package:soil_moisture_app/utils/json_post_get.dart';
-import 'package:soil_moisture_app/utils/display_error.dart';
-import 'package:soil_moisture_app/utils/sizes.dart';
+import 'package:soif/utils/json_post_get.dart';
+import 'package:soif/utils/display_error.dart';
+import 'package:soif/utils/sizes.dart';
 
 // * data import
-import 'package:soil_moisture_app/data/all_data.dart';
+import 'package:soif/data/all_data.dart';
 
 class ThresholdPump extends StatefulWidget {
   @override

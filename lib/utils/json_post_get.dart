@@ -9,15 +9,15 @@ import 'dart:convert';
 import 'dart:async';
 
 // * utils import
-import 'package:soil_moisture_app/utils/date_func.dart';
+import 'package:soif/utils/date_func.dart';
 
 // * Data import
-import 'package:soil_moisture_app/data/humidity_class.dart';
-import 'package:soil_moisture_app/data/light_class.dart';
-import 'package:soil_moisture_app/data/plant_class.dart';
-import 'package:soil_moisture_app/data/temp_class.dart';
-import 'package:soil_moisture_app/data/threshold_class.dart';
-import 'package:soil_moisture_app/data/all_data.dart';
+import 'package:soif/data/humidity_class.dart';
+import 'package:soif/data/light_class.dart';
+import 'package:soif/data/plant_class.dart';
+import 'package:soif/data/temp_class.dart';
+import 'package:soif/data/threshold_class.dart';
+import 'package:soif/data/all_data.dart';
 
 // * determines if any data is got from the API
 bool isDataGot = false;

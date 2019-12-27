@@ -13,8 +13,8 @@ import 'dart:math'; // * For max() and min()
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 // * utils Import
-import 'package:soil_moisture_app/utils/sizes.dart';
-import 'package:soil_moisture_app/utils/date_func.dart';
+import 'package:soif/utils/sizes.dart';
+import 'package:soif/utils/date_func.dart';
 
 // * This function defines the behaviour and formatting of the chart
 SfCartesianChart displayChart(
