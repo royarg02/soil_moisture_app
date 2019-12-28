@@ -38,304 +38,363 @@ class Analysis extends StatefulWidget {
 }
 
 class _AnalysisState extends State<Analysis> {
-  String _measure;
-  dynamic _chartObj;
-
-  void initState() {
-    _measure = 'Moisture';
-    super.initState();
-  }
-
-  void _initChart(String newMeasure) {
-    this._measure = newMeasure;
-    if (isDataGot) {
-      switch (_measure) {
-        case 'Humidity':
-          _chartObj = dayHumid;
-          break;
-        case 'Light':
-          _chartObj = dayLight;
-          break;
-        case 'Temperature':
-          _chartObj = dayTemp;
-          break;
-        case 'Moisture':
-          _chartObj =
-              plantList[Provider.of<SelectedCardState>(context).selCard];
-          break;
-      }
-      // Debug Print
-      print(_chartObj.getAllValues);
-      print(_measure);
-    }
-  }
-
-  void _fetchForDate() {
-    totData = _refresh();
-    setState(() {});
-  }
-
-  Future<void> _pickDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-      context: context,
-      initialDate: date,
-      firstDate: DateTime(date.year),
-      lastDate: now,
-    );
-    if (picked != null && picked != date) {
-      date = picked;
-      _fetchForDate();
-    }
-  }
-
-  Future<void> _refresh() async {
-    totData = fetchTotalData();
-    await totData.then((_) {
-      if (mounted) {
-        setState(() {
-          _initChart(_measure);
-        });
-      }
-      if (isNow()) {
-        latData = fetchLatestData();
-      }
-    }, onError: (_) {
-      Scaffold.of(context).removeCurrentSnackBar();
-      Scaffold.of(context).showSnackBar(FailureOnRefresh().build(context));
-    });
-    // Debug Print
-    if (isDataGot) {
-      print('analysis refresh got: ${plantList[0].getLastValue}');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      minimum: EdgeInsets.symmetric(horizontal: appWidth(context) * 0.03),
       child: RefreshIndicator(
-        onRefresh: _refresh,
-        child: ListView(
-          physics:
-              AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-          children: [
-            Container(
-              margin: EdgeInsets.symmetric(vertical: appWidth(context) * 0.03),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  FutureBuilder(
-                    future: totData,
-                    builder: (context, AsyncSnapshot snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        _initChart(this._measure);
-                        return (isDataGot)
-                            ? Container(
-                                height: appWidth(context) * 0.215,
-                                alignment: Alignment.center,
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Row(
-                                      children: <Widget>[
-                                        Text(
-                                          (_chartObj.getLastValue *
-                                                  ((_measure == 'Moisture')
-                                                      ? 100
-                                                      : 1))
-                                              .toStringAsFixed(1),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .display2
-                                              .copyWith(
-                                                color: (Provider.of<ThemeState>(
-                                                            context)
-                                                        .isDarkTheme)
-                                                    ? Theme.of(context)
-                                                        .accentColor
-                                                    : appSecondaryDarkColor,
-                                                fontSize:
-                                                    appWidth(context) * 0.09,
-                                              ),
-                                        ),
-                                        Text(
-                                          '${_chartObj.getUnit}',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .body1
-                                              .copyWith(
-                                                fontSize:
-                                                    appWidth(context) * 0.06,
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                    Text(
-                                      'On $fetchDateEEEMMMd',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .body2
-                                          .copyWith(
-                                            fontSize: appWidth(context) * 0.025,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            : SizedBox(
-                                height: appWidth(context) * 0.215,
-                              );
-                      } else {
-                        return SizedBox(
-                          height: appWidth(context) * 0.215,
-                        );
-                      }
-                    },
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(right: appWidth(context) * 0.02),
-                    height: appWidth(context) * 0.1,
-                    child: Theme(
-                      data: Theme.of(context).copyWith(
-                        canvasColor: Theme.of(context).primaryColor,
-                      ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          icon: Icon(FontAwesomeIcons.chevronDown),
-                          iconSize: appWidth(context) * 0.03,
-                          value: _measure,
-                          onChanged: (String measure) {
-                            setState(() {
-                              _initChart(measure);
-                            });
-                          },
-                          items: <String>[
-                            'Moisture',
-                            'Light',
-                            'Humidity',
-                            'Temperature'
-                          ].map<DropdownMenuItem<String>>((String option) {
-                            return DropdownMenuItem<String>(
-                              value: option,
-                              child: Container(
-                                alignment: Alignment.center,
-                                width: appWidth(context) * 0.31,
-                                child: Text(
-                                  option,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .body2
-                                      .copyWith(
-                                          fontSize: appWidth(context) * 0.035),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                      ),
-                    ),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 2.0,
-                        color: appPrimaryDarkColor,
-                      ),
-                      borderRadius:
-                          BorderRadius.circular(appWidth(context) * 0.1),
-                      shape: BoxShape.rectangle,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              height: appWidth(context) * 0.6,
-              child: Card(
-                child: FutureBuilder(
-                    future: totData,
-                    builder: (context, AsyncSnapshot snapshot) {
-                      // Debug Print
-                      print(snapshot);
-                      if (snapshot.hasError) {
-                        return NoNowData(isScrollable: false);
-                      } else if (snapshot.connectionState ==
-                          ConnectionState.done) {
-                        return (isDataGot)
-                            ? displayChart(_chartObj, _measure, context)
-                            : NoData();
-                      } else {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                    }),
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.chevron_left),
-                  onPressed: () {
-                    prevDate();
-                    _fetchForDate();
-                  },
-                ),
-                Tooltip(
-                  message: 'Jump to date',
-                  child: FlatButton(
-                    onPressed: () => _pickDate(context),
-                    child: Text(
-                      '$fetchDateEEEMMMd',
-                      style: Theme.of(context).textTheme.body2.copyWith(
-                            fontSize: appWidth(context) * 0.05,
-                          ),
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(appWidth(context) * 0.1),
-                      side: BorderSide(
-                        width: 2.0,
-                        color: appPrimaryDarkColor,
-                      ),
-                    ),
-                  ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.chevron_right),
-                  onPressed: (isNow())
-                      ? null
-                      : () {
-                          nextDate();
-                          _fetchForDate();
-                        },
-                )
-              ],
-            ),
-            SizedBox(
-              height: appWidth(context) * 0.01,
-            ),
-            FutureBuilder(
-              future: totData,
-              builder: (context, AsyncSnapshot snapshot) {
-                if (snapshot.connectionState == ConnectionState.done &&
-                    isDataGot) {
-                  // return PlantGridView(
-                  //   plantlist: plantList,
-                  // );
-                  return Text('Data Got');
-                } else {
-                  return SizedBox();
-                }
-              },
-            ),
-            SizedBox(
-              height: appWidth(context) * 0.03,
-            )
-          ],
+        onRefresh: () {},
+        child: FutureBuilder(
+          future: totData,
+          builder: (context, AsyncSnapshot snapshot) {
+            print(snapshot);
+            if (snapshot.hasError) {
+              return _ErrorPage();
+            } else if (snapshot.connectionState == ConnectionState.done) {
+              return _Page();
+            } else {
+              return _Skeleton();
+            }
+          },
         ),
       ),
     );
   }
 }
+
+class _ErrorPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Text('No Connection.'),
+    );
+  }
+}
+
+class _Skeleton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Text('Loading..'),
+    );
+  }
+}
+
+class _Page extends StatefulWidget {
+  @override
+  __PageState createState() => __PageState();
+}
+
+class __PageState extends State<_Page> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Text('Loaded!'),
+    );
+  }
+}
+
+// class AnalysiS extends StatefulWidget {
+//   @override
+//   _AnalysiSState createState() => _AnalysiSState();
+// }
+
+// class _AnalysiSState extends State<AnalysiS> {
+//   String _measure;
+//   dynamic _chartObj;
+
+//   void initState() {
+//     _measure = 'Moisture';
+//     super.initState();
+//   }
+
+//   void _initChart(String newMeasure) {
+//     this._measure = newMeasure;
+//     if (allData.plantList.isNotEmpty) {
+//       switch (_measure) {
+//         case 'Humidity':
+//           _chartObj = allData.humidity;
+//           break;
+//         case 'Light':
+//           _chartObj = allData.light;
+//           break;
+//         case 'Temperature':
+//           _chartObj = allData.temp;
+//           break;
+//         case 'Moisture':
+//           _chartObj = allData
+//               .plantList[Provider.of<SelectedCardState>(context).selCard]
+//               .moisture;
+//           break;
+//       }
+//       // Debug Print
+//       print(_chartObj.allValues);
+//       print(_measure);
+//     }
+//   }
+
+//   void _fetchForDate() {
+//     totData = _refresh();
+//     setState(() {});
+//   }
+
+//   Future<void> _pickDate(BuildContext context) async {
+//     final DateTime picked = await showDatePicker(
+//       context: context,
+//       initialDate: date,
+//       firstDate: DateTime(date.year),
+//       lastDate: now,
+//     );
+//     if (picked != null && picked != date) {
+//       date = picked;
+//       _fetchForDate();
+//     }
+//   }
+
+//   Future<void> _refresh() async {
+//     totData = fetchTotalData();
+//     await totData.then((_) {
+//       if (mounted) {
+//         setState(() {
+//           _initChart(_measure);
+//         });
+//       }
+//       if (isNow()) {
+//         latData = fetchLatestData();
+//       }
+//     }, onError: (_) {
+//       Scaffold.of(context).removeCurrentSnackBar();
+//       Scaffold.of(context).showSnackBar(FailureOnRefresh().build(context));
+//     });
+//     // Debug Print
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return SafeArea(
+//       minimum: EdgeInsets.symmetric(horizontal: appWidth(context) * 0.03),
+//       child: RefreshIndicator(
+//         onRefresh: _refresh,
+//         child: ListView(
+//           physics:
+//               AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+//           children: [
+//             Container(
+//               margin: EdgeInsets.symmetric(vertical: appWidth(context) * 0.03),
+//               child: Row(
+//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                 children: <Widget>[
+//                   FutureBuilder(
+//                     future: totData,
+//                     builder: (context, AsyncSnapshot snapshot) {
+//                       if (snapshot.connectionState == ConnectionState.done) {
+//                         _initChart(this._measure);
+//                         return (allData.plantList.isNotEmpty)
+//                             ? Container(
+//                                 height: appWidth(context) * 0.215,
+//                                 alignment: Alignment.center,
+//                                 child: Column(
+//                                   mainAxisSize: MainAxisSize.min,
+//                                   crossAxisAlignment: CrossAxisAlignment.start,
+//                                   children: <Widget>[
+//                                     Row(
+//                                       children: <Widget>[
+//                                         Text(
+//                                           (_chartObj.lastValue *
+//                                                   ((_measure == 'Moisture')
+//                                                       ? 100
+//                                                       : 1))
+//                                               .toStringAsFixed(1),
+//                                           style: Theme.of(context)
+//                                               .textTheme
+//                                               .display2
+//                                               .copyWith(
+//                                                 color: (Provider.of<ThemeState>(
+//                                                             context)
+//                                                         .isDarkTheme)
+//                                                     ? Theme.of(context)
+//                                                         .accentColor
+//                                                     : appSecondaryDarkColor,
+//                                                 fontSize:
+//                                                     appWidth(context) * 0.09,
+//                                               ),
+//                                         ),
+//                                         Text(
+//                                           '${_chartObj.unit}',
+//                                           style: Theme.of(context)
+//                                               .textTheme
+//                                               .body1
+//                                               .copyWith(
+//                                                 fontSize:
+//                                                     appWidth(context) * 0.06,
+//                                               ),
+//                                         ),
+//                                       ],
+//                                     ),
+//                                     Text(
+//                                       'On $fetchDateEEEMMMd',
+//                                       style: Theme.of(context)
+//                                           .textTheme
+//                                           .body2
+//                                           .copyWith(
+//                                             fontSize: appWidth(context) * 0.025,
+//                                           ),
+//                                     ),
+//                                   ],
+//                                 ),
+//                               )
+//                             : SizedBox(
+//                                 height: appWidth(context) * 0.215,
+//                               );
+//                       } else {
+//                         return SizedBox(
+//                           height: appWidth(context) * 0.215,
+//                         );
+//                       }
+//                     },
+//                   ),
+//                   Container(
+//                     padding: EdgeInsets.only(right: appWidth(context) * 0.02),
+//                     height: appWidth(context) * 0.1,
+//                     child: Theme(
+//                       data: Theme.of(context).copyWith(
+//                         canvasColor: Theme.of(context).primaryColor,
+//                       ),
+//                       child: DropdownButtonHideUnderline(
+//                         child: DropdownButton<String>(
+//                           icon: Icon(FontAwesomeIcons.chevronDown),
+//                           iconSize: appWidth(context) * 0.03,
+//                           value: _measure,
+//                           onChanged: (String measure) {
+//                             setState(() {
+//                               _initChart(measure);
+//                             });
+//                           },
+//                           items: <String>[
+//                             'Moisture',
+//                             'Light',
+//                             'Humidity',
+//                             'Temperature'
+//                           ].map<DropdownMenuItem<String>>((String option) {
+//                             return DropdownMenuItem<String>(
+//                               value: option,
+//                               child: Container(
+//                                 alignment: Alignment.center,
+//                                 width: appWidth(context) * 0.31,
+//                                 child: Text(
+//                                   option,
+//                                   style: Theme.of(context)
+//                                       .textTheme
+//                                       .body2
+//                                       .copyWith(
+//                                           fontSize: appWidth(context) * 0.035),
+//                                   textAlign: TextAlign.center,
+//                                 ),
+//                               ),
+//                             );
+//                           }).toList(),
+//                         ),
+//                       ),
+//                     ),
+//                     decoration: BoxDecoration(
+//                       border: Border.all(
+//                         width: 2.0,
+//                         color: appPrimaryDarkColor,
+//                       ),
+//                       borderRadius:
+//                           BorderRadius.circular(appWidth(context) * 0.1),
+//                       shape: BoxShape.rectangle,
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//             Container(
+//               height: appWidth(context) * 0.6,
+//               child: Card(
+//                 child: FutureBuilder(
+//                     future: totData,
+//                     builder: (context, AsyncSnapshot snapshot) {
+//                       // Debug Print
+//                       print(snapshot);
+//                       if (snapshot.hasError) {
+//                         return NoNowDataOrNoInternet(isScrollable: false);
+//                       } else if (snapshot.connectionState ==
+//                           ConnectionState.done) {
+//                         return (_chartObj.allValues.isNotEmpty)
+//                             ? displayChart(_chartObj, _measure, context)
+//                             : NoData();
+//                       } else {
+//                         return Center(
+//                           child: CircularProgressIndicator(),
+//                         );
+//                       }
+//                     }),
+//               ),
+//             ),
+//             Row(
+//               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//               children: <Widget>[
+//                 IconButton(
+//                   icon: Icon(Icons.chevron_left),
+//                   onPressed: () {
+//                     prevDate();
+//                     _fetchForDate();
+//                   },
+//                 ),
+//                 Tooltip(
+//                   message: 'Jump to date',
+//                   child: FlatButton(
+//                     onPressed: () => _pickDate(context),
+//                     child: Text(
+//                       '$fetchDateEEEMMMd',
+//                       style: Theme.of(context).textTheme.body2.copyWith(
+//                             fontSize: appWidth(context) * 0.05,
+//                           ),
+//                     ),
+//                     shape: RoundedRectangleBorder(
+//                       borderRadius:
+//                           BorderRadius.circular(appWidth(context) * 0.1),
+//                       side: BorderSide(
+//                         width: 2.0,
+//                         color: appPrimaryDarkColor,
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 IconButton(
+//                   icon: Icon(Icons.chevron_right),
+//                   onPressed: (isNow())
+//                       ? null
+//                       : () {
+//                           nextDate();
+//                           _fetchForDate();
+//                         },
+//                 )
+//               ],
+//             ),
+//             SizedBox(
+//               height: appWidth(context) * 0.01,
+//             ),
+//             FutureBuilder(
+//               future: totData,
+//               builder: (context, AsyncSnapshot snapshot) {
+//                 if (snapshot.connectionState == ConnectionState.done &&
+//                     allData.plantList.isNotEmpty) {
+//                   // return PlantGridView(
+//                   //   plantlist: plantList,
+//                   // );
+//                   return Text('Data Got');
+//                 } else {
+//                   return SizedBox();
+//                 }
+//               },
+//             ),
+//             SizedBox(
+//               height: appWidth(context) * 0.03,
+//             )
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }

@@ -53,24 +53,24 @@ class _ThresholdPumpState extends State<ThresholdPump> {
               ),
               centerTitle: true,
             ),
-            body: NoNowData(),
+            body: NoNowDataOrNoInternet(),
           );
         } else if (snapshot.connectionState == ConnectionState.done) {
-          return Page();
+          return _Page();
         } else {
-          return Skeleton();
+          return _Skeleton();
         }
       },
     );
   }
 }
 
-class Page extends StatefulWidget {
+class _Page extends StatefulWidget {
   @override
   _PageState createState() => _PageState();
 }
 
-class _PageState extends State<Page> {
+class _PageState extends State<_Page> {
   void _setThreshold({int position, num value}) {
     setState(() {
       pumpList[position].setVal = value;
@@ -108,7 +108,7 @@ class _PageState extends State<Page> {
                     thresholdChanger: _setThreshold,
                   );
                 })
-            : NoNowData(
+            : NoNowDataOrNoInternet(
                 haveInternet: true,
               ),
       ),
@@ -204,7 +204,7 @@ class _ThresholdSetButtonState extends State<ThresholdSetButton> {
   }
 }
 
-class Skeleton extends StatelessWidget {
+class _Skeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

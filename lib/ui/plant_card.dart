@@ -61,7 +61,7 @@ class PlantCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
-                '${this.plant.getLabel}',
+                '${this.plant.name}',
                 style: Theme.of(context).textTheme.body2.copyWith(
                       fontSize: appWidth(context) * 0.045,
                     ),
@@ -76,7 +76,7 @@ class PlantCard extends StatelessWidget {
               ),
               LinearPercentIndicator(
                 addAutomaticKeepAlive: false,
-                percent: this.plant.getLastValue,
+                percent: this.plant.moisture.lastValue,
                 progressColor: plant.isCritical()
                     ? criticalPlantColor
                     : plant.isMoreThanNormal()

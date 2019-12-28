@@ -4,12 +4,12 @@ import 'package:flutter/animation.dart';
 // * ui import
 import 'package:soif/ui/loading_plant_grid_view.dart';
 
-class LoadingPlantCardAnimation extends StatefulWidget {
+class DiagonallyLoadingAnimation extends StatefulWidget {
   @override
-  LoadingPlantCardAnimationState createState() => LoadingPlantCardAnimationState();
+  DiagonallyLoadingAnimationState createState() => DiagonallyLoadingAnimationState();
 }
 
-class LoadingPlantCardAnimationState extends State<LoadingPlantCardAnimation>
+class DiagonallyLoadingAnimationState extends State<DiagonallyLoadingAnimation>
     with SingleTickerProviderStateMixin {
   Animation _animation;
   AnimationController _controller;

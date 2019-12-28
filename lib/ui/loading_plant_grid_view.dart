@@ -20,8 +20,8 @@ class LoadingPlantGridView extends StatelessWidget {
         crossAxisSpacing: appWidth(context) * 0.005,
         mainAxisSpacing: appWidth(context) * 0.005,
         children: <Widget>[
-          LoadingPlantCardAnimation(),
-          LoadingPlantCardAnimation(),
+          DiagonallyLoadingAnimation(),
+          DiagonallyLoadingAnimation(),
         ],
       ),
     );

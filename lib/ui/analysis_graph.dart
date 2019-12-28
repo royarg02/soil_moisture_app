@@ -19,8 +19,8 @@ import 'package:soif/utils/date_func.dart';
 // * This function defines the behaviour and formatting of the chart
 SfCartesianChart displayChart(
     dynamic chartObj, String graph, BuildContext context) {
-  num dataMinValue = chartObj.getAllValues.reduce((num a, num b) => min(a, b));
-  num dataMaxValue = chartObj.getAllValues.reduce((num a, num b) => max(a, b));
+  num dataMinValue = chartObj.allValues.reduce((num a, num b) => min(a, b));
+  num dataMaxValue = chartObj.allValues.reduce((num a, num b) => max(a, b));
   return SfCartesianChart(
     zoomPanBehavior: ZoomPanBehavior(
       enablePinching: true,
@@ -45,14 +45,14 @@ SfCartesianChart displayChart(
       maximum: (dataMaxValue > 100) ? dataMaxValue + 100.0 : 100,
       interval: 20,
       axisLine: AxisLine(width: 1),
-      labelFormat: '{value}${chartObj.getUnit}',
+      labelFormat: '{value}${chartObj.unit}',
       isVisible: true,
       labelStyle: ChartTextStyle(
         fontSize: appWidth(context) * 0.027,
         fontFamily: 'Ocrb',
       ),
     ),
-    series: getLineSeries(chartObj.getAllValues, graph, context),
+    series: getLineSeries(chartObj.allValues, graph, context),
     tooltipBehavior: TooltipBehavior(
       enable: true,
       animationDuration: 200,

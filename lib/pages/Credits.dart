@@ -17,6 +17,7 @@ import 'package:soif/ui/colors.dart';
 // * External Packages import
 import 'package:flutter_image/network.dart';
 import 'package:provider/provider.dart';
+import 'package:soif/data/static_data.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 

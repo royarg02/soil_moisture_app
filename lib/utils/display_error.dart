@@ -11,33 +11,25 @@ import 'package:soif/utils/date_func.dart';
 import 'package:soif/utils/sizes.dart';
 
 // * No Latest Data Available upon Startup (due to empty data or no internet)
-class NoNowData extends StatelessWidget {
+class NoNowDataOrNoInternet extends StatelessWidget {
   final bool haveInternet;
-  final bool isScrollable;
-  NoNowData({this.isScrollable = true, this.haveInternet = false});
+  NoNowDataOrNoInternet({this.haveInternet = false});
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      physics: (isScrollable)
-          ? AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics())
-          : NeverScrollableScrollPhysics(),
-      shrinkWrap: (haveInternet) ? true : false,
-      children: [
-        Container(
-          padding: EdgeInsets.symmetric(
-              vertical: appWidth(context) * 0.1, horizontal: appWidth(context) * 0.01),
-          alignment: Alignment.center,
-          child: Text(
-            (this.haveInternet)
-                ? 'No Data for $fetchNowDate'
-                : 'Couldn\'t connect to Internet.\nRefresh to try again.',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.display1.copyWith(
-                  fontSize: appWidth(context) * 0.04,
-                ),
-          ),
-        ),
-      ],
+    return Container(
+      padding: EdgeInsets.symmetric(
+          vertical: appWidth(context) * 0.1,
+          horizontal: appWidth(context) * 0.01),
+      alignment: Alignment.center,
+      child: Text(
+        (this.haveInternet)
+            ? 'No Data for $fetchNowDate'
+            : 'Couldn\'t connect to Internet.\nRefresh to try again.',
+        textAlign: TextAlign.center,
+        style: Theme.of(context).textTheme.display1.copyWith(
+              fontSize: appWidth(context) * 0.04,
+            ),
+      ),
     );
   }
 }
