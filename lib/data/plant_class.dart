@@ -72,7 +72,9 @@ class Plant {
   String _name;
   Moisture _moisture;
   Plant(this._name, List<dynamic> values) {
-    this._moisture = Moisture()..setAllValues = values;
+    this._moisture = Moisture()
+      ..setAllValues =
+          values.map<num>((v) => double.parse(v.toString())).toList();
   }
   Plant.latest(this._name, num value) {
     this._moisture = Moisture.latest()..setLatestValue = value;

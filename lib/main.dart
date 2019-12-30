@@ -47,63 +47,95 @@ class Root extends StatelessWidget {
     return MaterialApp(
       title: title,
       debugShowCheckedModeBanner: false,
-      home: DefaultTabController(length: 2, child: Home()),
+      home: Home(),
       theme: Provider.of<ThemeState>(context).getTheme,
     );
   }
 }
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   final List<Widget> _children = [
     Overview(),
     Analysis(),
   ];
+  TabController _controller;
+  @override
+  void initState() {
+    super.initState();
+    _controller = TabController(vsync: this, initialIndex: 0, length: 2);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Future<bool> _popScopeInvoke() {
+    if (this._controller.index == 1) {
+      this._controller.index = 0;
+      return Future<bool>.value(false);
+    } else {
+      return Future<bool>.value(true);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     print(appWidth(context));
-    return Scaffold(
-      body: TabBarView(
-        children: _children,
-        physics: NeverScrollableScrollPhysics(),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        color: Theme.of(context).accentColor,
-        child: Row(
-          children: <Widget>[
-            Flexible(
-              child: TabBar(
-                tabs: <Widget>[
-                  AppTab(
-                    icon: Icon(
-                      Icons.remove_red_eye,
+    print(appHeight(context));
+    return WillPopScope(
+      onWillPop: _popScopeInvoke,
+      child: Scaffold(
+        body: TabBarView(
+          controller: _controller,
+          children: _children,
+          physics: NeverScrollableScrollPhysics(),
+        ),
+        bottomNavigationBar: BottomAppBar(
+          color: Theme.of(context).accentColor,
+          child: Row(
+            children: <Widget>[
+              Flexible(
+                child: TabBar(
+                  controller: _controller,
+                  tabs: <Widget>[
+                    AppTab(
+                      icon: Icon(
+                        Icons.remove_red_eye,
+                      ),
+                      text: 'OVERVIEW',
                     ),
-                    text: 'OVERVIEW',
+                    AppTab(
+                      icon: Icon(
+                        Icons.timeline,
+                      ),
+                      text: 'ANALYSIS',
+                    )
+                  ],
+                  unselectedLabelStyle: TextStyle(
+                    fontSize: appWidth(context) * 0.025,
+                    fontFamily: 'Ocrb',
                   ),
-                  AppTab(
-                    icon: Icon(
-                      Icons.timeline,
-                    ),
-                    text: 'ANALYSIS',
-                  )
-                ],
-                unselectedLabelStyle: TextStyle(
-                  fontSize: appWidth(context) * 0.025,
-                  fontFamily: 'Ocrb',
-                ),
-                labelStyle: TextStyle(
-                  fontSize: appWidth(context) * 0.035,
-                  fontFamily: 'Ocrb',
-                ),
-                indicator: RoundedRectTabIndicator(
-                  radius: appWidth(context) * 0.1,
-                  width: 2.0,
-                  color: Theme.of(context).cardColor,
+                  labelStyle: TextStyle(
+                    fontSize: appWidth(context) * 0.035,
+                    fontFamily: 'Ocrb',
+                  ),
+                  indicator: RoundedRectTabIndicator(
+                    radius: appWidth(context) * 0.1,
+                    width: 2.0,
+                    color: Theme.of(context).cardColor,
+                  ),
                 ),
               ),
-            ),
-            Options()
-          ],
+              Options()
+            ],
+          ),
         ),
       ),
     );

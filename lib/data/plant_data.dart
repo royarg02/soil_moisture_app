@@ -66,9 +66,17 @@ class AllData extends PlantData {
       this._plantlist = [];
     } else {
       this._humidity = Humidity()
-        ..setAllValues = data["records"][0]["humidity"];
-      this._light = Light()..setAllValues = data["records"][0]["light"];
-      this._temp = Temp()..setAllValues = data["records"][0]["temparature"];
+        ..setAllValues = data["records"][0]["humidity"]
+            .map<num>((v) => double.parse(v.toString()))
+            .toList();
+      this._light = Light()
+        ..setAllValues = data["records"][0]["light"]
+            .map<num>((v) => double.parse(v.toString()))
+            .toList();
+      this._temp = Temp()
+        ..setAllValues = data["records"][0]["temparature"]
+            .map<num>((v) => double.parse(v.toString()))
+            .toList();
       this._plantlist = data["records"][0]["moisture"]
           .entries
           .map<Plant>((entry) => Plant(entry.key, entry.value))

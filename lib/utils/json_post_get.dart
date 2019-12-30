@@ -39,7 +39,7 @@ Future<Map<String, dynamic>> fetchJsonData(
       * otherwise, the default url is invoked with the route determined by the
       * 'latest' boolean by fetching the current data (now) if true, full data if false
       */
-  url ??= "$baseUrl/getdata/${(latest) ? 'now' : fetchDateddmmyyyy}";
+  url ??= "$baseUrl/getdata/${(latest) ? 'now' : '26-10-2019'}";
   http.Response _response;
   // Debug print
   print(url);

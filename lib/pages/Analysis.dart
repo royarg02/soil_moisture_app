@@ -21,7 +21,12 @@ import 'package:soif/states/theme_state.dart';
 // * ui import
 import 'package:soif/ui/analysis_graph.dart';
 import 'package:soif/ui/colors.dart';
+import 'package:soif/ui/custom_tab_indicator.dart';
+import 'package:soif/ui/custom_tab_label.dart';
+import 'package:soif/ui/date_selector.dart';
+import 'package:soif/ui/plant_grid_view.dart';
 import 'package:soif/ui/refresh_snackbar.dart';
+import 'package:soif/ui/soif_app_bar.dart';
 
 // * utils import
 import 'package:soif/utils/display_error.dart';
@@ -87,9 +92,167 @@ class _Page extends StatefulWidget {
 class __PageState extends State<_Page> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text('Loaded!'),
+    return NestedScrollView(
+      physics: AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+      headerSliverBuilder: (BuildContext context, bool isScrolled) {
+        return <Widget>[
+          SliverOverlapAbsorber(
+            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+            child: DefaultTabController(
+              length: 4,
+              initialIndex: 0,
+              child: SliverPersistentHeader(
+                pinned: true,
+                delegate: _SliverPersistentHeaderDelegate(
+                  maxExpanded: appHeight(context) * 0.45,
+                ),
+              ),
+            ),
+          )
+        ];
+      },
+      body: ListView.builder(
+        itemCount: 50,
+        itemBuilder: (_, index) {
+          return ListTile(
+            title: Text('$index'),
+          );
+        },
+      ),
+      // body: (allData.plantList.isNotEmpty)
+      //     ? CustomScrollView(
+      //         slivers: <Widget>[
+      //           PlantGridView(
+      //             plantlist: allData.plantList,
+      //           )
+      //         ],
+      //       )
+      //     : SizedBox.shrink(),
     );
+  }
+}
+
+class ChartTabs extends StatelessWidget {
+  @override
+  @override
+  Widget build(BuildContext context) {
+    return Theme(
+      data: Theme.of(context).copyWith(
+        tabBarTheme: Theme.of(context).tabBarTheme.copyWith(
+              labelColor: Theme.of(context).accentColor,
+              unselectedLabelColor:
+                  Theme.of(context).accentColor.withOpacity(0.8),
+            ),
+      ),
+      child: TabBar(
+        // controller: _tabController,
+        tabs: <Widget>[
+          AppTab(
+            text: 'MOISTURE',
+          ),
+          AppTab(
+            text: 'LIGHT',
+          ),
+          AppTab(
+            text: 'HUMIDITY',
+          ),
+          AppTab(
+            text: 'TEMPERATURE',
+          )
+        ],
+        indicator: RoundedRectTabIndicator(
+          radius: appWidth(context) * 0.1,
+          width: 2.0,
+          color: Theme.of(context).accentColor,
+        ),
+      ),
+    );
+  }
+}
+
+class ChartView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: appHeight(context) * 0.35),
+      child: TabBarView(
+        physics: NeverScrollableScrollPhysics(),
+        children: <Widget>[
+          Card(
+            margin: const EdgeInsets.all(8.0),
+            elevation: 6.0,
+            child: SizedBox(
+              height: appHeight(context) * 0.35,
+            ),
+          ),
+          Card(
+            margin: const EdgeInsets.all(8.0),
+            elevation: 6.0,
+            child: SizedBox(
+              height: appHeight(context) * 0.35,
+            ),
+          ),
+          Card(
+            margin: const EdgeInsets.all(8.0),
+            elevation: 6.0,
+            child: SizedBox(
+              height: appHeight(context) * 0.35,
+            ),
+          ),
+          Card(
+            margin: const EdgeInsets.all(8.0),
+            elevation: 6.0,
+            child: SizedBox(
+              height: appHeight(context) * 0.35,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class _SliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
+  final double maxExpanded;
+  double minExpanded;
+  _SliverPersistentHeaderDelegate({@required this.maxExpanded}) {
+    minExpanded = maxExpanded - (maxExpanded * 0.1);
+  }
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    double normalizedShrinkOffset = shrinkOffset / maxExtent;
+    // print(normalizedShrinkOffset);
+    return Material(
+      elevation: normalizedShrinkOffset * 4.0,
+      color: Theme.of(context).scaffoldBackgroundColor,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          ChartTabs(),
+          DateSelector(),
+          Text(
+            'Latest data',
+            style: Theme.of(context).textTheme.body2.copyWith(
+                  fontSize: appHeight(context) *
+                      (0.035 - normalizedShrinkOffset * 0.015),
+                ),
+          ),
+          Flexible(child: ChartView()),
+        ],
+      ),
+    );
+  }
+
+  @override
+  double get maxExtent => maxExpanded;
+
+  double get minExtent => minExpanded;
+
+  @override
+  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
+    return true;
   }
 }
 

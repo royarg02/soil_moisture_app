@@ -17,6 +17,7 @@ import 'package:provider/provider.dart';
 import 'package:soif/states/selected_card_state.dart';
 import 'package:soif/states/theme_state.dart';
 import 'package:soif/ui/colors.dart';
+import 'package:soif/ui/soif_app_bar.dart';
 
 // * utils import
 import 'package:soif/utils/date_func.dart';
@@ -64,7 +65,7 @@ class _OverviewState extends State<Overview> {
           builder: (context, AsyncSnapshot snapshot) {
             // Debug print
             print(snapshot);
-            if (snapshot.hasError) {
+            if (snapshot.hasError && nowData == null) {
               return _ErrorPage();
             } else if (snapshot.connectionState == ConnectionState.done) {
               // * async load threshold data
@@ -323,34 +324,6 @@ class _Skeleton extends StatelessWidget {
     // )
 //       ],
 //     );
-  }
-}
-
-class SoifAppBar extends StatelessWidget {
-  final Widget backgroundWidget;
-  SoifAppBar({@required this.backgroundWidget});
-  @override
-  Widget build(BuildContext context) {
-    return SliverAppBar(
-      primary: true,
-      forceElevated: false,
-      pinned: true,
-      floating: true,
-      snap: true,
-      title: Image.asset(
-        (Provider.of<ThemeState>(context).isDarkTheme)
-            ? './assets/images/Soif_sk_dark.png'
-            : './assets/images/Soif_sk.png',
-        height: appWidth(context) * 0.08,
-      ),
-      expandedHeight: appHeight(context) * 0.45,
-      flexibleSpace: FlexibleSpaceBar(
-        background: Container(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          child: this.backgroundWidget,
-        ),
-      ),
-    );
   }
 }
 

@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 
 class AppTab extends StatelessWidget {
   AppTab({
-    this.text,
+    @required this.text,
     this.icon,
   });
   final String text;
@@ -23,10 +23,11 @@ class AppTab extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Container(
-            child: icon,
-            margin: const EdgeInsets.only(right: 10.0),
-          ),
+          if (icon != null)
+            Container(
+              child: icon,
+              margin: const EdgeInsets.only(right: 10.0),
+            ),
           Flexible(
             child: Text(
               text,
