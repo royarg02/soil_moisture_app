@@ -42,7 +42,7 @@ class _DateSelectorState extends State<DateSelector> {
             child: Text(
               '$fetchDateEEEMMMd',
               style: Theme.of(context).textTheme.body2.copyWith(
-                    fontSize: appWidth(context) * 0.05,
+                    fontSize: appWidth(context) * 0.04,
                   ),
             ),
             shape: RoundedRectangleBorder(

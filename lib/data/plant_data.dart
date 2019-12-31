@@ -26,7 +26,11 @@ class NowData extends PlantData {
     _temp = Temp.latest();
   }
   factory NowData.fromJson(Map<String, dynamic> data) {
-    if (data != null) _nowData = NowData._parse(data);
+    if (data != null) {
+      print(
+          '==============================[New Now Data]==============================');
+      _nowData = NowData._parse(data);
+    }
     return _nowData;
   }
 
@@ -55,7 +59,11 @@ class AllData extends PlantData {
     _temp = Temp();
   }
   factory AllData.fromJson(Map<String, dynamic> data) {
-    if (data != null) _allData = AllData._parse(data);
+    if (data != null) {
+      print(
+          '==============================[New All Data]==============================');
+      _allData = AllData._parse(data);
+    }
     return _allData;
   }
   AllData._parse(Map<String, dynamic> data) {

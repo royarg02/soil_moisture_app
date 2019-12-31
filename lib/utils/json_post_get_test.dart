@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 void printData(Map<String, dynamic> data, String type) {
-  print('$type data given: $data\n\n');
+  debugPrint('$type data given: $data\n\n');
 }

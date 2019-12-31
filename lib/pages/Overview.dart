@@ -92,6 +92,7 @@ class _ErrorPage extends StatelessWidget {
         SoifAppBar(
           backgroundWidget: NoNowDataOrNoInternet(),
         ),
+        LoadingPlantGridView(animation: false),
       ],
     );
   }
@@ -107,9 +108,12 @@ class _Page extends StatelessWidget {
           backgroundWidget: (nowData.plantList.isNotEmpty)
               // * would show only if today's data is available
               ? Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    MoistureRadialIndicator(),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: MoistureRadialIndicator(),
+                    ),
                     OtherInfoRow(),
                   ],
                 )
@@ -158,6 +162,7 @@ class MoistureRadialIndicator extends StatelessWidget {
       animationDuration: 600,
       radius: appWidth(context) * 0.55,
       animation: true,
+      animateFromLastPercent: true,
       percent: _selPlant.moisture.lastValue,
       circularStrokeCap: CircularStrokeCap.round,
       backgroundColor: (Provider.of<ThemeState>(context).isDarkTheme)

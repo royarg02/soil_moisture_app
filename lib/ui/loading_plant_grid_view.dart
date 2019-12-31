@@ -5,6 +5,8 @@ import 'package:soif/utils/loading_plant_card_animation.dart';
 import 'package:soif/utils/sizes.dart';
 
 class LoadingPlantGridView extends StatelessWidget {
+  final bool animation;
+  LoadingPlantGridView({this.animation = true});
   @override
   Widget build(BuildContext context) {
     return SliverPadding(
@@ -19,10 +21,15 @@ class LoadingPlantGridView extends StatelessWidget {
             (appWidth(context) < 600 && isPortrait(context)) ? 3 : 5,
         crossAxisSpacing: appWidth(context) * 0.005,
         mainAxisSpacing: appWidth(context) * 0.005,
-        children: <Widget>[
-          DiagonallyLoadingAnimation(),
-          DiagonallyLoadingAnimation(),
-        ],
+        children: (this.animation)
+            ? <Widget>[
+                DiagonallyLoadingAnimation(),
+                DiagonallyLoadingAnimation(),
+              ]
+            : <Widget>[
+                Card(color: Colors.grey),
+                Card(color: Colors.grey),
+              ],
       ),
     );
   }

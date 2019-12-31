@@ -5,6 +5,8 @@
 */
 
 import 'package:flutter/material.dart';
+// * External packages import
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // * utils import
 import 'package:soif/utils/date_func.dart';
@@ -21,14 +23,25 @@ class NoNowDataOrNoInternet extends StatelessWidget {
           vertical: appWidth(context) * 0.1,
           horizontal: appWidth(context) * 0.01),
       alignment: Alignment.center,
-      child: Text(
-        (this.haveInternet)
-            ? 'No Data for $fetchNowDate'
-            : 'Couldn\'t connect to Internet.\nRefresh to try again.',
-        textAlign: TextAlign.center,
-        style: Theme.of(context).textTheme.display1.copyWith(
-              fontSize: appWidth(context) * 0.04,
-            ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Icon(
+            (this.haveInternet)
+                ? FontAwesomeIcons.question
+                : Icons.signal_cellular_connected_no_internet_4_bar,
+            size: kToolbarHeight,
+          ),
+          Text(
+            (this.haveInternet)
+                ? 'No Data available for $fetchNowDate.'
+                : 'Couldn\'t connect to Internet.\nRefresh to try again.',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.display1.copyWith(
+                  fontSize: appWidth(context) * 0.04,
+                ),
+          ),
+        ],
       ),
     );
   }

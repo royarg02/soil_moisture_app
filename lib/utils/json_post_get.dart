@@ -39,7 +39,7 @@ Future<Map<String, dynamic>> fetchJsonData(
       * otherwise, the default url is invoked with the route determined by the
       * 'latest' boolean by fetching the current data (now) if true, full data if false
       */
-  url ??= "$baseUrl/getdata/${(latest) ? 'now' : '26-10-2019'}";
+  url ??= "$baseUrl/getdata/${(latest) ? 'now' : fetchDateddmmyyyy}";
   http.Response _response;
   // Debug print
   print(url);
@@ -108,9 +108,9 @@ void addThresholdData(Map<String, dynamic> data) {
   // Debug Print
   printData(data, 'Threshold');
   /*
-  * If the threshold value API has not been updated and the current data includes a new entry/ plant, then a new
-  * entry(object) is appended to the 'pumpList' with a value of '0.0'. If current data is not available, the
-  * fetched threshold data itself is used.
+  * If the threshold value API has not been updated and the current data includes a 
+  * new entry/ plant, then a new entry(object) is appended to the 'pumpList' with a
+  * value of '0.0'. If current data is not available, the fetched threshold data itself is used.
   */
   final maxLength = nowData?.plantList?.length ?? data.length;
   pumpList = Iterable<Threshold>.generate(
