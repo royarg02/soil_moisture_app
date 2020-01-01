@@ -126,7 +126,7 @@ void addThresholdData(Map<String, dynamic> data) {
 
 // * fetch total data from API
 Future<void> fetchTotalData() async {
-  print(fetchDateddmmyyyy);
+  print('Fetching data for: $fetchDateddmmyyyy');
   return await fetchJsonData().then((onValue) => addTotalData(onValue));
 }
 

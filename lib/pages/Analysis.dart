@@ -36,134 +36,124 @@ import 'package:soif/utils/date_func.dart';
 import 'package:soif/utils/sizes.dart';
 
 // * Data import
+import 'package:soif/data/environment_data.dart';
 import 'package:soif/data/all_data.dart';
-
-Future<void> _refresh(BuildContext context) async {
-  totData = fetchTotalData();
-  await totData.then((_) {
-    Scaffold.of(context).removeCurrentSnackBar();
-    Scaffold.of(context).showSnackBar(SuccessOnRefresh().build(context));
-    if (isNow()) {
-      latData = fetchLatestData();
-    }
-  }, onError: (_) {
-    Scaffold.of(context).removeCurrentSnackBar();
-    Scaffold.of(context).showSnackBar(FailureOnRefresh().build(context));
-  });
-}
 
 class Analysis extends StatefulWidget {
   @override
   _AnalysisState createState() => _AnalysisState();
 }
 
-class _AnalysisState extends State<Analysis> {
+class _AnalysisState extends State<Analysis>
+    with AutomaticKeepAliveClientMixin {
+  Future<void> _refresh() async {
+    totData = fetchTotalData();
+    await totData.then((_) {
+      Scaffold.of(context).removeCurrentSnackBar();
+      Scaffold.of(context).showSnackBar(SuccessOnRefresh().build(context));
+      if (isNow()) {
+        latData = fetchLatestData();
+      }
+    }, onError: (_) {
+      Scaffold.of(context).removeCurrentSnackBar();
+      Scaffold.of(context).showSnackBar(FailureOnRefresh().build(context));
+    });
+  }
+
+  void refreshWithImmediateEffect() {
+    totData = _refresh();
+    setState(() {});
+  }
+
+  Future<void> refreshWithEffectAfterDone() {
+    return _refresh().then((_) {
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return SafeArea(
       child: DefaultTabController(
         length: 4,
         initialIndex: 0,
         child: RefreshIndicator(
-          onRefresh: () => _refresh(context).then((_) {
-            setState(() {});
-          }),
-          child: FutureBuilder(
-            future: totData,
-            builder: (context, AsyncSnapshot snapshot) {
-              print(snapshot);
-              if (snapshot.hasError) {
-                return _ErrorPage();
-              } else if (snapshot.connectionState == ConnectionState.done) {
-                return _Page();
-              } else {
-                return _Skeleton();
-              }
-            },
+          onRefresh: refreshWithEffectAfterDone,
+          child: CustomScrollView(
+            physics:
+                AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+            slivers: <Widget>[
+              SoifAppBar(
+                title: ChartTabs(),
+                titleSpacing: 0.0,
+                bottom: PreferredSize(
+                  preferredSize: Size.fromHeight(48.0),
+                  child:
+                      DateSelector(invokeFunction: refreshWithImmediateEffect),
+                ),
+                expandedHeight: appHeight(context) * 0.35 + 96.0,
+                backgroundWidgetPadding:
+                    const EdgeInsets.symmetric(vertical: 48.0),
+                backgroundWidget: FutureBuilder(
+                  future: totData,
+                  builder: (context, AsyncSnapshot snapshot) {
+                    print(snapshot);
+                    if (snapshot.hasError) {
+                      return _ErrorWidget();
+                    } else if (snapshot.connectionState ==
+                        ConnectionState.done) {
+                      return _PageWidget();
+                    } else {
+                      return _SkeletonWidget();
+                    }
+                  },
+                ),
+              ),
+              FutureBuilder(
+                future: totData,
+                builder: (context, AsyncSnapshot snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done &&
+                      !snapshot.hasError) {
+                    return PlantGridView(
+                      plantlist: allData.plantList,
+                    );
+                  } else {
+                    return SliverToBoxAdapter();
+                  }
+                },
+              ),
+            ],
           ),
         ),
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
-class _ErrorPage extends StatelessWidget {
+class _ErrorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      physics: AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-      slivers: <Widget>[
-        SoifAppBar(
-          title: ChartTabs(),
-          titleSpacing: 0.0,
-          bottom: PreferredSize(
-            preferredSize: Size.fromHeight(48.0),
-            child: DateSelector(),
-          ),
-          backgroundWidget: ChartViewCard(
-              content: NoNowDataOrNoInternet(haveInternet: false)),
-          backgroundWidgetPadding: const EdgeInsets.symmetric(vertical: 48.0),
-          expandedHeight: appHeight(context) * 0.35 + 96.0,
-        ),
-      ],
-    );
+    return ChartViewCard(content: NoNowDataOrNoInternet(haveInternet: false));
   }
 }
 
-class _Skeleton extends StatelessWidget {
+class _SkeletonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      physics: AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-      slivers: <Widget>[
-        SoifAppBar(
-          title: ChartTabs(),
-          titleSpacing: 0.0,
-          bottom: PreferredSize(
-            preferredSize: Size.fromHeight(48.0),
-            child: DateSelector(),
-          ),
-          backgroundWidget: ChartViewCard(
-              content: Center(child: CircularProgressIndicator())),
-          backgroundWidgetPadding: const EdgeInsets.symmetric(vertical: 48.0),
-          expandedHeight: appHeight(context) * 0.35 + 96.0,
-        ),
-      ],
-    );
+    return ChartViewCard(content: Center(child: CircularProgressIndicator()));
   }
 }
 
-class _Page extends StatefulWidget {
-  @override
-  __PageState createState() => __PageState();
-}
-
-class __PageState extends State<_Page> {
+class _PageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      physics: AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-      slivers: <Widget>[
-        SoifAppBar(
-          title: ChartTabs(),
-          titleSpacing: 0.0,
-          forceElevated: false,
-          bottom: PreferredSize(
-            preferredSize: Size.fromHeight(48.0),
-            child: DateSelector(),
-          ),
-          backgroundWidget: (allData.plantList.isEmpty)
-              ? ChartViewCard(content: NoData())
-              : ChartView(),
-          backgroundWidgetPadding: const EdgeInsets.symmetric(vertical: 48.0),
-          expandedHeight: appHeight(context) * 0.35 + 96.0,
-        ),
-        if (allData.plantList.isNotEmpty)
-          PlantGridView(
-            plantlist: allData.plantList,
-          )
-      ],
-    );
+    return (allData.plantList.isEmpty)
+        ? ChartViewCard(content: NoData())
+        : ChartView();
   }
 }
 
@@ -206,13 +196,84 @@ class ChartTabs extends StatelessWidget {
   }
 }
 
+class ChartViewContent extends StatelessWidget {
+  final EnvironmentData chartData;
+  final String graphToString;
+  ChartViewContent({@required this.chartData, @required this.graphToString});
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: appHeight(context) * 0.06),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  '${(chartData.lastValue * ((graphToString.toUpperCase() == 'MOISTURE') ? 100 : 1)).toStringAsFixed(1)}${chartData.unit}',
+                  style: Theme.of(context).textTheme.body2.copyWith(
+                        color: Theme.of(context).accentColor,
+                        fontSize: appHeight(context) * 0.025,
+                      ),
+                ),
+                Text(
+                  graphToString.toUpperCase(),
+                  style: Theme.of(context).textTheme.overline,
+                ),
+              ],
+            ),
+          ),
+        ),
+        ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: appHeight(context) * 0.25),
+          child: displayChart(chartData, graphToString.toUpperCase(), context),
+        ),
+      ],
+    );
+  }
+}
+
 class ChartView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TabBarView(
       physics: NeverScrollableScrollPhysics(),
-      children: Iterable<Widget>.generate(
-          4, (i) => ChartViewCard(content: SizedBox.shrink())).toList(),
+      children: <Widget>[
+        ChartViewCard(
+          content: ChartViewContent(
+            graphToString: 'Moisture',
+            chartData: allData
+                .plantList[Provider.of<SelectedCardState>(context).selCard]
+                .moisture,
+          ),
+        ),
+        ChartViewCard(
+          content: ChartViewContent(
+            graphToString: 'Light',
+            chartData: allData.light,
+          ),
+        ),
+        ChartViewCard(
+          content: ChartViewContent(
+            graphToString: 'Humidity',
+            chartData: allData.humidity,
+          ),
+        ),
+        ChartViewCard(
+          content: ChartViewContent(
+            graphToString: 'Temperature',
+            chartData: allData.temp,
+          ),
+        ),
+      ],
+
+      // Iterable<Widget>.generate(
+      //     4, (i) => ChartViewCard(content: SizedBox.shrink())).toList(),
 
       // <Widget>[
       //   Card(

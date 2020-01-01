@@ -23,7 +23,8 @@ import 'package:provider/provider.dart';
 
 class PlantGridView extends StatelessWidget {
   final List<Plant> plantlist;
-  PlantGridView({@required this.plantlist});
+  final bool isEnabled;
+  PlantGridView({@required this.plantlist, this.isEnabled});
   @override
   Widget build(BuildContext context) {
     SelectedCardState selectedCardObj = Provider.of<SelectedCardState>(context);
@@ -47,6 +48,7 @@ class PlantGridView extends StatelessWidget {
               plant: plantlist[position],
               isSelected: position == selectedCardObj.selCard,
               onTap: () => selectedCardObj.chooseCard(position),
+              isEnabled: isEnabled ?? true,
             );
           },
           childCount: this.plantlist.length,

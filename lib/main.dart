@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 // * Prefs import
 import 'package:soif/prefs/user_prefs.dart';
+import 'package:soif/states/analysis_ui_loading_state.dart';
 import 'package:soif/states/selected_card_state.dart';
 
 // * State import
@@ -34,6 +35,9 @@ void main() async {
         ChangeNotifierProvider<SelectedCardState>(
           create: (context) => SelectedCardState(),
         ),
+        ChangeNotifierProvider<AnalysisUiLoadingState>(
+          create: (context) => AnalysisUiLoadingState(),
+        )
       ],
       child: Root(),
     ),
@@ -87,8 +91,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    print(appWidth(context));
-    print(appHeight(context));
+    print('Screenwidth: ${appWidth(context)}');
+    print('Screenheight: ${appHeight(context)}');
     return WillPopScope(
       onWillPop: _popScopeInvoke,
       child: Scaffold(

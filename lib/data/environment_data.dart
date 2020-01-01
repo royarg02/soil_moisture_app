@@ -49,11 +49,11 @@ class Humidity extends EnvironmentData {
 
 class Temp extends EnvironmentData {
   Temp() {
-    this._unit = 'C';
+    this._unit = '°C';
   }
 
   Temp.latest() {
-    this._unit = 'C';
+    this._unit = '°C';
     this._values = null;
   }
 }

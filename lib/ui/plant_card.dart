@@ -29,11 +29,13 @@ class PlantCard extends StatelessWidget {
   final Function onTap;
   final Plant plant;
   final bool isSelected;
+  final bool isEnabled;
 
   PlantCard({
     this.plant,
     @required this.onTap,
     this.isSelected,
+    this.isEnabled = true,
   });
 
   @override
@@ -75,7 +77,6 @@ class PlantCard extends StatelessWidget {
                 width: appWidth(context) * 0.1,
               ),
               LinearPercentIndicator(
-                addAutomaticKeepAlive: false,
                 percent: this.plant.moisture.lastValue,
                 progressColor: plant.isCritical()
                     ? criticalPlantColor
@@ -91,7 +92,7 @@ class PlantCard extends StatelessWidget {
               )
             ],
           ),
-          onTap: this.onTap,
+          onTap: (this.isEnabled) ? this.onTap : null,
         ),
       ),
     );

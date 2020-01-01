@@ -119,10 +119,9 @@ class _Page extends StatelessWidget {
                 )
               : NoNowDataOrNoInternet(haveInternet: true), //No,
         ),
-        if (nowData.plantList.isNotEmpty)
-          PlantGridView(
-            plantlist: nowData.plantList,
-          ),
+        PlantGridView(
+          plantlist: nowData.plantList,
+        ),
         // SizedBox(
         //   height: appWidth(context) * 0.03,
         // )
