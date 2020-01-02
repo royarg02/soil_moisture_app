@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 
 // * ui import
 import 'package:soif/ui/colors.dart';
+import 'package:soif/ui/custom_slider_thumb_shape.dart';
 
 // * Text theme to be used throughout the app
 TextTheme appTextTheme = TextTheme(
@@ -65,8 +66,16 @@ ThemeData buildLightTheme() {
     cardTheme: base.cardTheme.copyWith(
       elevation: 3.0,
     ),
+    sliderTheme: base.sliderTheme.copyWith(
+      thumbShape: CustomSliderThumbShape(thumbRadius: 8.0),
+    ),
     snackBarTheme: base.snackBarTheme.copyWith(
       backgroundColor: appSecondaryColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(14.0),
+        ),
+      ),
     ),
     accentTextTheme: base.accentTextTheme.apply(
       fontFamily: 'Ocrb',
@@ -117,8 +126,16 @@ ThemeData buildDarkTheme() {
     cardTheme: base.cardTheme.copyWith(
       elevation: 3.0,
     ),
+    sliderTheme: base.sliderTheme.copyWith(
+      thumbShape: CustomSliderThumbShape(thumbRadius: 8.0),
+    ),
     snackBarTheme: base.snackBarTheme.copyWith(
       backgroundColor: darkAppPrimaryLightColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(14.0),
+        ),
+      ),
     ),
     accentTextTheme: base.accentTextTheme.apply(
       fontFamily: 'Ocrb',

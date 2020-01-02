@@ -23,6 +23,9 @@ import 'package:soif/states/theme_state.dart';
 class Options extends StatelessWidget {
   void showOptions(BuildContext context) {
     showModalBottomSheet(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(14.0)),
+      ),
       isScrollControlled: true,
       context: context,
       builder: (context) => Column(

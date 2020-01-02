@@ -122,9 +122,6 @@ class _Page extends StatelessWidget {
         PlantGridView(
           plantlist: nowData.plantList,
         ),
-        // SizedBox(
-        //   height: appWidth(context) * 0.03,
-        // )
       ],
     );
   }
@@ -157,7 +154,6 @@ class MoistureRadialIndicator extends StatelessWidget {
     int _selCard = Provider.of<SelectedCardState>(context).selCard;
     Plant _selPlant = nowData.plantList[_selCard];
     return CircularPercentIndicator(
-      // addAutomaticKeepAlive: false,
       animationDuration: 600,
       radius: appWidth(context) * 0.55,
       animation: true,
@@ -254,80 +250,7 @@ class _Skeleton extends StatelessWidget {
         ),
         LoadingPlantGridView()
       ],
-      // children: [
-      //   Column(
-      //     children: <Widget>[
-      //       Center(
-      //         child: SizedBox(
-      //           height: appWidth(context) * 0.54,
-      //           width: appWidth(context) * 0.54,
-      //           child: CircularProgressIndicator(
-      //             strokeWidth: 6.0,
-      //           ),
-      //         ),
-      //       ),
-      //       Padding(
-      //         padding: const EdgeInsets.only(top: 6.0),
-      //         child: Text(
-      //           'Getting Data...',
-      //           style: Theme.of(context).textTheme.caption.copyWith(
-      //                 fontSize: appWidth(context) * 0.03,
-      //               ),
-      //           textAlign: TextAlign.center,
-      //         ),
-      //       )
-      //     ],
-      //   ),
-      // ],
     );
-    // return ListView(
-    //   physics: AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-    //   children: <Widget>[
-    //     Container(
-    //       height: 300.0,
-    //       width: 300.0,
-    //       padding: EdgeInsets.symmetric(vertical: appWidth(context) * 0.03),
-    //       alignment: Alignment.center,
-    //       child: CircularProgressIndicator(
-    //         strokeWidth: 6.0,
-    //       ),
-    //     ),
-    // Padding(
-    //   child: SizedBox(
-    //     height: appWidth(context) * 0.6,
-    //     width: appWidth(context) * 0.6,
-    //     child: CircularProgressIndicator(
-    //       strokeWidth: 6.0,
-    //     ),
-    //   ),
-    // child: CircularPercentIndicator(
-    //   radius: appWidth(context) * 0.6,
-    //   backgroundColor: (Provider.of<ThemeState>(context).isDarkTheme)
-    //       ? darkAppProgressIndicatorBackgroundColor
-    //       : appProgressIndicatorBackgroundColor,
-    //   center: CircularProgressIndicator(),
-    //   footer: SizedBox(
-    //     height: appWidth(context) * 0.05,
-    //   ),
-    //   lineWidth: appWidth(context) * 0.02,
-    // ),
-    // ),
-    // Container(
-    //   height: appWidth(context) * 0.12,
-    //   child: Card(
-    //     margin: EdgeInsets.symmetric(horizontal: appWidth(context) * 0.07),
-    //     child: Padding(
-    //       padding: EdgeInsets.all(appWidth(context) * 0.055),
-    //       child: LinearProgressIndicator(
-    //         backgroundColor: (Provider.of<ThemeState>(context).isDarkTheme)
-    //             ? darkAppProgressIndicatorBackgroundColor
-    //             : appProgressIndicatorBackgroundColor,
-    //       ),
-    //     ),
-    //   ),
-    // )
-//       ],
-//     );
   }
 }
 

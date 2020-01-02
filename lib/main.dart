@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 
 // * Prefs import
 import 'package:soif/prefs/user_prefs.dart';
-import 'package:soif/states/analysis_ui_loading_state.dart';
 import 'package:soif/states/selected_card_state.dart';
 
 // * State import
@@ -35,9 +34,6 @@ void main() async {
         ChangeNotifierProvider<SelectedCardState>(
           create: (context) => SelectedCardState(),
         ),
-        ChangeNotifierProvider<AnalysisUiLoadingState>(
-          create: (context) => AnalysisUiLoadingState(),
-        )
       ],
       child: Root(),
     ),

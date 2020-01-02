@@ -11,17 +11,14 @@
 import 'package:flutter/material.dart';
 
 // * External packages import
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 // * State import
 import 'package:soif/states/selected_card_state.dart';
-import 'package:soif/states/theme_state.dart';
 
 // * ui import
 import 'package:soif/ui/analysis_graph.dart';
 import 'package:soif/ui/chart_view_card.dart';
-import 'package:soif/ui/colors.dart';
 import 'package:soif/ui/custom_tab_indicator.dart';
 import 'package:soif/ui/custom_tab_label.dart';
 import 'package:soif/ui/date_selector.dart';
@@ -50,7 +47,7 @@ class _AnalysisState extends State<Analysis>
     totData = fetchTotalData();
     await totData.then((_) {
       Scaffold.of(context).removeCurrentSnackBar();
-      Scaffold.of(context).showSnackBar(SuccessOnRefresh().build(context));
+      // Scaffold.of(context).showSnackBar(SuccessOnRefresh().build(context));
       if (isNow()) {
         latData = fetchLatestData();
       }
@@ -99,13 +96,12 @@ class _AnalysisState extends State<Analysis>
                   future: totData,
                   builder: (context, AsyncSnapshot snapshot) {
                     print(snapshot);
-                    if (snapshot.hasError) {
-                      return _ErrorWidget();
-                    } else if (snapshot.connectionState ==
-                        ConnectionState.done) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return _SkeletonWidget();
+                    } else if (allData != null) {
                       return _PageWidget();
                     } else {
-                      return _SkeletonWidget();
+                      return _ErrorWidget();
                     }
                   },
                 ),
@@ -113,8 +109,10 @@ class _AnalysisState extends State<Analysis>
               FutureBuilder(
                 future: totData,
                 builder: (context, AsyncSnapshot snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done &&
-                      !snapshot.hasError) {
+                  // print(snapshot);
+                  // print(allData);
+                  if (snapshot.connectionState != ConnectionState.waiting &&
+                      allData != null) {
                     return PlantGridView(
                       plantlist: allData.plantList,
                     );
@@ -168,28 +166,18 @@ class ChartTabs extends StatelessWidget {
                   Theme.of(context).accentColor.withOpacity(0.8),
             ),
       ),
-      child: TabBar(
-        tabs: ['MOISTURE', 'LIGHT', 'HUMIDITY', 'TEMPERATURE']
-            .map<Widget>((label) => AppTab(text: label))
-            .toList(),
-        // <Widget>[
-        //   AppTab(
-        //     text: 'MOISTURE',
-        //   ),
-        //   AppTab(
-        //     text: 'LIGHT',
-        //   ),
-        //   AppTab(
-        //     text: 'HUMIDITY',
-        //   ),
-        //   AppTab(
-        //     text: 'TEMPERATURE',
-        //   )
-        // ],
-        indicator: RoundedRectTabIndicator(
-          radius: appWidth(context) * 0.1,
-          width: 2.0,
-          color: Theme.of(context).accentColor,
+      child: Card(
+        color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.8),
+        margin: EdgeInsets.fromLTRB(4.0, 0.0, 4.0, 4.0),
+        child: TabBar(
+          tabs: ['MOISTURE', 'LIGHT', 'HUMIDITY', 'TEMPERATURE']
+              .map<Widget>((label) => AppTab(text: label))
+              .toList(),
+          indicator: RoundedRectTabIndicator(
+            radius: appWidth(context) * 0.1,
+            width: 2.0,
+            color: Theme.of(context).accentColor,
+          ),
         ),
       ),
     );
@@ -271,346 +259,6 @@ class ChartView extends StatelessWidget {
           ),
         ),
       ],
-
-      // Iterable<Widget>.generate(
-      //     4, (i) => ChartViewCard(content: SizedBox.shrink())).toList(),
-
-      // <Widget>[
-      //   Card(
-      //     margin: const EdgeInsets.all(8.0),
-      //     elevation: 6.0,
-      //     child: SizedBox(
-      //       height: appHeight(context) * 0.3,
-      //     ),
-      //   ),
-      //   Card(
-      //     margin: const EdgeInsets.all(8.0),
-      //     elevation: 6.0,
-      //     child: SizedBox(
-      //       height: appHeight(context) * 0.3,
-      //     ),
-      //   ),
-      //   Card(
-      //     margin: const EdgeInsets.all(8.0),
-      //     elevation: 6.0,
-      //     child: SizedBox(
-      //       height: appHeight(context) * 0.3,
-      //     ),
-      //   ),
-      //   Card(
-      //     margin: const EdgeInsets.all(8.0),
-      //     elevation: 6.0,
-      //     child: SizedBox(
-      //       height: appHeight(context) * 0.3,
-      //     ),
-      //   )
-      // ],
     );
   }
 }
-
-// class AnalysiS extends StatefulWidget {
-//   @override
-//   _AnalysiSState createState() => _AnalysiSState();
-// }
-
-// class _AnalysiSState extends State<AnalysiS> {
-//   String _measure;
-//   dynamic _chartObj;
-
-//   void initState() {
-//     _measure = 'Moisture';
-//     super.initState();
-//   }
-
-//   void _initChart(String newMeasure) {
-//     this._measure = newMeasure;
-//     if (allData.plantList.isNotEmpty) {
-//       switch (_measure) {
-//         case 'Humidity':
-//           _chartObj = allData.humidity;
-//           break;
-//         case 'Light':
-//           _chartObj = allData.light;
-//           break;
-//         case 'Temperature':
-//           _chartObj = allData.temp;
-//           break;
-//         case 'Moisture':
-//           _chartObj = allData
-//               .plantList[Provider.of<SelectedCardState>(context).selCard]
-//               .moisture;
-//           break;
-//       }
-//       // Debug Print
-//       print(_chartObj.allValues);
-//       print(_measure);
-//     }
-//   }
-
-//   void _fetchForDate() {
-//     totData = _refresh();
-//     setState(() {});
-//   }
-
-//   Future<void> _pickDate(BuildContext context) async {
-//     final DateTime picked = await showDatePicker(
-//       context: context,
-//       initialDate: date,
-//       firstDate: DateTime(date.year),
-//       lastDate: now,
-//     );
-//     if (picked != null && picked != date) {
-//       date = picked;
-//       _fetchForDate();
-//     }
-//   }
-
-//   Future<void> _refresh() async {
-//     totData = fetchTotalData();
-//     await totData.then((_) {
-//       if (mounted) {
-//         setState(() {
-//           _initChart(_measure);
-//         });
-//       }
-//       if (isNow()) {
-//         latData = fetchLatestData();
-//       }
-//     }, onError: (_) {
-//       Scaffold.of(context).removeCurrentSnackBar();
-//       Scaffold.of(context).showSnackBar(FailureOnRefresh().build(context));
-//     });
-//     // Debug Print
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return SafeArea(
-//       minimum: EdgeInsets.symmetric(horizontal: appWidth(context) * 0.03),
-//       child: RefreshIndicator(
-//         onRefresh: _refresh,
-//         child: ListView(
-//           physics:
-//               AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-//           children: [
-//             Container(
-//               margin: EdgeInsets.symmetric(vertical: appWidth(context) * 0.03),
-//               child: Row(
-//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                 children: <Widget>[
-//                   FutureBuilder(
-//                     future: totData,
-//                     builder: (context, AsyncSnapshot snapshot) {
-//                       if (snapshot.connectionState == ConnectionState.done) {
-//                         _initChart(this._measure);
-//                         return (allData.plantList.isNotEmpty)
-//                             ? Container(
-//                                 height: appWidth(context) * 0.215,
-//                                 alignment: Alignment.center,
-//                                 child: Column(
-//                                   mainAxisSize: MainAxisSize.min,
-//                                   crossAxisAlignment: CrossAxisAlignment.start,
-//                                   children: <Widget>[
-//                                     Row(
-//                                       children: <Widget>[
-//                                         Text(
-//                                           (_chartObj.lastValue *
-//                                                   ((_measure == 'Moisture')
-//                                                       ? 100
-//                                                       : 1))
-//                                               .toStringAsFixed(1),
-//                                           style: Theme.of(context)
-//                                               .textTheme
-//                                               .display2
-//                                               .copyWith(
-//                                                 color: (Provider.of<ThemeState>(
-//                                                             context)
-//                                                         .isDarkTheme)
-//                                                     ? Theme.of(context)
-//                                                         .accentColor
-//                                                     : appSecondaryDarkColor,
-//                                                 fontSize:
-//                                                     appWidth(context) * 0.09,
-//                                               ),
-//                                         ),
-//                                         Text(
-//                                           '${_chartObj.unit}',
-//                                           style: Theme.of(context)
-//                                               .textTheme
-//                                               .body1
-//                                               .copyWith(
-//                                                 fontSize:
-//                                                     appWidth(context) * 0.06,
-//                                               ),
-//                                         ),
-//                                       ],
-//                                     ),
-//                                     Text(
-//                                       'On $fetchDateEEEMMMd',
-//                                       style: Theme.of(context)
-//                                           .textTheme
-//                                           .body2
-//                                           .copyWith(
-//                                             fontSize: appWidth(context) * 0.025,
-//                                           ),
-//                                     ),
-//                                   ],
-//                                 ),
-//                               )
-//                             : SizedBox(
-//                                 height: appWidth(context) * 0.215,
-//                               );
-//                       } else {
-//                         return SizedBox(
-//                           height: appWidth(context) * 0.215,
-//                         );
-//                       }
-//                     },
-//                   ),
-//                   Container(
-//                     padding: EdgeInsets.only(right: appWidth(context) * 0.02),
-//                     height: appWidth(context) * 0.1,
-//                     child: Theme(
-//                       data: Theme.of(context).copyWith(
-//                         canvasColor: Theme.of(context).primaryColor,
-//                       ),
-//                       child: DropdownButtonHideUnderline(
-//                         child: DropdownButton<String>(
-//                           icon: Icon(FontAwesomeIcons.chevronDown),
-//                           iconSize: appWidth(context) * 0.03,
-//                           value: _measure,
-//                           onChanged: (String measure) {
-//                             setState(() {
-//                               _initChart(measure);
-//                             });
-//                           },
-//                           items: <String>[
-//                             'Moisture',
-//                             'Light',
-//                             'Humidity',
-//                             'Temperature'
-//                           ].map<DropdownMenuItem<String>>((String option) {
-//                             return DropdownMenuItem<String>(
-//                               value: option,
-//                               child: Container(
-//                                 alignment: Alignment.center,
-//                                 width: appWidth(context) * 0.31,
-//                                 child: Text(
-//                                   option,
-//                                   style: Theme.of(context)
-//                                       .textTheme
-//                                       .body2
-//                                       .copyWith(
-//                                           fontSize: appWidth(context) * 0.035),
-//                                   textAlign: TextAlign.center,
-//                                 ),
-//                               ),
-//                             );
-//                           }).toList(),
-//                         ),
-//                       ),
-//                     ),
-//                     decoration: BoxDecoration(
-//                       border: Border.all(
-//                         width: 2.0,
-//                         color: appPrimaryDarkColor,
-//                       ),
-//                       borderRadius:
-//                           BorderRadius.circular(appWidth(context) * 0.1),
-//                       shape: BoxShape.rectangle,
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//             Container(
-//               height: appWidth(context) * 0.6,
-//               child: Card(
-//                 child: FutureBuilder(
-//                     future: totData,
-//                     builder: (context, AsyncSnapshot snapshot) {
-//                       // Debug Print
-//                       print(snapshot);
-//                       if (snapshot.hasError) {
-//                         return NoNowDataOrNoInternet(isScrollable: false);
-//                       } else if (snapshot.connectionState ==
-//                           ConnectionState.done) {
-//                         return (_chartObj.allValues.isNotEmpty)
-//                             ? displayChart(_chartObj, _measure, context)
-//                             : NoData();
-//                       } else {
-//                         return Center(
-//                           child: CircularProgressIndicator(),
-//                         );
-//                       }
-//                     }),
-//               ),
-//             ),
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//               children: <Widget>[
-//                 IconButton(
-//                   icon: Icon(Icons.chevron_left),
-//                   onPressed: () {
-//                     prevDate();
-//                     _fetchForDate();
-//                   },
-//                 ),
-//                 Tooltip(
-//                   message: 'Jump to date',
-//                   child: FlatButton(
-//                     onPressed: () => _pickDate(context),
-//                     child: Text(
-//                       '$fetchDateEEEMMMd',
-//                       style: Theme.of(context).textTheme.body2.copyWith(
-//                             fontSize: appWidth(context) * 0.05,
-//                           ),
-//                     ),
-//                     shape: RoundedRectangleBorder(
-//                       borderRadius:
-//                           BorderRadius.circular(appWidth(context) * 0.1),
-//                       side: BorderSide(
-//                         width: 2.0,
-//                         color: appPrimaryDarkColor,
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//                 IconButton(
-//                   icon: Icon(Icons.chevron_right),
-//                   onPressed: (isNow())
-//                       ? null
-//                       : () {
-//                           nextDate();
-//                           _fetchForDate();
-//                         },
-//                 )
-//               ],
-//             ),
-//             SizedBox(
-//               height: appWidth(context) * 0.01,
-//             ),
-//             FutureBuilder(
-//               future: totData,
-//               builder: (context, AsyncSnapshot snapshot) {
-//                 if (snapshot.connectionState == ConnectionState.done &&
-//                     allData.plantList.isNotEmpty) {
-//                   // return PlantGridView(
-//                   //   plantlist: plantList,
-//                   // );
-//                   return Text('Data Got');
-//                 } else {
-//                   return SizedBox();
-//                 }
-//               },
-//             ),
-//             SizedBox(
-//               height: appWidth(context) * 0.03,
-//             )
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }

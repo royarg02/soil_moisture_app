@@ -1,12 +1,17 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:soif/states/analysis_ui_loading_state.dart';
-import 'package:soif/utils/date_func.dart';
-import 'package:soif/utils/json_post_get.dart';
-import 'package:soif/utils/sizes.dart';
-import 'package:soif/pages/Analysis.dart';
+/*
+ * Date Selector
+ * 
+ * Provides controls for choosing the date in Analysis page. 
+ */
 
-import 'colors.dart';
+import 'package:flutter/material.dart';
+
+// * Utils import
+import 'package:soif/utils/date_func.dart';
+import 'package:soif/utils/sizes.dart';
+
+// * Ui Import
+import 'package:soif/ui/colors.dart';
 
 class DateSelector extends StatefulWidget {
   final Function invokeFunction;
@@ -28,7 +33,6 @@ class _DateSelectorState extends State<DateSelector> {
         date = picked;
       });
       widget.invokeFunction();
-      // _fetchForDate();
     }
   }
 

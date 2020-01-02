@@ -79,10 +79,6 @@ List<LineSeries<_ChartData, DateTime>> getLineSeries(
       (i) => _ChartData(
           allValues[i], DateTime(date.year, date.month, date.day, i))).toList();
 
-  // for (var i = 0; i < allValues.length; ++i) {
-  //   data.add(
-  //       _ChartData(allValues[i], DateTime(date.year, date.month, date.day, i)));
-  // }
   return <LineSeries<_ChartData, DateTime>>[
     LineSeries<_ChartData, DateTime>(
       enableTooltip: true,

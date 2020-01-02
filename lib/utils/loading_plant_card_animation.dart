@@ -27,6 +27,6 @@ class DiagonallyLoadingAnimationState extends State<DiagonallyLoadingAnimation>
   }
 
   Widget build(BuildContext context) {
-    return LoadingPlantCard(animation: _animation);
+    return LoadingCard(animation: _animation);
   }
 }

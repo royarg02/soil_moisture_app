@@ -15,7 +15,7 @@ class ThresholdSlider extends StatefulWidget {
   final int position;
   final Function thresholdChanger;
   ThresholdSlider(
-      {this.label, this.threshold, this.position, this.thresholdChanger});
+      {@required this.label, @required this.threshold, this.position, this.thresholdChanger});
 
   @override
   _ThresholdSliderState createState() => _ThresholdSliderState();

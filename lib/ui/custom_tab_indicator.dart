@@ -26,7 +26,7 @@ class _BoxPainter extends BoxPainter {
       this.radius)
       : assert(decoration != null),
         super(onChanged) {
-    radius ??= 56.0; // Value conforming to Material Guidelines
+    radius ??= 56.0; // Value as per Material Guidelines
   }
 
   @override

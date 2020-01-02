@@ -35,8 +35,8 @@ class LoadingPlantGridView extends StatelessWidget {
   }
 }
 
-class LoadingPlantCard extends AnimatedWidget {
-  LoadingPlantCard({Key key, Animation animation})
+class LoadingCard extends AnimatedWidget {
+  LoadingCard({Key key, Animation animation})
       : super(key: key, listenable: animation);
   @override
   Widget build(BuildContext context) {

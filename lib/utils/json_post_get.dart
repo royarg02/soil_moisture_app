@@ -13,18 +13,10 @@ import 'dart:async';
 import 'package:soif/utils/date_func.dart';
 
 // * Data import
-import 'package:soif/data/humidity_class.dart';
-import 'package:soif/data/light_class.dart';
-import 'package:soif/data/plant_class.dart';
-import 'package:soif/data/temp_class.dart';
 import 'package:soif/data/threshold_class.dart';
 import 'package:soif/data/all_data.dart';
 import 'package:soif/data/static_data.dart';
 import 'package:soif/utils/json_post_get_test.dart';
-
-// * determines if any data is got from the API
-// bool isDataGot = false;
-// bool isCurrentDataGot = false;
 
 // * variables for caching response
 Future latData = fetchLatestData();
@@ -75,15 +67,6 @@ void addTotalData(Map<String, dynamic> data) {
   // Debug print
   printData(data, 'All');
   allData = AllData.fromJson(data);
-  // plantList = null;
-  // if (data['records'].isEmpty) {
-  //   plantList = [];
-  //   return null;
-  // }
-  // plantList = totalListFromJson(data['records'][0]['moisture']);
-  // dayHumid = Humidity.fromJson(data['records'][0]);
-  // dayTemp = Temp.fromJson(data['records'][0]);
-  // dayLight = Light.fromJson(data['records'][0]);
   print(allData);
 }
 
@@ -92,15 +75,6 @@ void addLatestData(Map<String, dynamic> data) {
   // Debug print
   printData(data, 'Now');
   nowData = NowData.fromJson(data);
-  // nowPlantList = null;
-  // if (data == null) {
-  //   nowPlantList = [];
-  //   return null;
-  // }
-  // nowPlantList = nowListFromJson(data['moisture']);
-  // nowLight = Light.createLatest(data['light']);
-  // nowHumid = Humidity.createLatest(data['humidity']);
-  // nowTemp = Temp.createLatest(data['temparature']);
   print(nowData);
 }
 
@@ -112,15 +86,9 @@ void addThresholdData(Map<String, dynamic> data) {
   * new entry/ plant, then a new entry(object) is appended to the 'pumpList' with a
   * value of '0.0'. If current data is not available, the fetched threshold data itself is used.
   */
-  final maxLength = nowData?.plantList?.length ?? data.length;
+  final maxLength = nowData?.plantList?.length ?? data["settings"].length;
   pumpList = Iterable<Threshold>.generate(
       maxLength, ((i) => Threshold(i, data["settings"]["pump$i"]))).toList();
-  // var length = (nowPlantList != null && nowPlantList.length > data.length)
-  //     ? nowPlantList.length
-  //     : data.length;
-  // for (var i = 0; i < length; i++) {
-  //   pumpList.add(Threshold(i, data['settings']['pump$i']));
-  // }
   print(pumpList);
 }
 
