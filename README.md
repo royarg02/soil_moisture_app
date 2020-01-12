@@ -1,4 +1,4 @@
-# SOIF
+# <img src="assets/readme/Soif.png" height=100>
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d94e74bd82544d2389ceda65e810ab96)](https://www.codacy.com/manual/RoyARG02/soil_moisture_app?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=RoyARG02/soil_moisture_app&amp;utm_campaign=Badge_Grade)
 
@@ -11,8 +11,6 @@ Font: [OCRB](https://github.com/opensourcedesign/fonts/tree/master/OCR)
 ### Screenshots
 
 <p align = "middle">
-  <img src="assets/readme/Soif.png" height=100>
-  <br><br>
   <img src="assets/readme/overview.png" height=500>
   <img src="assets/readme/analysis_dark.png" height=500>
   <br><br>
