@@ -6,6 +6,7 @@
 
 import 'package:intl/intl.dart';
 
+final DateTime oldestDate = DateTime(2019, 08, 01);
 final DateTime now = DateTime.now();
 DateTime date = now;
 

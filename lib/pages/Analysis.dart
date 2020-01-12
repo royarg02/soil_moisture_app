@@ -80,8 +80,17 @@ class _AnalysisState extends State<Analysis> {
     final DateTime picked = await showDatePicker(
       context: context,
       initialDate: date,
-      firstDate: DateTime(date.year),
+      firstDate: oldestDate,
       lastDate: now,
+      builder: (BuildContext context, Widget child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            buttonBarTheme: ButtonBarTheme.of(context)
+                .copyWith(buttonTextTheme: ButtonTextTheme.normal),
+          ),
+          child: child,
+        );
+      },
     );
     if (picked != null && picked != date) {
       date = picked;

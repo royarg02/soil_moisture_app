@@ -74,6 +74,8 @@ class _CreditsState extends State<Credits> {
         style: Theme.of(context).textTheme.caption.copyWith(
               fontSize: appWidth(context) * 0.03,
             ),
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
       ),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,

@@ -21,18 +21,22 @@ import 'pages/Analysis.dart';
 import 'pages/Overview.dart';
 
 void main() async {
+  WidgetsFlutterBinding
+      .ensureInitialized(); //for awaiting to load sharedPreferences
   await loadPrefs();
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider<ThemeState>(
-        builder: (context) => ThemeState(),
-      ),
-      ChangeNotifierProvider<SelectedCardState>(
-        builder: (context) => SelectedCardState(),
-      ),
-    ],
-    child: Root(),
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeState>(
+          create: (context) => ThemeState(),
+        ),
+        ChangeNotifierProvider<SelectedCardState>(
+          create: (context) => SelectedCardState(),
+        ),
+      ],
+      child: Root(),
+    ),
+  );
 }
 
 class Root extends StatelessWidget {
