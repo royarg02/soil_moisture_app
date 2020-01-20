@@ -10,6 +10,15 @@ import 'package:flutter/services.dart';
 // * ui import
 import 'package:soil_moisture_app/ui/colors.dart';
 
+// * Helper functions for returning appropriate themes
+ThemeMode determineThemeMode(bool isDarkTheme) {
+  return isDarkTheme ? ThemeMode.dark : ThemeMode.light;
+}
+
+SystemUiOverlayStyle appSystemUiTheme(bool isDarkTheme) {
+  return isDarkTheme ? buildDarkSystemUi() : buildLightSystemUi();
+}
+
 // * Text theme to be used throughout the app
 TextTheme appTextTheme = TextTheme(
   display4: TextStyle(fontFamily: 'Ocrb'),

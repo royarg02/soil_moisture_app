@@ -1,7 +1,7 @@
 /* 
 * options
 
-* Displays a bottom options menu for 'Pump Threshold Control' and 'About', for now.
+* Displays a bottom options menu for 'Dark Theme', 'Pump Threshold Control' and 'About'.
 */
 
 import 'package:flutter/material.dart';
@@ -22,6 +22,7 @@ import 'package:soil_moisture_app/states/theme_state.dart';
 
 class Options extends StatelessWidget {
   void showOptions(BuildContext context) {
+    var _themeState = Provider.of<ThemeState>(context);
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
@@ -29,15 +30,15 @@ class Options extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           ListTile(
-            leading: (Provider.of<ThemeState>(context).isDarkTheme)
+            leading: (_themeState.isDarkTheme)
                 ? Icon(FontAwesomeIcons.solidLightbulb)
                 : Icon(FontAwesomeIcons.lightbulb),
             title: Text('Dark Theme'),
             trailing: Switch(
-              value: Provider.of<ThemeState>(context).isDarkTheme,
-              onChanged: (_) => Provider.of<ThemeState>(context).toggleTheme(),
+              value: _themeState.isDarkTheme,
+              onChanged: (_) => _themeState.toggleTheme(),
             ),
-            onTap: () => Provider.of<ThemeState>(context).toggleTheme(),
+            onTap: () => _themeState.toggleTheme(),
           ),
           ListTile(
             leading: Icon(FontAwesomeIcons.slidersH),
