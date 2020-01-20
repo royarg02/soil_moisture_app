@@ -21,6 +21,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // * utils import
+import 'package:soil_moisture_app/utils/app_info.dart';
 import 'package:soil_moisture_app/utils/sizes.dart';
 
 // * data import
@@ -119,19 +120,35 @@ class _CreditsState extends State<Credits> {
         centerTitle: true,
       ),
       body: SafeArea(
-        minimum: EdgeInsets.symmetric(horizontal: appWidth(context) * 0.03),
         child: ListView(
+          padding: EdgeInsets.all(appWidth(context) * 0.03),
           physics:
               AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
           children: <Widget>[
-            SizedBox(
-              height: appWidth(context) * 0.03,
-            ),
             Image.asset(
               (Provider.of<ThemeState>(context).isDarkTheme)
                   ? './assets/images/Soif_sk_dark.png'
                   : './assets/images/Soif_sk.png',
               height: appWidth(context) * 0.25,
+            ),
+            Padding(
+              padding: EdgeInsets.all(appHeight(context) * 0.01),
+              child: RichText(
+                textAlign: TextAlign.center,
+                strutStyle: StrutStyle(fontSize: 14.0),
+                text: TextSpan(
+                  style: Theme.of(context).textTheme.body2.copyWith(
+                        color: (Provider.of<ThemeState>(context).isDarkTheme)
+                            ? subtleWhiteTextColor
+                            : subtleBlackTextColor,
+                      ),
+                  children: [
+                    TextSpan(text: 'Version ${getAppInfo.version}\n'),
+                    TextSpan(text: 'Built with '),
+                    WidgetSpan(child: FlutterLogo()),
+                  ],
+                ),
+              ),
             ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: appWidth(context) * 0.03),
@@ -189,9 +206,6 @@ class _CreditsState extends State<Credits> {
                 onTap: () => _launchUrl(apiUrl),
               ),
             ),
-            SizedBox(
-              height: appWidth(context) * 0.03,
-            )
           ],
         ),
       ),
