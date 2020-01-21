@@ -1,7 +1,7 @@
 /* 
 * options
 
-* Displays a bottom options menu for 'Pump Threshold Control' and 'About', for now.
+* Displays a bottom options menu for 'Dark Theme', 'Pump Threshold Control' and 'About'.
 */
 
 import 'package:flutter/material.dart';
@@ -20,55 +20,7 @@ import 'package:soif/pages/ThresholdPump.dart';
 // * State Import
 import 'package:soif/states/theme_state.dart';
 
-class Options extends StatelessWidget {
-  void showOptions(BuildContext context) {
-    showModalBottomSheet(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(14.0)),
-      ),
-      isScrollControlled: true,
-      context: context,
-      builder: (context) => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          ListTile(
-            leading: (Provider.of<ThemeState>(context).isDarkTheme)
-                ? Icon(FontAwesomeIcons.solidLightbulb)
-                : Icon(FontAwesomeIcons.lightbulb),
-            title: Text('Dark Theme'),
-            trailing: Switch(
-              value: Provider.of<ThemeState>(context).isDarkTheme,
-              onChanged: (_) => Provider.of<ThemeState>(context).toggleTheme(),
-            ),
-            onTap: () => Provider.of<ThemeState>(context).toggleTheme(),
-          ),
-          ListTile(
-            leading: Icon(FontAwesomeIcons.slidersH),
-            title: Text('Pump Threshold Control'),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ThresholdPump()),
-              );
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.info),
-            title: Text('About'),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Credits()),
-              );
-            },
-          )
-        ],
-      ),
-    );
-  }
-
+class OptionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
@@ -81,4 +33,53 @@ class Options extends StatelessWidget {
       onPressed: () => showOptions(context),
     );
   }
+}
+
+void showOptions(BuildContext context) {
+  showModalBottomSheet(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(14.0)),
+    ),
+    isScrollControlled: true,
+    context: context,
+    builder: (context) => Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        ListTile(
+          leading: (Provider.of<ThemeState>(context).isDarkTheme)
+              ? Icon(FontAwesomeIcons.solidLightbulb)
+              : Icon(FontAwesomeIcons.lightbulb),
+          title: Text('Dark Theme'),
+          trailing: Switch(
+            value: Provider.of<ThemeState>(context).isDarkTheme,
+            onChanged: (_) =>
+                Provider.of<ThemeState>(context, listen: false).toggleTheme(),
+          ),
+          onTap: () => Provider.of<ThemeState>(context, listen: false).toggleTheme(),
+        ),
+        ListTile(
+          leading: Icon(FontAwesomeIcons.slidersH),
+          title: Text('Pump Threshold Control'),
+          onTap: () {
+            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ThresholdPump()),
+            );
+          },
+        ),
+        ListTile(
+          leading: Icon(Icons.info),
+          title: Text('About'),
+          onTap: () {
+            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Credits()),
+            );
+          },
+        )
+      ],
+    ),
+  );
 }

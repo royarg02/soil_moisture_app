@@ -5,18 +5,18 @@
 */
 
 import 'package:http/http.dart' as http;
-import 'package:soif/data/plant_data.dart';
 import 'dart:convert';
 import 'dart:async';
 
 // * utils import
 import 'package:soif/utils/date_func.dart';
+import 'package:soif/utils/json_post_get_test.dart';
 
 // * Data import
+import 'package:soif/data/plant_data.dart';
 import 'package:soif/data/threshold_class.dart';
 import 'package:soif/data/all_data.dart';
 import 'package:soif/data/static_data.dart';
-import 'package:soif/utils/json_post_get_test.dart';
 
 // * variables for caching response
 Future latData = fetchLatestData();

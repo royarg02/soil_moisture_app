@@ -17,18 +17,17 @@ import 'package:provider/provider.dart';
 
 // * State Import
 import 'package:soif/states/theme_state.dart';
-import 'package:soif/ui/refresh_snackbar.dart';
-
-// * ui import
-import 'package:soif/ui/threshold_slider.dart';
-import 'package:soif/ui/colors.dart';
-import 'package:soif/utils/date_func.dart';
 
 // * utils import
+import 'package:soif/utils/date_func.dart';
 import 'package:soif/utils/json_post_get.dart';
-import 'package:soif/utils/display_error.dart';
-import 'package:soif/utils/loading_plant_card_animation.dart';
 import 'package:soif/utils/sizes.dart';
+
+// * widgets import
+import 'package:soif/widgets/refresh_snackbar.dart';
+import 'package:soif/widgets/threshold_slider.dart';
+import 'package:soif/widgets/display_error.dart';
+import 'package:soif/widgets/animated_loading_card.dart';
 
 // * data import
 import 'package:soif/data/all_data.dart';
@@ -198,34 +197,24 @@ class _ThresholdSetButtonState extends State<ThresholdSetButton> {
 
   void _showStatus(BuildContext context, String status) {
     showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              'Threshold Set Status',
-              textAlign: TextAlign.center,
-            ),
-            actions: <Widget>[
-              FlatButton(
-                color: (Provider.of<ThemeState>(context).isDarkTheme)
-                    ? Theme.of(context).accentColor
-                    : appSecondaryDarkColor,
-                textTheme: ButtonTextTheme.primary,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                      Radius.circular(appWidth(context) * 0.1)),
-                ),
-                child: Text(
-                  'OK',
-                  style: Theme.of(context).accentTextTheme.button,
-                ),
-                onPressed: () => Navigator.of(context).pop(),
-                padding: EdgeInsets.all(appWidth(context) * 0.02),
-              )
-            ],
-            content: Text(status),
-          );
-        });
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Threshold Set Status',
+            textAlign: TextAlign.center,
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('OK'),
+              onPressed: () => Navigator.of(context).pop(),
+              padding: EdgeInsets.all(appWidth(context) * 0.02),
+            )
+          ],
+          content: Text(status),
+        );
+      },
+    );
   }
 
   @override
@@ -261,7 +250,7 @@ class _Skeleton extends StatelessWidget {
           margin: EdgeInsets.only(top: appWidth(context) * 0.03),
           child: ConstrainedBox(
             constraints: BoxConstraints.expand(height: 52),
-            child: DiagonallyLoadingAnimation(),
+            child: AnimatedLoadingCard(),
           ),
         );
       },

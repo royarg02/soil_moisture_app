@@ -5,18 +5,21 @@ import 'package:provider/provider.dart';
 
 // * Prefs import
 import 'package:soif/prefs/user_prefs.dart';
-import 'package:soif/states/selected_card_state.dart';
 
 // * State import
+import 'package:soif/states/selected_card_state.dart';
 import 'package:soif/states/theme_state.dart';
-import 'package:soif/ui/custom_tab_indicator.dart';
 
 // * ui import
-import 'package:soif/ui/custom_tab_label.dart';
-import 'package:soif/ui/options.dart';
+import 'package:soif/ui/build_theme.dart';
+
+// * widgets import
+import 'package:soif/widgets/custom_tab_label.dart';
+import 'package:soif/widgets/options.dart';
 
 // * utils import
 import 'package:soif/utils/sizes.dart';
+import 'package:soif/utils/app_info.dart';
 
 // * Pages Import
 import 'pages/Analysis.dart';
@@ -24,6 +27,7 @@ import 'pages/Overview.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); //for awaiting
+  await loadAppInfo();
   await loadPrefs();
   runApp(
     MultiProvider(
@@ -48,26 +52,34 @@ class Root extends StatelessWidget {
       title: title,
       debugShowCheckedModeBanner: false,
       home: Home(),
-      theme: Provider.of<ThemeState>(context).getTheme,
+      theme: buildLightTheme(),
+      darkTheme: buildDarkTheme(),
+      themeMode:
+          determineThemeMode(Provider.of<ThemeState>(context).isDarkTheme),
     );
   }
 }
 
 class Home extends StatefulWidget {
+  final List<Widget> _tabPages = [
+    Overview(),
+    Analysis(),
+  ];
   @override
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
-  final List<Widget> _children = [
-    Overview(),
-    Analysis(),
-  ];
+class _HomeState extends State<Home>
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   TabController _controller;
   @override
   void initState() {
     super.initState();
-    _controller = TabController(vsync: this, initialIndex: 0, length: 2);
+    _controller = TabController(
+      vsync: this,
+      initialIndex: 0,
+      length: widget._tabPages.length,
+    );
   }
 
   @override
@@ -76,17 +88,20 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     super.dispose();
   }
 
-  Future<bool> _popScopeInvoke() {
+  Future<bool> _popScopeInvoke() async {
     if (this._controller.index == 1) {
       this._controller.index = 0;
       return Future<bool>.value(false);
     } else {
+      await getPrefs.setBool('isDarkTheme',
+          Provider.of<ThemeState>(context, listen: false).isDarkTheme);
       return Future<bool>.value(true);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     print('Screenwidth: ${appWidth(context)}');
     print('Screenheight: ${appHeight(context)}');
     return WillPopScope(
@@ -94,7 +109,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       child: Scaffold(
         body: TabBarView(
           controller: _controller,
-          children: _children,
+          children: widget._tabPages,
           physics: NeverScrollableScrollPhysics(),
         ),
         bottomNavigationBar: BottomAppBar(
@@ -118,14 +133,13 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       text: 'ANALYSIS',
                     )
                   ],
-                  unselectedLabelStyle: TextStyle(
-                    fontSize: appWidth(context) * 0.025,
-                    fontFamily: 'Ocrb',
-                  ),
-                  labelStyle: TextStyle(
-                    fontSize: appWidth(context) * 0.035,
-                    fontFamily: 'Ocrb',
-                  ),
+                  unselectedLabelStyle:
+                      Theme.of(context).primaryTextTheme.body2.copyWith(
+                            fontSize: appWidth(context) * 0.025,
+                          ),
+                  labelStyle: Theme.of(context).primaryTextTheme.body2.copyWith(
+                        fontSize: appWidth(context) * 0.035,
+                      ),
                   indicator: RoundedRectTabIndicator(
                     radius: appWidth(context) * 0.1,
                     width: 2.0,
@@ -133,11 +147,14 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   ),
                 ),
               ),
-              Options()
+              OptionButton()
             ],
           ),
         ),
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

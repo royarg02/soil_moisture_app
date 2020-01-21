@@ -1,7 +1,7 @@
 name: soif
-description: A new Flutter project.
+description: For soil moisture monitoring.
 
-version: 2.0.0+2
+version: 2.0.0+alpha
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
@@ -14,8 +14,9 @@ dependencies:
   font_awesome_flutter: ^8.5.0
   url_launcher: ^5.4.1
   flutter_image: ^3.0.0
-  provider: ^4.0.0
+  provider: ^4.0.2
   shared_preferences: ^0.5.6
+  package_info: ^0.4.0+13
 
   cupertino_icons: ^0.1.3
   http:
@@ -35,6 +36,23 @@ flutter:
    - assets/images/plant_dark.png
 
   fonts:
-    - family: Ocrb
+    - family: JetBrains Mono
       fonts:
-        - asset: assets/fonts/Ocrb.ttf
+        - asset: assets/fonts/JetBrainsMono/JetBrainsMono-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/JetBrainsMono/JetBrainsMono-Bold-Italic.ttf
+          weight: 700
+          style: italic
+        - asset: assets/fonts/JetBrainsMono/JetBrainsMono-ExtraBold.ttf
+          weight: 900
+        - asset: assets/fonts/JetBrainsMono/JetBrainsMono-ExtraBold-Italic.ttf
+          weight: 900
+          style: italic
+        - asset: assets/fonts/JetBrainsMono/JetBrainsMono-Italic.ttf
+          style: italic
+        - asset: assets/fonts/JetBrainsMono/JetBrainsMono-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/JetBrainsMono/JetBrainsMono-Medium-Italic.ttf
+          weight: 500
+          style: italic
+        - asset: assets/fonts/JetBrainsMono/JetBrainsMono-Regular.ttf

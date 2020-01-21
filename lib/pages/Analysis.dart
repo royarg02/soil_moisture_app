@@ -18,16 +18,17 @@ import 'package:soif/states/selected_card_state.dart';
 
 // * ui import
 import 'package:soif/ui/analysis_graph.dart';
-import 'package:soif/ui/chart_view_card.dart';
-import 'package:soif/ui/custom_tab_indicator.dart';
-import 'package:soif/ui/custom_tab_label.dart';
-import 'package:soif/ui/date_selector.dart';
-import 'package:soif/ui/plant_grid_view.dart';
-import 'package:soif/ui/refresh_snackbar.dart';
-import 'package:soif/ui/soif_app_bar.dart';
+
+// * widgets import
+import 'package:soif/widgets/custom_tab_label.dart';
+import 'package:soif/widgets/chart_view_card.dart';
+import 'package:soif/widgets/date_selector.dart';
+import 'package:soif/widgets/plant_grid_view.dart';
+import 'package:soif/widgets/refresh_snackbar.dart';
+import 'package:soif/widgets/soif_app_bar.dart';
+import 'package:soif/widgets/display_error.dart';
 
 // * utils import
-import 'package:soif/utils/display_error.dart';
 import 'package:soif/utils/json_post_get.dart';
 import 'package:soif/utils/date_func.dart';
 import 'package:soif/utils/sizes.dart';
@@ -173,6 +174,13 @@ class ChartTabs extends StatelessWidget {
           tabs: ['MOISTURE', 'LIGHT', 'HUMIDITY', 'TEMPERATURE']
               .map<Widget>((label) => AppTab(text: label))
               .toList(),
+          unselectedLabelStyle:
+              Theme.of(context).primaryTextTheme.body2.copyWith(
+                    fontSize: appWidth(context) * 0.025,
+                  ),
+          labelStyle: Theme.of(context).primaryTextTheme.body2.copyWith(
+                fontSize: appWidth(context) * 0.035,
+              ),
           indicator: RoundedRectTabIndicator(
             radius: appWidth(context) * 0.1,
             width: 2.0,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// * Export tab indicator to be used alongwith the tabs
+export 'package:soif/ui/custom_tab_indicator.dart';
 /*
  * Custom Tab Label
  * 

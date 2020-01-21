@@ -9,8 +9,8 @@ import 'package:flutter/material.dart';
 // * State import
 import 'package:soif/states/selected_card_state.dart';
 
-// * ui import
-import 'package:soif/ui/plant_card.dart';
+// * widgets import
+import 'package:soif/widgets/plant_card.dart';
 
 // * data import
 import 'package:soif/data/plant_class.dart';
@@ -27,7 +27,6 @@ class PlantGridView extends StatelessWidget {
   PlantGridView({@required this.plantlist, this.isEnabled});
   @override
   Widget build(BuildContext context) {
-    SelectedCardState selectedCardObj = Provider.of<SelectedCardState>(context);
     return SliverPadding(
       padding: EdgeInsets.fromLTRB(
         appWidth(context) * 0.03,
@@ -46,8 +45,11 @@ class PlantGridView extends StatelessWidget {
           (context, position) {
             return PlantCard(
               plant: plantlist[position],
-              isSelected: position == selectedCardObj.selCard,
-              onTap: () => selectedCardObj.chooseCard(position),
+              isSelected:
+                  position == Provider.of<SelectedCardState>(context).selCard,
+              onTap: () =>
+                  Provider.of<SelectedCardState>(context, listen: false)
+                      .chooseCard(position),
               isEnabled: isEnabled ?? true,
             );
           },

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+// * widgets import
+import 'package:soif/widgets/animated_loading_card.dart';
+
 // * Utils import
-import 'package:soif/utils/loading_plant_card_animation.dart';
 import 'package:soif/utils/sizes.dart';
 
 class LoadingPlantGridView extends StatelessWidget {
@@ -23,42 +25,13 @@ class LoadingPlantGridView extends StatelessWidget {
         mainAxisSpacing: appWidth(context) * 0.005,
         children: (this.animation)
             ? <Widget>[
-                DiagonallyLoadingAnimation(),
-                DiagonallyLoadingAnimation(),
+                AnimatedLoadingCard(),
+                AnimatedLoadingCard(),
               ]
             : <Widget>[
                 Card(color: Colors.grey),
                 Card(color: Colors.grey),
               ],
-      ),
-    );
-  }
-}
-
-class LoadingCard extends AnimatedWidget {
-  LoadingCard({Key key, Animation animation})
-      : super(key: key, listenable: animation);
-  @override
-  Widget build(BuildContext context) {
-    Animation _animation = listenable;
-    return Container(
-      margin: const EdgeInsets.all(4.0),
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(4.0)),
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Colors.grey,
-            Colors.grey[300],
-            Colors.grey,
-          ],
-          stops: [
-            _animation.value,
-            (_animation.value + 0.15) % 1.0,
-            (_animation.value + 0.3) % 1.0
-          ],
-        ),
       ),
     );
   }

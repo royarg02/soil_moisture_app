@@ -43,7 +43,7 @@ SfCartesianChart displayChart(
       majorGridLines: MajorGridLines(width: 0.0),
       dateFormat: DateFormat('ha'),
       labelStyle: ChartTextStyle(
-        fontFamily: 'Ocrb',
+        fontFamily: 'JetBrains Mono',
         fontSize: appWidth(context) * 0.023,
       ),
     ),
@@ -57,7 +57,7 @@ SfCartesianChart displayChart(
       isVisible: true,
       labelStyle: ChartTextStyle(
         fontSize: appWidth(context) * 0.023,
-        fontFamily: 'Ocrb',
+        fontFamily: 'JetBrains Mono',
       ),
     ),
     series: getLineSeries(chartObj.allValues, graph, context),

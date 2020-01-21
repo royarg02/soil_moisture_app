@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+// * states import
 import 'package:soif/states/theme_state.dart';
+
+// * utils import
 import 'package:soif/utils/sizes.dart';
 
 class SoifAppBar extends StatelessWidget {
@@ -24,6 +28,9 @@ class SoifAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
+      brightness: Provider.of<ThemeState>(context).isDarkTheme
+          ? Brightness.dark
+          : Brightness.light,
       elevation: this.elevation ?? 4.0,
       titleSpacing: this.titleSpacing ?? NavigationToolbar.kMiddleSpacing,
       primary: true,

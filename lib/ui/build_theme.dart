@@ -11,22 +11,14 @@ import 'package:flutter/services.dart';
 import 'package:soif/ui/colors.dart';
 import 'package:soif/ui/custom_slider_thumb_shape.dart';
 
-// * Text theme to be used throughout the app
-TextTheme appTextTheme = TextTheme(
-  display4: TextStyle(fontFamily: 'Ocrb'),
-  display3: TextStyle(fontFamily: 'Ocrb'),
-  display2: TextStyle(fontFamily: 'Ocrb'),
-  display1: TextStyle(fontFamily: 'Ocrb'),
-  body1: TextStyle(fontFamily: 'Ocrb'),
-  body2: TextStyle(fontFamily: 'Ocrb'),
-  headline: TextStyle(fontFamily: 'Ocrb'),
-  subtitle: TextStyle(fontFamily: 'Ocrb'),
-  button: TextStyle(fontFamily: 'Ocrb'),
-  caption: TextStyle(fontFamily: 'Ocrb'),
-  subhead: TextStyle(fontFamily: 'Ocrb'),
-  overline: TextStyle(fontFamily: 'Ocrb'),
-  title: TextStyle(fontFamily: 'Ocrb'),
-);
+// * Helper functions for returning appropriate themes
+ThemeMode determineThemeMode(bool isDarkTheme) {
+  return isDarkTheme ? ThemeMode.dark : ThemeMode.light;
+}
+
+SystemUiOverlayStyle appSystemUiTheme(bool isDarkTheme) {
+  return isDarkTheme ? buildDarkSystemUi() : buildLightSystemUi();
+}
 
 // * Light Theme
 ThemeData buildLightTheme() {
@@ -46,9 +38,9 @@ ThemeData buildLightTheme() {
       primaryVariant: appPrimaryDarkColor,
       secondaryVariant: appSecondaryColor,
     ),
-    textTheme: appTextTheme,
   );
   return base.copyWith(
+    textTheme: base.textTheme.apply(fontFamily: 'JetBrains Mono'),
     appBarTheme: base.appBarTheme.copyWith(
       brightness: Brightness.light,
     ),
@@ -57,6 +49,10 @@ ThemeData buildLightTheme() {
     ),
     bottomSheetTheme: base.bottomSheetTheme.copyWith(
       backgroundColor: appSecondaryLightColor,
+    ),
+    buttonBarTheme: base.buttonBarTheme.copyWith(
+      buttonTextTheme: ButtonTextTheme.accent,
+      alignment: MainAxisAlignment.spaceEvenly,
     ),
     tabBarTheme: base.tabBarTheme.copyWith(
       labelColor: base.cardColor,
@@ -78,10 +74,10 @@ ThemeData buildLightTheme() {
       ),
     ),
     accentTextTheme: base.accentTextTheme.apply(
-      fontFamily: 'Ocrb',
+      fontFamily: 'JetBrains Mono',
     ),
     primaryTextTheme: base.accentTextTheme.apply(
-      fontFamily: 'Ocrb',
+      fontFamily: 'JetBrains Mono',
       bodyColor: appSecondaryDarkColor,
       displayColor: appSecondaryDarkColor,
     ),
@@ -112,9 +108,9 @@ ThemeData buildDarkTheme() {
       primaryVariant: darkAppPrimaryColor,
       secondaryVariant: darkAppPrimaryColor,
     ),
-    textTheme: appTextTheme,
   );
   return base.copyWith(
+    textTheme: base.textTheme.apply(fontFamily: 'JetBrains Mono'),
     appBarTheme: base.appBarTheme.copyWith(
       brightness: Brightness.dark,
     ),
@@ -137,11 +133,15 @@ ThemeData buildDarkTheme() {
         ),
       ),
     ),
+    buttonBarTheme: base.buttonBarTheme.copyWith(
+      buttonTextTheme: ButtonTextTheme.accent,
+      alignment: MainAxisAlignment.spaceEvenly,
+    ),
     accentTextTheme: base.accentTextTheme.apply(
-      fontFamily: 'Ocrb',
+      fontFamily: 'JetBrains Mono',
     ),
     primaryTextTheme: base.accentTextTheme.apply(
-      fontFamily: 'Ocrb',
+      fontFamily: 'JetBrains Mono',
       bodyColor: base.accentColor,
       displayColor: base.accentColor,
     ),

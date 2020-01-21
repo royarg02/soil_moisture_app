@@ -16,12 +16,12 @@ import 'package:provider/provider.dart';
 // * States import
 import 'package:soif/states/selected_card_state.dart';
 import 'package:soif/states/theme_state.dart';
+
+// * ui import
 import 'package:soif/ui/colors.dart';
-import 'package:soif/ui/soif_app_bar.dart';
 
 // * utils import
 import 'package:soif/utils/date_func.dart';
-import 'package:soif/utils/display_error.dart';
 import 'package:soif/utils/json_post_get.dart';
 import 'package:soif/utils/sizes.dart';
 
@@ -29,10 +29,12 @@ import 'package:soif/utils/sizes.dart';
 import 'package:soif/data/all_data.dart';
 import 'package:soif/data/plant_class.dart';
 
-// * ui import
-import 'package:soif/ui/loading_plant_grid_view.dart';
-import 'package:soif/ui/plant_grid_view.dart';
-import 'package:soif/ui/refresh_snackbar.dart';
+// * widgets import
+import 'package:soif/widgets/loading_plant_grid_view.dart';
+import 'package:soif/widgets/soif_app_bar.dart';
+import 'package:soif/widgets/display_error.dart';
+import 'package:soif/widgets/plant_grid_view.dart';
+import 'package:soif/widgets/refresh_snackbar.dart';
 
 class Overview extends StatefulWidget {
   @override
