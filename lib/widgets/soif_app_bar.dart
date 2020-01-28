@@ -24,14 +24,13 @@ class SoifAppBar extends StatelessWidget {
       this.bottom,
       this.titleSpacing,
       this.expandedHeight,
-      this.backgroundWidgetPadding});
+      this.backgroundWidgetPadding = EdgeInsets.zero});
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
       brightness: Provider.of<ThemeState>(context).isDarkTheme
           ? Brightness.dark
           : Brightness.light,
-      elevation: this.elevation ?? 4.0,
       titleSpacing: this.titleSpacing ?? NavigationToolbar.kMiddleSpacing,
       primary: true,
       forceElevated: this.forceElevated ?? false,
@@ -50,7 +49,8 @@ class SoifAppBar extends StatelessWidget {
         collapseMode: CollapseMode.pin,
         background: Container(
           alignment: Alignment.topCenter,
-          padding: this.backgroundWidgetPadding ?? EdgeInsets.zero,
+          padding:
+              this.backgroundWidgetPadding.add(MediaQuery.of(context).padding),
           color: Theme.of(context).scaffoldBackgroundColor,
           child: this.backgroundWidget,
         ),

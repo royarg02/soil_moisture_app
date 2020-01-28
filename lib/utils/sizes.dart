@@ -5,6 +5,7 @@
 */
 
 import 'package:flutter/material.dart';
+import 'package:soif/utils/constants.dart';
 
 bool isPortrait(context) =>
     MediaQuery.of(context).orientation == Orientation.portrait;
@@ -16,3 +17,6 @@ double appHeight(context) => (isPortrait(context))
 double appWidth(context) => (isPortrait(context))
     ? MediaQuery.of(context).size.width
     : MediaQuery.of(context).size.height;
+
+double appChartHeight(context) =>
+    (appHeight(context) < 700) ? soifChartHeightSmall : soifChartHeightBig;

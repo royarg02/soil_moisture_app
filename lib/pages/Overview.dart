@@ -60,8 +60,10 @@ class _OverviewState extends State<Overview> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      top: false,
       child: RefreshIndicator(
         onRefresh: _refresh,
+        displacement: 40.0 + MediaQuery.of(context).padding.top,
         child: FutureBuilder(
           future: latData,
           builder: (context, AsyncSnapshot snapshot) {

@@ -125,13 +125,23 @@ class _CreditsState extends State<Credits> {
           physics:
               AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
           children: <Widget>[
-            Image.asset(
-              (Provider.of<ThemeState>(context).isDarkTheme)
-                  ? './assets/images/Soif_sk_dark.png'
-                  : './assets/images/Soif_sk.png',
-              height: appWidth(context) * 0.25,
+            Align(
+              alignment: Alignment.topCenter,
+              child: Banner(
+                textStyle: Theme.of(context).accentTextTheme.overline,
+                location: BannerLocation.bottomEnd,
+                message: 'Alpha',
+                color: Theme.of(context).accentColor,
+                child: Image.asset(
+                  (Provider.of<ThemeState>(context).isDarkTheme)
+                      ? './assets/images/Soif_sk_dark.png'
+                      : './assets/images/Soif_sk.png',
+                  height: appHeight(context) * 0.12,
+                  fit: BoxFit.contain,
+                ),
+              ),
             ),
-             Padding(
+            Padding(
               padding: EdgeInsets.all(appHeight(context) * 0.01),
               child: RichText(
                 textAlign: TextAlign.center,

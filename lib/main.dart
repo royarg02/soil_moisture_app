@@ -107,6 +107,8 @@ class _HomeState extends State<Home>
     return WillPopScope(
       onWillPop: _popScopeInvoke,
       child: Scaffold(
+        extendBodyBehindAppBar: true,
+        extendBody: true,
         body: TabBarView(
           controller: _controller,
           children: widget._tabPages,

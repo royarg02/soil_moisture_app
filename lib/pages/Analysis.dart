@@ -30,6 +30,7 @@ import 'package:soif/widgets/display_error.dart';
 
 // * utils import
 import 'package:soif/utils/json_post_get.dart';
+import 'package:soif/utils/constants.dart';
 import 'package:soif/utils/date_func.dart';
 import 'package:soif/utils/sizes.dart';
 
@@ -73,10 +74,12 @@ class _AnalysisState extends State<Analysis>
   Widget build(BuildContext context) {
     super.build(context);
     return SafeArea(
+      top: false,
       child: DefaultTabController(
         length: 4,
         initialIndex: 0,
         child: RefreshIndicator(
+          displacement: soifAppBarHeight + MediaQuery.of(context).padding.top,
           onRefresh: refreshWithEffectAfterDone,
           child: CustomScrollView(
             physics:
