@@ -11,9 +11,16 @@ import 'package:flutter/services.dart';
 import 'package:soif/ui/colors.dart';
 import 'package:soif/ui/custom_slider_thumb_shape.dart';
 
-// * Helper functions for returning appropriate themes
-ThemeMode determineThemeMode(bool isDarkTheme) {
-  return isDarkTheme ? ThemeMode.dark : ThemeMode.light;
+// * Helper functions for returning appropriate thememode
+ThemeMode determineThemeMode(int themeMode) {
+  switch (themeMode) {
+    case 1:
+      return ThemeMode.dark;
+    case 2:
+      return ThemeMode.system;
+    default:
+      return ThemeMode.light;
+  }
 }
 
 SystemUiOverlayStyle appSystemUiTheme(bool isDarkTheme) {

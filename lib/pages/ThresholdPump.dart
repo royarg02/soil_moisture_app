@@ -37,7 +37,7 @@ class ThresholdPump extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        brightness: Provider.of<ThemeState>(context).isDarkTheme
+        brightness: Provider.of<ThemeState>(context).isDarkTheme(context)
             ? Brightness.dark
             : Brightness.light,
         leading: BackButton(),

@@ -11,6 +11,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 // * UI import
+import 'package:soif/ui/build_theme.dart';
 import 'package:soif/ui/colors.dart';
 
 // * Pages Import
@@ -20,18 +21,35 @@ import 'package:soif/pages/ThresholdPump.dart';
 // * State Import
 import 'package:soif/states/theme_state.dart';
 
+// * Widgets Import
+import 'package:soif/widgets/theme_dialog.dart';
+
 class OptionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
       icon: Icon(
         Icons.more_vert,
-        color: (Provider.of<ThemeState>(context).isDarkTheme)
+        color: (Provider.of<ThemeState>(context).isDarkTheme(context))
             ? materialDarkGreyColor
             : Theme.of(context).iconTheme.color,
       ),
       onPressed: () => showOptions(context),
     );
+  }
+}
+
+// * Extension to get ThemeMode name
+extension on ThemeMode {
+  String get name {
+    switch (this) {
+      case ThemeMode.light:
+        return 'Light';
+      case ThemeMode.dark:
+        return 'Dark';
+      default:
+        return 'System Default';
+    }
   }
 }
 
@@ -46,16 +64,16 @@ void showOptions(BuildContext context) {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         ListTile(
-          leading: (Provider.of<ThemeState>(context).isDarkTheme)
-              ? Icon(FontAwesomeIcons.solidLightbulb)
-              : Icon(FontAwesomeIcons.lightbulb),
-          title: Text('Dark Theme'),
-          trailing: Switch(
-            value: Provider.of<ThemeState>(context).isDarkTheme,
-            onChanged: (_) =>
-                Provider.of<ThemeState>(context, listen: false).toggleTheme(),
+          leading: Icon(FontAwesomeIcons.palette),
+          title: Text('Theme'),
+          trailing: Text(
+            determineThemeMode(Provider.of<ThemeState>(context).appThemeMode)
+                .name,
           ),
-          onTap: () => Provider.of<ThemeState>(context, listen: false).toggleTheme(),
+          onTap: () => showThemeDialog(context).then(
+            (newTheme) => Provider.of<ThemeState>(context, listen: false)
+                .changeTheme(context, newTheme),
+          ),
         ),
         ListTile(
           leading: Icon(FontAwesomeIcons.slidersH),

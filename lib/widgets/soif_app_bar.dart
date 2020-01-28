@@ -28,7 +28,7 @@ class SoifAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      brightness: Provider.of<ThemeState>(context).isDarkTheme
+      brightness: Provider.of<ThemeState>(context).isDarkTheme(context)
           ? Brightness.dark
           : Brightness.light,
       titleSpacing: this.titleSpacing ?? NavigationToolbar.kMiddleSpacing,
@@ -39,7 +39,7 @@ class SoifAppBar extends StatelessWidget {
       snap: true,
       title: this.title ??
           Image.asset(
-            (Provider.of<ThemeState>(context).isDarkTheme)
+            (Provider.of<ThemeState>(context).isDarkTheme(context))
                 ? './assets/images/Soif_sk_dark.png'
                 : './assets/images/Soif_sk.png',
             height: appWidth(context) * 0.08,

@@ -62,9 +62,10 @@ class _CreditsState extends State<Credits> {
             TextSpan(
               text: ' ${devDetails[index]['Github']}',
               style: Theme.of(context).textTheme.body2.copyWith(
-                    color: (Provider.of<ThemeState>(context).isDarkTheme)
-                        ? subtleWhiteTextColor
-                        : subtleBlackTextColor,
+                    color:
+                        (Provider.of<ThemeState>(context).isDarkTheme(context))
+                            ? subtleWhiteTextColor
+                            : subtleBlackTextColor,
                   ),
             )
           ],
@@ -87,7 +88,7 @@ class _CreditsState extends State<Credits> {
                 _launchUrl('http://github.com/${devDetails[index]['Github']}'),
             icon: Icon(
               FontAwesomeIcons.github,
-              color: (Provider.of<ThemeState>(context).isDarkTheme)
+              color: (Provider.of<ThemeState>(context).isDarkTheme(context))
                   ? githubWhite
                   : githubBlack,
             ),
@@ -133,7 +134,7 @@ class _CreditsState extends State<Credits> {
                 message: 'Alpha',
                 color: Theme.of(context).accentColor,
                 child: Image.asset(
-                  (Provider.of<ThemeState>(context).isDarkTheme)
+                  (Provider.of<ThemeState>(context).isDarkTheme(context))
                       ? './assets/images/Soif_sk_dark.png'
                       : './assets/images/Soif_sk.png',
                   height: appHeight(context) * 0.12,
@@ -148,7 +149,7 @@ class _CreditsState extends State<Credits> {
                 strutStyle: StrutStyle(fontSize: 14.0),
                 text: TextSpan(
                   style: Theme.of(context).textTheme.body2.copyWith(
-                        color: (Provider.of<ThemeState>(context).isDarkTheme)
+                        color: (Provider.of<ThemeState>(context).isDarkTheme(context))
                             ? subtleWhiteTextColor
                             : subtleBlackTextColor,
                       ),

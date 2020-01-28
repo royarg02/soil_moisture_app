@@ -164,7 +164,7 @@ class MoistureRadialIndicator extends StatelessWidget {
       animateFromLastPercent: true,
       percent: _selPlant.moisture.lastValue,
       circularStrokeCap: CircularStrokeCap.round,
-      backgroundColor: (Provider.of<ThemeState>(context).isDarkTheme)
+      backgroundColor: (Provider.of<ThemeState>(context).isDarkTheme(context))
           ? darkAppProgressIndicatorBackgroundColor
           : appProgressIndicatorBackgroundColor,
       progressColor: (_selPlant.isCritical())
@@ -235,7 +235,7 @@ class _Skeleton extends StatelessWidget {
                   width: appWidth(context) * 0.55,
                   child: CircularProgressIndicator(
                     backgroundColor:
-                        Provider.of<ThemeState>(context).isDarkTheme
+                        Provider.of<ThemeState>(context).isDarkTheme(context)
                             ? darkAppProgressIndicatorBackgroundColor
                             : appProgressIndicatorBackgroundColor,
                     strokeWidth: 6.0,

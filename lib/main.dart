@@ -18,6 +18,7 @@ import 'package:soif/widgets/custom_tab_label.dart';
 import 'package:soif/widgets/options.dart';
 
 // * utils import
+import 'package:soif/utils/constants.dart';
 import 'package:soif/utils/sizes.dart';
 import 'package:soif/utils/app_info.dart';
 
@@ -33,7 +34,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider<ThemeState>(
-          create: (context) => ThemeState(),
+          create: (context) => ThemeState(context),
         ),
         ChangeNotifierProvider<SelectedCardState>(
           create: (context) => SelectedCardState(),
@@ -55,7 +56,7 @@ class Root extends StatelessWidget {
       theme: buildLightTheme(),
       darkTheme: buildDarkTheme(),
       themeMode:
-          determineThemeMode(Provider.of<ThemeState>(context).isDarkTheme),
+          determineThemeMode(Provider.of<ThemeState>(context).appThemeMode),
     );
   }
 }
@@ -93,8 +94,8 @@ class _HomeState extends State<Home>
       this._controller.index = 0;
       return Future<bool>.value(false);
     } else {
-      await getPrefs.setBool('isDarkTheme',
-          Provider.of<ThemeState>(context, listen: false).isDarkTheme);
+      await getPrefs.setInt(soifThemeModePrefsKey,
+          Provider.of<ThemeState>(context, listen: false).appThemeMode);
       return Future<bool>.value(true);
     }
   }

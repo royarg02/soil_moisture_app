@@ -48,7 +48,7 @@ class PlantCard extends StatelessWidget {
                       ? Theme.of(context).errorColor
                       : Theme.of(context).primaryColor
                   : this.plant.isCritical()
-                      ? (Provider.of<ThemeState>(context).isDarkTheme)
+                      ? (Provider.of<ThemeState>(context).isDarkTheme(context))
                           ? darkAppErrorDarkColor
                           : appErrorLightColor
                       : Theme.of(context).cardColor,
@@ -70,7 +70,7 @@ class PlantCard extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               Image.asset(
-                (Provider.of<ThemeState>(context).isDarkTheme)
+                (Provider.of<ThemeState>(context).isDarkTheme(context))
                     ? './assets/images/plant_dark.png'
                     : './assets/images/plant.png',
                 height: appWidth(context) * 0.1,
@@ -86,7 +86,7 @@ class PlantCard extends StatelessWidget {
                 animateFromLastPercent: true,
                 animationDuration: 600,
                 animation: true,
-                backgroundColor: (Provider.of<ThemeState>(context).isDarkTheme)
+                backgroundColor: (Provider.of<ThemeState>(context).isDarkTheme(context))
                     ? darkAppProgressIndicatorBackgroundColor
                     : appProgressIndicatorBackgroundColor,
               )

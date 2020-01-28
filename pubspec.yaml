@@ -4,7 +4,7 @@ description: For soil moisture monitoring.
 version: 2.0.0+alpha
 
 environment:
-  sdk: ">=2.2.2 <3.0.0"
+  sdk: ">=2.6.0 <3.0.0"
 
 dependencies:
   flutter:

@@ -172,7 +172,7 @@ class ChartTabs extends StatelessWidget {
       ),
       child: Card(
         color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.8),
-        margin: EdgeInsets.fromLTRB(4.0, 0.0, 4.0, 4.0),
+        margin: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 4.0),
         child: TabBar(
           tabs: ['MOISTURE', 'LIGHT', 'HUMIDITY', 'TEMPERATURE']
               .map<Widget>((label) => AppTab(text: label))
