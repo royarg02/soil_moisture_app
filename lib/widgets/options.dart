@@ -10,16 +10,16 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
-// * UI import
-import 'package:soif/ui/build_theme.dart';
-import 'package:soif/ui/colors.dart';
-
 // * Pages Import
 import 'package:soif/pages/Credits.dart';
 import 'package:soif/pages/ThresholdPump.dart';
 
 // * State Import
 import 'package:soif/states/theme_state.dart';
+
+// * UI import
+import 'package:soif/ui/build_theme.dart';
+import 'package:soif/ui/colors.dart';
 
 // * Widgets Import
 import 'package:soif/widgets/theme_dialog.dart';

@@ -6,12 +6,12 @@
 
 import 'package:flutter/material.dart';
 
+// * Ui Import
+import 'package:soif/ui/colors.dart';
+
 // * Utils import
 import 'package:soif/utils/date_func.dart';
 import 'package:soif/utils/sizes.dart';
-
-// * Ui Import
-import 'package:soif/ui/colors.dart';
 
 class DateSelector extends StatefulWidget {
   final Function invokeFunction;

@@ -8,24 +8,24 @@
 
 import 'package:flutter/material.dart';
 
+// * External Packages import
+import 'package:flutter_image/network.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+// * data import
+import 'package:soif/data/static_data.dart';
+
 // * States import
 import 'package:soif/states/theme_state.dart';
 
 // * ui import
 import 'package:soif/ui/colors.dart';
 
-// * External Packages import
-import 'package:flutter_image/network.dart';
-import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 // * utils import
 import 'package:soif/utils/app_info.dart';
 import 'package:soif/utils/sizes.dart';
-
-// * data import
-import 'package:soif/data/static_data.dart';
 
 class Credits extends StatefulWidget {
   @override

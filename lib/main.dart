@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 // * External Packages import
 import 'package:provider/provider.dart';
 
+// * Pages Import
+import 'pages/Analysis.dart';
+import 'pages/Overview.dart';
+
 // * Prefs import
 import 'package:soif/prefs/user_prefs.dart';
 
@@ -13,18 +17,14 @@ import 'package:soif/states/theme_state.dart';
 // * ui import
 import 'package:soif/ui/build_theme.dart';
 
+// * utils import
+import 'package:soif/utils/app_info.dart';
+import 'package:soif/utils/constants.dart';
+import 'package:soif/utils/sizes.dart';
+
 // * widgets import
 import 'package:soif/widgets/custom_tab_label.dart';
 import 'package:soif/widgets/options.dart';
-
-// * utils import
-import 'package:soif/utils/constants.dart';
-import 'package:soif/utils/sizes.dart';
-import 'package:soif/utils/app_info.dart';
-
-// * Pages Import
-import 'pages/Analysis.dart';
-import 'pages/Overview.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); //for awaiting

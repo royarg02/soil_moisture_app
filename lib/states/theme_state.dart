@@ -1,6 +1,7 @@
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:ui' as ui;
 
 // * Prefs Import
 import 'package:soif/prefs/user_prefs.dart';
@@ -13,7 +14,7 @@ import 'package:soif/utils/constants.dart';
 
 
 /*
- * ThemeMode is determined by the following logic
+ * ThemeMode is determined by the following
  * 
  * THEMEMODE        | appThemeMode
  * -------------------------------

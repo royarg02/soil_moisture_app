@@ -13,30 +13,30 @@ import 'package:flutter/material.dart';
 // * External packages import
 import 'package:provider/provider.dart';
 
+// * Data import
+import 'package:soif/data/all_data.dart';
+import 'package:soif/data/environment_data.dart';
+
 // * State import
 import 'package:soif/states/selected_card_state.dart';
 
 // * ui import
 import 'package:soif/ui/analysis_graph.dart';
 
+// * utils import
+import 'package:soif/utils/constants.dart';
+import 'package:soif/utils/date_func.dart';
+import 'package:soif/utils/json_post_get.dart';
+import 'package:soif/utils/sizes.dart';
+
 // * widgets import
 import 'package:soif/widgets/custom_tab_label.dart';
 import 'package:soif/widgets/chart_view_card.dart';
 import 'package:soif/widgets/date_selector.dart';
+import 'package:soif/widgets/display_error.dart';
 import 'package:soif/widgets/plant_grid_view.dart';
 import 'package:soif/widgets/refresh_snackbar.dart';
 import 'package:soif/widgets/soif_app_bar.dart';
-import 'package:soif/widgets/display_error.dart';
-
-// * utils import
-import 'package:soif/utils/json_post_get.dart';
-import 'package:soif/utils/constants.dart';
-import 'package:soif/utils/date_func.dart';
-import 'package:soif/utils/sizes.dart';
-
-// * Data import
-import 'package:soif/data/environment_data.dart';
-import 'package:soif/data/all_data.dart';
 
 class Analysis extends StatefulWidget {
   @override

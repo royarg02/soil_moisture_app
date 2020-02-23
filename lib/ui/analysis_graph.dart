@@ -5,9 +5,10 @@
 * This graph has zoom, pan and tooltip features.
 */
 
+import 'dart:math'; // * For max() and min()
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'dart:math'; // * For max() and min()
 
 // * External packages import
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -16,8 +17,8 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:soif/data/environment_data.dart';
 
 // * utils Import
-import 'package:soif/utils/sizes.dart';
 import 'package:soif/utils/date_func.dart';
+import 'package:soif/utils/sizes.dart';
 
 // * This function defines the behaviour and formatting of the chart
 SfCartesianChart displayChart(

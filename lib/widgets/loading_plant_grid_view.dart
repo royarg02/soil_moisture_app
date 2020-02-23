@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-// * widgets import
-import 'package:soif/widgets/animated_loading_card.dart';
-
 // * Utils import
 import 'package:soif/utils/sizes.dart';
+
+// * widgets import
+import 'package:soif/widgets/animated_loading_card.dart';
 
 class LoadingPlantGridView extends StatelessWidget {
   final bool animation;

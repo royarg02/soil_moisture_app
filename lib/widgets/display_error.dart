@@ -5,6 +5,7 @@
 */
 
 import 'package:flutter/material.dart';
+
 // * External packages import
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 

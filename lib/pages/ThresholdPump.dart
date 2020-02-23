@@ -12,8 +12,11 @@
 
 import 'package:flutter/material.dart';
 
-// * Externa Packages Import
+// * External Packages Import
 import 'package:provider/provider.dart';
+
+// * data import
+import 'package:soif/data/all_data.dart';
 
 // * State Import
 import 'package:soif/states/theme_state.dart';
@@ -24,13 +27,10 @@ import 'package:soif/utils/json_post_get.dart';
 import 'package:soif/utils/sizes.dart';
 
 // * widgets import
+import 'package:soif/widgets/animated_loading_card.dart';
+import 'package:soif/widgets/display_error.dart';
 import 'package:soif/widgets/refresh_snackbar.dart';
 import 'package:soif/widgets/threshold_slider.dart';
-import 'package:soif/widgets/display_error.dart';
-import 'package:soif/widgets/animated_loading_card.dart';
-
-// * data import
-import 'package:soif/data/all_data.dart';
 
 class ThresholdPump extends StatelessWidget {
   @override

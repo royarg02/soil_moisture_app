@@ -6,20 +6,20 @@
 
 import 'package:flutter/material.dart';
 
-// * State import
-import 'package:soif/states/selected_card_state.dart';
-
-// * widgets import
-import 'package:soif/widgets/plant_card.dart';
+// * External packages import
+import 'package:provider/provider.dart';
 
 // * data import
 import 'package:soif/data/plant_class.dart';
 
+// * State import
+import 'package:soif/states/selected_card_state.dart';
+
 // * utils import
 import 'package:soif/utils/sizes.dart';
 
-// * External packages import
-import 'package:provider/provider.dart';
+// * widgets import
+import 'package:soif/widgets/plant_card.dart';
 
 class PlantGridView extends StatelessWidget {
   final List<Plant> plantlist;
