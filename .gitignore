@@ -74,3 +74,4 @@ flutter_export_environment.sh
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
 local.properties
+.flutter-
