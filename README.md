@@ -1,12 +1,13 @@
 <div id = "logo" align = "middle">
     <img src="assets/images/Soif_sk.png" width=300>
 </div>
-
 <div id = "badges" align = "center">
-    [![GitHub Release](https://img.shields.io/badge/release-v2.0.0--alpha-orange)](https://github.com/RoyARG02/soil_moisture_app/releases) 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d94e74bd82544d2389ceda65e810ab96)](https://www.codacy.com/manual/RoyARG02/soil_moisture_app?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=RoyARG02/soil_moisture_app&amp;utm_campaign=Badge_Grade) 
-[![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/GPL-3.0)
+    <a href = "https://github.com/RoyARG02/soil_moisture_app/releases" title = "Github Releases"><img src = "https://img.shields.io/badge/release-v2.0.0--alpha-orange"/></a>
+    <a href = "(https://www.codacy.com/manual/RoyARG02/soil_moisture_app?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=RoyARG02/soil_moisture_app&amp;utm_campaign=Badge_Grade" title = "Codacy Badge"><img src = "https://api.codacy.com/project/badge/Grade/d94e74bd82544d2389ceda65e810ab96" /></a>
+    <a href = "https://opensource.org/licenses/GPL-3.0" title = "GPL v3 License"><img src = "https://img.shields.io/badge/License-GPL%20v3-yellow.svg" /></a>
 </div>
+
+<hr>
 
 This is a Flutter project, which will serve as the dashboard for the **Soil Moisture** content of a particular area.
 
