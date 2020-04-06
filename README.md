@@ -1,6 +1,6 @@
-# <img src="assets/readme/Soif.png" height=100>
+# <img src="assets/images/Soif_sk.png" height=100>
 
-[![GitHub Release](https://img.shields.io/badge/release-v1.0.3-blue)](https://github.com/RoyARG02/soil_moisture_app/releases) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d94e74bd82544d2389ceda65e810ab96)](https://www.codacy.com/manual/RoyARG02/soil_moisture_app?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=RoyARG02/soil_moisture_app&amp;utm_campaign=Badge_Grade) [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/GPL-3.0)  
+[![GitHub Release](https://img.shields.io/badge/release-v2.0.0--alpha-orange)](https://github.com/RoyARG02/soil_moisture_app/releases) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d94e74bd82544d2389ceda65e810ab96)](https://www.codacy.com/manual/RoyARG02/soil_moisture_app?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=RoyARG02/soil_moisture_app&amp;utm_campaign=Badge_Grade) [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/GPL-3.0)  
 
 This is a Flutter project, which will serve as the dashboard for the **Soil Moisture** content of a particular area.
 

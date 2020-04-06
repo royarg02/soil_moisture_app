@@ -1,5 +1,5 @@
 name: soif
-description: For soil moisture monitoring.
+description: An application to monitor and display soil moisture content for drip irrigation.
 
 version: 2.0.0+alpha
 
