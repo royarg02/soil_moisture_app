@@ -149,7 +149,8 @@ class _CreditsState extends State<Credits> {
                 strutStyle: StrutStyle(fontSize: 14.0),
                 text: TextSpan(
                   style: Theme.of(context).textTheme.body2.copyWith(
-                        color: (Provider.of<ThemeState>(context).isDarkTheme(context))
+                        color: (Provider.of<ThemeState>(context)
+                                .isDarkTheme(context))
                             ? subtleWhiteTextColor
                             : subtleBlackTextColor,
                       ),
