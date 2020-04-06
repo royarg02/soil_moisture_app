@@ -18,4 +18,9 @@ class Threshold {
   get getVal => this._val;
 
   set setVal(num value) => this._val = value;
+
+  @override
+  String toString(){
+    return '${this._label} => ${this._val}';
+  }
 }

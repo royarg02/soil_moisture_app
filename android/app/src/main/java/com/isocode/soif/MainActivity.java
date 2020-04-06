@@ -1,4 +1,4 @@
-package com.example.soil_moisture_app;
+package com.isocode.soif;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

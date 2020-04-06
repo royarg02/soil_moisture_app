@@ -5,23 +5,30 @@
 * This graph has zoom, pan and tooltip features.
 */
 
+import 'dart:math'; // * For max() and min()
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'dart:math'; // * For max() and min()
 
 // * External packages import
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+// * Data import
+import 'package:soif/data/environment_data.dart';
+
 // * utils Import
-import 'package:soil_moisture_app/utils/sizes.dart';
-import 'package:soil_moisture_app/utils/date_func.dart';
+import 'package:soif/utils/date_func.dart';
+import 'package:soif/utils/sizes.dart';
 
 // * This function defines the behaviour and formatting of the chart
 SfCartesianChart displayChart(
-    dynamic chartObj, String graph, BuildContext context) {
-  num dataMinValue = chartObj.getAllValues.reduce((num a, num b) => min(a, b));
-  num dataMaxValue = chartObj.getAllValues.reduce((num a, num b) => max(a, b));
+    EnvironmentData chartObj, String graph, BuildContext context) {
+  num dataMinValue = chartObj.allValues.reduce((num a, num b) => min(a, b));
+  num dataMaxValue = chartObj.allValues.reduce((num a, num b) => max(a, b));
+  double minYAxisValue = (dataMinValue < 0.0) ? dataMinValue - 50.0 : 0.0;
+  double maxYAxisValue = (dataMaxValue > 100.0) ? dataMaxValue + 50.0 : 100.0;
   return SfCartesianChart(
+    margin: EdgeInsets.all(4.0),
     zoomPanBehavior: ZoomPanBehavior(
       enablePinching: true,
       enablePanning: true,
@@ -29,30 +36,32 @@ SfCartesianChart displayChart(
     ),
     plotAreaBorderWidth: 0,
     primaryXAxis: DateTimeAxis(
+      intervalType: DateTimeIntervalType.hours,
       minimum: DateTime(date.year, date.month, date.day, 0),
       maximum: DateTime(date.year, date.month, date.day, 23),
-      axisLine: AxisLine(width: 1),
+      axisLine: AxisLine(width: 1, color: Theme.of(context).accentColor),
       interval: 3,
-      dateFormat: DateFormat.jm(),
-      majorGridLines: MajorGridLines(width: 1),
+      majorGridLines: MajorGridLines(width: 0.0),
+      dateFormat: DateFormat('ha'),
       labelStyle: ChartTextStyle(
-        fontFamily: 'Ocrb',
-        fontSize: appWidth(context) * 0.027,
+        fontFamily: 'JetBrains Mono',
+        fontSize: appWidth(context) * 0.023,
       ),
     ),
     primaryYAxis: NumericAxis(
-      minimum: (dataMinValue < 0) ? dataMinValue - 100.0 : 0,
-      maximum: (dataMaxValue > 100) ? dataMaxValue + 100.0 : 100,
-      interval: 20,
-      axisLine: AxisLine(width: 1),
-      labelFormat: '{value}${chartObj.getUnit}',
+      minimum: minYAxisValue,
+      maximum: maxYAxisValue,
+      interval:
+          (((maxYAxisValue - minYAxisValue) / 100) * 20).round().toDouble(),
+      axisLine: AxisLine(width: 0.0),
+      labelFormat: '{value}${chartObj.unit}',
       isVisible: true,
       labelStyle: ChartTextStyle(
-        fontSize: appWidth(context) * 0.027,
-        fontFamily: 'Ocrb',
+        fontSize: appWidth(context) * 0.023,
+        fontFamily: 'JetBrains Mono',
       ),
     ),
-    series: getLineSeries(chartObj.getAllValues, graph, context),
+    series: getLineSeries(chartObj.allValues, graph, context),
     tooltipBehavior: TooltipBehavior(
       enable: true,
       animationDuration: 200,
@@ -64,15 +73,13 @@ SfCartesianChart displayChart(
 
 // * This function returns the series(List) to be displayed in the graph
 // * The graph displays mapped x and y values from Class defined below
-List<LineSeries<dynamic, DateTime>> getLineSeries(
-    List<dynamic> chartData, String graph, BuildContext context) {
-  // Debug Print
-  print(chartData);
-  List<_ChartData> data = [];
-  for (var i = 0; i < chartData.length; ++i) {
-    data.add(
-        _ChartData(chartData[i], DateTime(date.year, date.month, date.day, i)));
-  }
+List<LineSeries<_ChartData, DateTime>> getLineSeries(
+    List<num> allValues, String graph, BuildContext context) {
+  List<_ChartData> data = Iterable<_ChartData>.generate(
+      allValues.length,
+      (i) => _ChartData(
+          allValues[i], DateTime(date.year, date.month, date.day, i))).toList();
+
   return <LineSeries<_ChartData, DateTime>>[
     LineSeries<_ChartData, DateTime>(
       enableTooltip: true,
@@ -80,7 +87,7 @@ List<LineSeries<dynamic, DateTime>> getLineSeries(
       dataSource: data,
       xValueMapper: (point, _) => point.index,
       yValueMapper: (point, _) {
-        return (graph == 'Moisture') ? point.value * 100 : point.value;
+        return (graph == 'MOISTURE') ? point.value * 100.0 : point.value;
       },
       pointColorMapper: (x, _) => Theme.of(context).accentColor,
       width: 2,
@@ -96,7 +103,7 @@ List<LineSeries<dynamic, DateTime>> getLineSeries(
 
 // * Class for mapping x and y values for the Graph
 class _ChartData {
-  dynamic value;
+  num value;
   DateTime index;
   _ChartData(this.value, this.index);
 }

@@ -9,27 +9,32 @@
 import 'package:flutter/material.dart';
 
 // * external packages import
-import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
-// * States import
-import 'package:soil_moisture_app/states/selected_card_state.dart';
-import 'package:soil_moisture_app/states/theme_state.dart';
-import 'package:soil_moisture_app/ui/colors.dart';
-
-// * utils import
-import 'package:soil_moisture_app/utils/date_func.dart';
-import 'package:soil_moisture_app/utils/display_error.dart';
-import 'package:soil_moisture_app/utils/json_post_get.dart';
-import 'package:soil_moisture_app/utils/sizes.dart';
-
 // * Data import
-import 'package:soil_moisture_app/data/all_data.dart';
+import 'package:soif/data/all_data.dart';
+import 'package:soif/data/plant_class.dart';
+
+// * States import
+import 'package:soif/states/selected_card_state.dart';
+import 'package:soif/states/theme_state.dart';
 
 // * ui import
-import 'package:soil_moisture_app/ui/plant_grid_view.dart';
-import 'package:soil_moisture_app/ui/refresh_snackbar.dart';
+import 'package:soif/ui/colors.dart';
+
+// * utils import
+import 'package:soif/utils/date_func.dart';
+import 'package:soif/utils/json_post_get.dart';
+import 'package:soif/utils/sizes.dart';
+
+// * widgets import
+import 'package:soif/widgets/display_error.dart';
+import 'package:soif/widgets/loading_plant_grid_view.dart';
+import 'package:soif/widgets/plant_grid_view.dart';
+import 'package:soif/widgets/refresh_snackbar.dart';
+import 'package:soif/widgets/soif_app_bar.dart';
 
 class Overview extends StatefulWidget {
   @override
@@ -50,33 +55,30 @@ class _OverviewState extends State<Overview> {
       Scaffold.of(context).showSnackBar(FailureOnRefresh().build(context));
     });
     setState(() {});
-    // Debug Print
-    if (isCurrentDataGot) {
-      print('Overview refresh got: ${nowPlantList[0].getLastValue}');
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      minimum: EdgeInsets.symmetric(horizontal: appWidth(context) * 0.03),
+      top: false,
       child: RefreshIndicator(
         onRefresh: _refresh,
+        displacement: 40.0 + MediaQuery.of(context).padding.top,
         child: FutureBuilder(
           future: latData,
           builder: (context, AsyncSnapshot snapshot) {
             // Debug print
             print(snapshot);
-            if (snapshot.hasError) {
-              return NoNowData();
+            if (snapshot.hasError && nowData == null) {
+              return _ErrorPage();
             } else if (snapshot.connectionState == ConnectionState.done) {
               // * async load threshold data
               threshData = threshData ?? fetchThresholdData();
               // * async load full data for Analysis
               totData = totData ?? fetchTotalData();
-              return Page();
+              return _Page();
             } else {
-              return Skeleton();
+              return _Skeleton();
             }
           },
         ),
@@ -85,62 +87,66 @@ class _OverviewState extends State<Overview> {
   }
 }
 
-class Page extends StatelessWidget {
+class _ErrorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return CustomScrollView(
       physics: AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: appWidth(context) * 0.03),
-          child: (nowPlantList.isNotEmpty)
+      slivers: <Widget>[
+        SoifAppBar(
+          backgroundWidget: NoNowDataOrNoInternet(),
+        ),
+        LoadingPlantGridView(animation: false),
+      ],
+    );
+  }
+}
+
+class _Page extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return CustomScrollView(
+      physics: AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+      slivers: <Widget>[
+        SoifAppBar(
+          backgroundWidget: (nowData.plantList.isNotEmpty)
               // * would show only if today's data is available
-              ? MoistureRadialIndicator()
-              : NoNowData(haveInternet: true),
-        ),
-        Container(
-          height: appWidth(context) * 0.12,
-          child: (isCurrentDataGot)
-              ? Card(
-                  margin: EdgeInsets.symmetric(
-                      horizontal: appWidth(context) * 0.07),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      AvatarData(
-                          'Current Humidity',
-                          nowHumid.getLastValue,
-                          nowHumid.getUnit,
-                          FontAwesomeIcons.tint,
-                          Colors.blue[300]),
-                      AvatarData(
-                          'Current Illuminance',
-                          nowLight.getLastValue,
-                          nowLight.getUnit,
-                          FontAwesomeIcons.lightbulb,
-                          Colors.amber[400]),
-                      AvatarData(
-                          'Current Temperature',
-                          nowTemp.getLastValue,
-                          nowTemp.getUnit,
-                          FontAwesomeIcons.thermometerHalf,
-                          Colors.red[400])
-                    ],
-                  ),
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: MoistureRadialIndicator(),
+                    ),
+                    OtherInfoRow(),
+                  ],
                 )
-              : SizedBox(),
+              : NoNowDataOrNoInternet(haveInternet: true), //No,
         ),
-        SizedBox(
-          height: appWidth(context) * 0.02,
+        PlantGridView(
+          plantlist: nowData.plantList,
         ),
-        (isCurrentDataGot)
-            ? PlantGridView(
-                plantlist: nowPlantList,
-              )
-            : SizedBox(),
-        SizedBox(
-          height: appWidth(context) * 0.03,
-        )
+      ],
+    );
+  }
+}
+
+class OtherInfoRow extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
+        AvatarData('Current Humidity', nowData.humidity.lastValue,
+            nowData.humidity.unit, FontAwesomeIcons.tint, Colors.blue[300]),
+        AvatarData('Current Illuminance', nowData.light.lastValue,
+            nowData.light.unit, FontAwesomeIcons.lightbulb, Colors.amber[400]),
+        AvatarData(
+            'Current Temperature',
+            nowData.temp.lastValue,
+            nowData.temp.unit,
+            FontAwesomeIcons.thermometerHalf,
+            Colors.red[400])
       ],
     );
   }
@@ -150,22 +156,23 @@ class MoistureRadialIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int _selCard = Provider.of<SelectedCardState>(context).selCard;
+    Plant _selPlant = nowData.plantList[_selCard];
     return CircularPercentIndicator(
-      addAutomaticKeepAlive: false,
       animationDuration: 600,
-      radius: appWidth(context) * 0.6,
+      radius: appWidth(context) * 0.55,
       animation: true,
-      percent: nowPlantList[_selCard].getLastValue,
+      animateFromLastPercent: true,
+      percent: _selPlant.moisture.lastValue,
       circularStrokeCap: CircularStrokeCap.round,
-      backgroundColor: (Provider.of<ThemeState>(context).isDarkTheme)
+      backgroundColor: (Provider.of<ThemeState>(context).isDarkTheme(context))
           ? darkAppProgressIndicatorBackgroundColor
           : appProgressIndicatorBackgroundColor,
-      progressColor: (nowPlantList[_selCard].isCritical())
+      progressColor: (_selPlant.isCritical())
           ? criticalPlantColor
-          : (nowPlantList[_selCard].isMoreThanNormal()
+          : (_selPlant.isMoreThanNormal()
               ? moreThanNormalPlantColor
               : normalPlantColor),
-      lineWidth: appWidth(context) * 0.02,
+      lineWidth: 6.0,
       footer: Text(
         'Current Moisture',
         style: Theme.of(context).textTheme.caption.copyWith(
@@ -177,17 +184,34 @@ class MoistureRadialIndicator extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            '${nowPlantList[_selCard].getLabel}',
+            '${_selPlant.name}',
             style: Theme.of(context).textTheme.body2.copyWith(
                   fontSize: appWidth(context) * 0.03,
                 ),
             textAlign: TextAlign.center,
           ),
-          Text(
-            '${(nowPlantList[_selCard].getLastValue * 100).toStringAsFixed(0)}${nowPlantList[_selCard].getUnit}',
-            style: Theme.of(context).textTheme.display4.copyWith(
-                  fontSize: appWidth(context) * 0.2,
-                ),
+          RichText(
+            text: TextSpan(
+              text:
+                  '${(_selPlant.moisture.lastValue * 100).toStringAsFixed(0)}',
+              style: Theme.of(context).textTheme.display4.copyWith(
+                    fontSize: appWidth(context) * 0.2,
+                  ),
+              children: [
+                if (_selPlant.moisture.lastValue < 0.99)
+                  WidgetSpan(
+                    alignment: PlaceholderAlignment.middle,
+                    baseline: TextBaseline.alphabetic,
+                    child: Text(
+                      _selPlant.moisture.unit,
+                      style: Theme.of(context)
+                          .textTheme
+                          .display4
+                          .copyWith(fontSize: appWidth(context) * 0.1),
+                    ),
+                  ),
+              ],
+            ),
           ),
         ],
       ),
@@ -195,40 +219,40 @@ class MoistureRadialIndicator extends StatelessWidget {
   }
 }
 
-class Skeleton extends StatelessWidget {
+class _Skeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return CustomScrollView(
       physics: AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: appWidth(context) * 0.03),
-          child: CircularPercentIndicator(
-            radius: appWidth(context) * 0.6,
-            backgroundColor: (Provider.of<ThemeState>(context).isDarkTheme)
-                ? darkAppProgressIndicatorBackgroundColor
-                : appProgressIndicatorBackgroundColor,
-            center: CircularProgressIndicator(),
-            footer: SizedBox(
-              height: appWidth(context) * 0.05,
-            ),
-            lineWidth: appWidth(context) * 0.02,
+      slivers: <Widget>[
+        SoifAppBar(
+          backgroundWidget: Column(
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 4.0),
+                child: SizedBox(
+                  height: appWidth(context) * 0.55,
+                  width: appWidth(context) * 0.55,
+                  child: CircularProgressIndicator(
+                    backgroundColor:
+                        Provider.of<ThemeState>(context).isDarkTheme(context)
+                            ? darkAppProgressIndicatorBackgroundColor
+                            : appProgressIndicatorBackgroundColor,
+                    strokeWidth: 6.0,
+                  ),
+                ),
+              ),
+              Text(
+                'Getting Data...',
+                style: Theme.of(context).textTheme.caption.copyWith(
+                      fontSize: appWidth(context) * 0.03,
+                    ),
+                textAlign: TextAlign.center,
+              )
+            ],
           ),
         ),
-        Container(
-          height: appWidth(context) * 0.12,
-          child: Card(
-            margin: EdgeInsets.symmetric(horizontal: appWidth(context) * 0.07),
-            child: Padding(
-              padding: EdgeInsets.all(appWidth(context) * 0.055),
-              child: LinearProgressIndicator(
-                backgroundColor: (Provider.of<ThemeState>(context).isDarkTheme)
-                    ? darkAppProgressIndicatorBackgroundColor
-                    : appProgressIndicatorBackgroundColor,
-              ),
-            ),
-          ),
-        )
+        LoadingPlantGridView()
       ],
     );
   }

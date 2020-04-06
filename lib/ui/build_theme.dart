@@ -8,33 +8,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 // * ui import
-import 'package:soil_moisture_app/ui/colors.dart';
+import 'package:soif/ui/colors.dart';
+import 'package:soif/ui/custom_slider_thumb_shape.dart';
 
-// * Helper functions for returning appropriate themes
-ThemeMode determineThemeMode(bool isDarkTheme) {
-  return isDarkTheme ? ThemeMode.dark : ThemeMode.light;
+// * Helper functions for returning appropriate thememode
+ThemeMode determineThemeMode(int themeMode) {
+  switch (themeMode) {
+    case 1:
+      return ThemeMode.dark;
+    case 2:
+      return ThemeMode.system;
+    default:
+      return ThemeMode.light;
+  }
 }
 
 SystemUiOverlayStyle appSystemUiTheme(bool isDarkTheme) {
   return isDarkTheme ? buildDarkSystemUi() : buildLightSystemUi();
 }
-
-// * Text theme to be used throughout the app
-TextTheme appTextTheme = TextTheme(
-  display4: TextStyle(fontFamily: 'Ocrb'),
-  display3: TextStyle(fontFamily: 'Ocrb'),
-  display2: TextStyle(fontFamily: 'Ocrb'),
-  display1: TextStyle(fontFamily: 'Ocrb'),
-  body1: TextStyle(fontFamily: 'Ocrb'),
-  body2: TextStyle(fontFamily: 'Ocrb'),
-  headline: TextStyle(fontFamily: 'Ocrb'),
-  subtitle: TextStyle(fontFamily: 'Ocrb'),
-  button: TextStyle(fontFamily: 'Ocrb'),
-  caption: TextStyle(fontFamily: 'Ocrb'),
-  subhead: TextStyle(fontFamily: 'Ocrb'),
-  overline: TextStyle(fontFamily: 'Ocrb'),
-  title: TextStyle(fontFamily: 'Ocrb'),
-);
 
 // * Light Theme
 ThemeData buildLightTheme() {
@@ -54,9 +45,9 @@ ThemeData buildLightTheme() {
       primaryVariant: appPrimaryDarkColor,
       secondaryVariant: appSecondaryColor,
     ),
-    textTheme: appTextTheme,
   );
   return base.copyWith(
+    textTheme: base.textTheme.apply(fontFamily: 'JetBrains Mono'),
     appBarTheme: base.appBarTheme.copyWith(
       brightness: Brightness.light,
     ),
@@ -66,31 +57,42 @@ ThemeData buildLightTheme() {
     bottomSheetTheme: base.bottomSheetTheme.copyWith(
       backgroundColor: appSecondaryLightColor,
     ),
+    buttonBarTheme: base.buttonBarTheme.copyWith(
+      buttonTextTheme: ButtonTextTheme.accent,
+      alignment: MainAxisAlignment.spaceEvenly,
+    ),
     tabBarTheme: base.tabBarTheme.copyWith(
       labelColor: base.cardColor,
       unselectedLabelColor: appSecondaryDarkColor,
       indicatorSize: TabBarIndicatorSize.label,
-      indicator: UnderlineTabIndicator(
-        borderSide: BorderSide(
-          width: 3.0,
-          color: base.cardColor,
-        ),
-        insets: EdgeInsets.only(bottom: 1.0),
-      ),
     ),
     cardTheme: base.cardTheme.copyWith(
       elevation: 3.0,
     ),
+    sliderTheme: base.sliderTheme.copyWith(
+      thumbShape: CustomSliderThumbShape(thumbRadius: 8.0),
+    ),
     snackBarTheme: base.snackBarTheme.copyWith(
       backgroundColor: appSecondaryColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(14.0),
+        ),
+      ),
     ),
     accentTextTheme: base.accentTextTheme.apply(
-      fontFamily: 'Ocrb',
+      fontFamily: 'JetBrains Mono',
     ),
     primaryTextTheme: base.accentTextTheme.apply(
-      fontFamily: 'Ocrb',
+      fontFamily: 'JetBrains Mono',
       bodyColor: appSecondaryDarkColor,
       displayColor: appSecondaryDarkColor,
+    ),
+    pageTransitionsTheme: PageTransitionsTheme(
+      builders: {
+        TargetPlatform.android: ZoomPageTransitionsBuilder(),
+        TargetPlatform.iOS: CupertinoPageTransitionsBuilder()
+      },
     ),
   );
 }
@@ -113,9 +115,9 @@ ThemeData buildDarkTheme() {
       primaryVariant: darkAppPrimaryColor,
       secondaryVariant: darkAppPrimaryColor,
     ),
-    textTheme: appTextTheme,
   );
   return base.copyWith(
+    textTheme: base.textTheme.apply(fontFamily: 'JetBrains Mono'),
     appBarTheme: base.appBarTheme.copyWith(
       brightness: Brightness.dark,
     ),
@@ -123,25 +125,30 @@ ThemeData buildDarkTheme() {
       labelColor: base.cardColor,
       unselectedLabelColor: darkAppSecondaryDarkColor,
       indicatorSize: TabBarIndicatorSize.label,
-      indicator: UnderlineTabIndicator(
-        borderSide: BorderSide(
-          width: 3.0,
-          color: base.cardColor,
-        ),
-        insets: EdgeInsets.only(bottom: 1.0),
-      ),
     ),
     cardTheme: base.cardTheme.copyWith(
       elevation: 3.0,
     ),
+    sliderTheme: base.sliderTheme.copyWith(
+      thumbShape: CustomSliderThumbShape(thumbRadius: 8.0),
+    ),
     snackBarTheme: base.snackBarTheme.copyWith(
       backgroundColor: darkAppPrimaryLightColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(14.0),
+        ),
+      ),
+    ),
+    buttonBarTheme: base.buttonBarTheme.copyWith(
+      buttonTextTheme: ButtonTextTheme.accent,
+      alignment: MainAxisAlignment.spaceEvenly,
     ),
     accentTextTheme: base.accentTextTheme.apply(
-      fontFamily: 'Ocrb',
+      fontFamily: 'JetBrains Mono',
     ),
     primaryTextTheme: base.accentTextTheme.apply(
-      fontFamily: 'Ocrb',
+      fontFamily: 'JetBrains Mono',
       bodyColor: base.accentColor,
       displayColor: base.accentColor,
     ),
@@ -149,16 +156,19 @@ ThemeData buildDarkTheme() {
     iconTheme: base.iconTheme.copyWith(
       color: base.accentColor,
     ),
+    pageTransitionsTheme: PageTransitionsTheme(
+      builders: {
+        TargetPlatform.android: ZoomPageTransitionsBuilder(),
+        TargetPlatform.iOS: CupertinoPageTransitionsBuilder()
+      },
+    ),
   );
 }
 
 SystemUiOverlayStyle buildLightSystemUi() => SystemUiOverlayStyle.dark.copyWith(
       statusBarColor: Colors.transparent,
-      systemNavigationBarColor: appSecondaryLightColor,
     );
 
 SystemUiOverlayStyle buildDarkSystemUi() => SystemUiOverlayStyle.light.copyWith(
       statusBarColor: Colors.transparent,
-      systemNavigationBarIconBrightness: Brightness.dark,
-      systemNavigationBarColor: darkAppPrimaryColor,
     );

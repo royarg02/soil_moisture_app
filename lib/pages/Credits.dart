@@ -8,24 +8,24 @@
 
 import 'package:flutter/material.dart';
 
-// * States import
-import 'package:soil_moisture_app/states/theme_state.dart';
-
-// * ui import
-import 'package:soil_moisture_app/ui/colors.dart';
-
 // * External Packages import
 import 'package:flutter_image/network.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-// * utils import
-import 'package:soil_moisture_app/utils/app_info.dart';
-import 'package:soil_moisture_app/utils/sizes.dart';
 
 // * data import
-import 'package:soil_moisture_app/data/all_data.dart';
+import 'package:soif/data/static_data.dart';
+
+// * States import
+import 'package:soif/states/theme_state.dart';
+
+// * ui import
+import 'package:soif/ui/colors.dart';
+
+// * utils import
+import 'package:soif/utils/app_info.dart';
+import 'package:soif/utils/sizes.dart';
 
 class Credits extends StatefulWidget {
   @override
@@ -62,9 +62,10 @@ class _CreditsState extends State<Credits> {
             TextSpan(
               text: ' ${devDetails[index]['Github']}',
               style: Theme.of(context).textTheme.body2.copyWith(
-                    color: (Provider.of<ThemeState>(context).isDarkTheme)
-                        ? subtleWhiteTextColor
-                        : subtleBlackTextColor,
+                    color:
+                        (Provider.of<ThemeState>(context).isDarkTheme(context))
+                            ? subtleWhiteTextColor
+                            : subtleBlackTextColor,
                   ),
             )
           ],
@@ -87,7 +88,7 @@ class _CreditsState extends State<Credits> {
                 _launchUrl('http://github.com/${devDetails[index]['Github']}'),
             icon: Icon(
               FontAwesomeIcons.github,
-              color: (Provider.of<ThemeState>(context).isDarkTheme)
+              color: (Provider.of<ThemeState>(context).isDarkTheme(context))
                   ? githubWhite
                   : githubBlack,
             ),
@@ -125,11 +126,21 @@ class _CreditsState extends State<Credits> {
           physics:
               AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
           children: <Widget>[
-            Image.asset(
-              (Provider.of<ThemeState>(context).isDarkTheme)
-                  ? './assets/images/Soif_sk_dark.png'
-                  : './assets/images/Soif_sk.png',
-              height: appWidth(context) * 0.25,
+            Align(
+              alignment: Alignment.topCenter,
+              child: Banner(
+                textStyle: Theme.of(context).accentTextTheme.overline,
+                location: BannerLocation.bottomEnd,
+                message: 'Alpha',
+                color: Theme.of(context).accentColor,
+                child: Image.asset(
+                  (Provider.of<ThemeState>(context).isDarkTheme(context))
+                      ? './assets/images/Soif_sk_dark.png'
+                      : './assets/images/Soif_sk.png',
+                  height: appHeight(context) * 0.12,
+                  fit: BoxFit.contain,
+                ),
+              ),
             ),
             Padding(
               padding: EdgeInsets.all(appHeight(context) * 0.01),
@@ -138,7 +149,8 @@ class _CreditsState extends State<Credits> {
                 strutStyle: StrutStyle(fontSize: 14.0),
                 text: TextSpan(
                   style: Theme.of(context).textTheme.body2.copyWith(
-                        color: (Provider.of<ThemeState>(context).isDarkTheme)
+                        color: (Provider.of<ThemeState>(context)
+                                .isDarkTheme(context))
                             ? subtleWhiteTextColor
                             : subtleBlackTextColor,
                       ),

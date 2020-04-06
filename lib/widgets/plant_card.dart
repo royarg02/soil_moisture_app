@@ -13,27 +13,29 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
+// * Data import
+import 'package:soif/data/plant_class.dart';
+
 // * States import
-import 'package:soil_moisture_app/states/theme_state.dart';
+import 'package:soif/states/theme_state.dart';
 
 // * ui import
-import 'package:soil_moisture_app/ui/colors.dart';
+import 'package:soif/ui/colors.dart';
 
 // * utils import
-import 'package:soil_moisture_app/utils/sizes.dart';
-
-// * Data import
-import 'package:soil_moisture_app/data/plant_class.dart';
+import 'package:soif/utils/sizes.dart';
 
 class PlantCard extends StatelessWidget {
   final Function onTap;
   final Plant plant;
   final bool isSelected;
+  final bool isEnabled;
 
   PlantCard({
     this.plant,
     @required this.onTap,
     this.isSelected,
+    this.isEnabled = true,
   });
 
   @override
@@ -46,7 +48,7 @@ class PlantCard extends StatelessWidget {
                       ? Theme.of(context).errorColor
                       : Theme.of(context).primaryColor
                   : this.plant.isCritical()
-                      ? (Provider.of<ThemeState>(context).isDarkTheme)
+                      ? (Provider.of<ThemeState>(context).isDarkTheme(context))
                           ? darkAppErrorDarkColor
                           : appErrorLightColor
                       : Theme.of(context).cardColor,
@@ -61,22 +63,21 @@ class PlantCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
-                '${this.plant.getLabel}',
+                '${this.plant.name}',
                 style: Theme.of(context).textTheme.body2.copyWith(
                       fontSize: appWidth(context) * 0.045,
                     ),
                 textAlign: TextAlign.center,
               ),
               Image.asset(
-                (Provider.of<ThemeState>(context).isDarkTheme)
+                (Provider.of<ThemeState>(context).isDarkTheme(context))
                     ? './assets/images/plant_dark.png'
                     : './assets/images/plant.png',
                 height: appWidth(context) * 0.1,
                 width: appWidth(context) * 0.1,
               ),
               LinearPercentIndicator(
-                addAutomaticKeepAlive: false,
-                percent: this.plant.getLastValue,
+                percent: this.plant.moisture.lastValue,
                 progressColor: plant.isCritical()
                     ? criticalPlantColor
                     : plant.isMoreThanNormal()
@@ -85,13 +86,13 @@ class PlantCard extends StatelessWidget {
                 animateFromLastPercent: true,
                 animationDuration: 600,
                 animation: true,
-                backgroundColor: (Provider.of<ThemeState>(context).isDarkTheme)
+                backgroundColor: (Provider.of<ThemeState>(context).isDarkTheme(context))
                     ? darkAppProgressIndicatorBackgroundColor
                     : appProgressIndicatorBackgroundColor,
               )
             ],
           ),
-          onTap: this.onTap,
+          onTap: (this.isEnabled) ? this.onTap : null,
         ),
       ),
     );

@@ -22,7 +22,7 @@ class FailureOnRefresh extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SnackBar(
-      content: Text('Couldn\'t update data. Check your Internet Connection.'),
+      content: Text('Couldn\'t fetch data. Check your Internet Connection.'),
       duration: Duration(
         seconds: 2,
       ),

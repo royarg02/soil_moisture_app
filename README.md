@@ -6,7 +6,7 @@ This is a Flutter project, which will serve as the dashboard for the **Soil Mois
 
 Color Theme: [Material.io](https://material.io/resources/color/#!/?view.left=0&view.right=0&primary.color=E6EE9C&secondary.color=827717)
 
-Font: [OCRB](https://github.com/opensourcedesign/fonts/tree/master/OCR)
+Font: [JetBrains Mono](https://github.com/JetBrains/JetBrainsMono)
 
 ### Screenshots
 

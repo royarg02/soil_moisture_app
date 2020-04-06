@@ -3,34 +3,38 @@ import 'package:flutter/material.dart';
 // * External Packages import
 import 'package:provider/provider.dart';
 
-// * Prefs import
-import 'package:soil_moisture_app/prefs/user_prefs.dart';
-
-// * State import
-import 'package:soil_moisture_app/states/selected_card_state.dart';
-import 'package:soil_moisture_app/states/theme_state.dart';
-
-// * ui import
-import 'package:soil_moisture_app/ui/build_theme.dart';
-import 'package:soil_moisture_app/ui/options.dart';
-
-// * utils import
-import 'package:soil_moisture_app/utils/app_info.dart';
-import 'package:soil_moisture_app/utils/sizes.dart';
-
 // * Pages Import
 import 'pages/Analysis.dart';
 import 'pages/Overview.dart';
 
+// * Prefs import
+import 'package:soif/prefs/user_prefs.dart';
+
+// * State import
+import 'package:soif/states/selected_card_state.dart';
+import 'package:soif/states/theme_state.dart';
+
+// * ui import
+import 'package:soif/ui/build_theme.dart';
+
+// * utils import
+import 'package:soif/utils/app_info.dart';
+import 'package:soif/utils/constants.dart';
+import 'package:soif/utils/sizes.dart';
+
+// * widgets import
+import 'package:soif/widgets/custom_tab_label.dart';
+import 'package:soif/widgets/options.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); //for awaiting
-  await loadPrefs();
   await loadAppInfo();
+  await loadPrefs();
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider<ThemeState>(
-          create: (context) => ThemeState(),
+          create: (context) => ThemeState(context),
         ),
         ChangeNotifierProvider<SelectedCardState>(
           create: (context) => SelectedCardState(),
@@ -45,14 +49,14 @@ class Root extends StatelessWidget {
   final String title = 'Soif';
   @override
   Widget build(BuildContext context) {
-    var _themeState = Provider.of<ThemeState>(context);
     return MaterialApp(
       title: title,
       debugShowCheckedModeBanner: false,
       home: Home(),
       theme: buildLightTheme(),
       darkTheme: buildDarkTheme(),
-      themeMode: determineThemeMode(_themeState.isDarkTheme),
+      themeMode:
+          determineThemeMode(Provider.of<ThemeState>(context).appThemeMode),
     );
   }
 }
@@ -63,12 +67,13 @@ class Home extends StatefulWidget {
     Analysis(),
   ];
   @override
-  @override
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
+class _HomeState extends State<Home>
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   TabController _controller;
+  @override
   void initState() {
     super.initState();
     _controller = TabController(
@@ -89,68 +94,70 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       this._controller.index = 0;
       return Future<bool>.value(false);
     } else {
-      await getPrefs.setBool(
-          'isDarkTheme', Provider.of<ThemeState>(context).isDarkTheme);
+      await getPrefs.setInt(soifThemeModePrefsKey,
+          Provider.of<ThemeState>(context, listen: false).appThemeMode);
       return Future<bool>.value(true);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    print(appWidth(context));
+    super.build(context);
+    print('Screenwidth: ${appWidth(context)}');
+    print('Screenheight: ${appHeight(context)}');
     return WillPopScope(
       onWillPop: _popScopeInvoke,
       child: Scaffold(
-        appBar: AppBar(
-          title: Image.asset(
-            (Provider.of<ThemeState>(context).isDarkTheme)
-                ? './assets/images/Soif_sk_dark.png'
-                : './assets/images/Soif_sk.png',
-            height: appWidth(context) * 0.08,
-          ),
-          centerTitle: true,
-        ),
+        extendBodyBehindAppBar: true,
+        extendBody: true,
         body: TabBarView(
-          controller: this._controller,
+          controller: _controller,
           children: widget._tabPages,
           physics: NeverScrollableScrollPhysics(),
         ),
-        bottomNavigationBar: Container(
+        bottomNavigationBar: BottomAppBar(
           color: Theme.of(context).accentColor,
           child: Row(
             children: <Widget>[
               Flexible(
                 child: TabBar(
-                  controller: this._controller,
+                  controller: _controller,
                   tabs: <Widget>[
-                    Tab(
+                    AppTab(
                       icon: Icon(
                         Icons.remove_red_eye,
                       ),
-                      text: 'Overview',
+                      text: 'OVERVIEW',
                     ),
-                    Tab(
+                    AppTab(
                       icon: Icon(
                         Icons.timeline,
                       ),
-                      text: 'Analysis',
+                      text: 'ANALYSIS',
                     )
                   ],
-                  unselectedLabelStyle: TextStyle(
-                    fontSize: appWidth(context) * 0.025,
-                    fontFamily: 'Ocrb',
-                  ),
-                  labelStyle: TextStyle(
-                    fontSize: appWidth(context) * 0.035,
-                    fontFamily: 'Ocrb',
+                  unselectedLabelStyle:
+                      Theme.of(context).primaryTextTheme.body2.copyWith(
+                            fontSize: appWidth(context) * 0.025,
+                          ),
+                  labelStyle: Theme.of(context).primaryTextTheme.body2.copyWith(
+                        fontSize: appWidth(context) * 0.035,
+                      ),
+                  indicator: RoundedRectTabIndicator(
+                    radius: appWidth(context) * 0.1,
+                    width: 2.0,
+                    color: Theme.of(context).cardColor,
                   ),
                 ),
               ),
-              Options()
+              OptionButton()
             ],
           ),
         ),
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
