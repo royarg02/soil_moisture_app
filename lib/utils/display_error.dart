@@ -32,7 +32,7 @@ class NoNowData extends StatelessWidget {
                 ? 'No Data for $fetchNowDate'
                 : 'Couldn\'t connect to Internet.\nRefresh to try again.',
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.display1.copyWith(
+            style: Theme.of(context).textTheme.headline4.copyWith(
                   fontSize: appWidth(context) * 0.04,
                 ),
           ),
@@ -52,7 +52,7 @@ class NoData extends StatelessWidget {
       child: Text(
         'No Data Found.\nRefresh to try again or choose another date.',
         textAlign: TextAlign.center,
-        style: Theme.of(context).textTheme.display1.copyWith(
+        style: Theme.of(context).textTheme.headline4.copyWith(
               fontSize: appWidth(context) * 0.04,
             ),
       ),

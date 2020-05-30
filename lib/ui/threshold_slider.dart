@@ -32,7 +32,7 @@ class _ThresholdSliderState extends State<ThresholdSlider> {
             flex: 5,
             child: Text(
               this.widget.label,
-              style: Theme.of(context).textTheme.body2.copyWith(
+              style: Theme.of(context).textTheme.bodyText1.copyWith(
                     fontSize: appWidth(context) * 0.045,
                   ),
               textAlign: TextAlign.center,

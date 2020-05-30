@@ -62,7 +62,7 @@ class PlantCard extends StatelessWidget {
             children: <Widget>[
               Text(
                 '${this.plant.getLabel}',
-                style: Theme.of(context).textTheme.body2.copyWith(
+                style: Theme.of(context).textTheme.bodyText1.copyWith(
                       fontSize: appWidth(context) * 0.045,
                     ),
                 textAlign: TextAlign.center,

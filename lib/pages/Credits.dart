@@ -58,10 +58,10 @@ class _CreditsState extends State<Credits> {
           children: [
             TextSpan(
                 text: devDetails[index]['Name'],
-                style: Theme.of(context).textTheme.subhead),
+                style: Theme.of(context).textTheme.subtitle1),
             TextSpan(
               text: ' ${devDetails[index]['Github']}',
-              style: Theme.of(context).textTheme.body2.copyWith(
+              style: Theme.of(context).textTheme.bodyText1.copyWith(
                     color: (Provider.of<ThemeState>(context).isDarkTheme)
                         ? subtleWhiteTextColor
                         : subtleBlackTextColor,
@@ -113,7 +113,7 @@ class _CreditsState extends State<Credits> {
         leading: BackButton(),
         title: Text(
           'About',
-          style: Theme.of(context).textTheme.title.copyWith(
+          style: Theme.of(context).textTheme.headline6.copyWith(
                 fontSize: appWidth(context) * 0.055,
               ),
         ),
@@ -137,7 +137,7 @@ class _CreditsState extends State<Credits> {
                 textAlign: TextAlign.center,
                 strutStyle: StrutStyle(fontSize: 14.0),
                 text: TextSpan(
-                  style: Theme.of(context).textTheme.body2.copyWith(
+                  style: Theme.of(context).textTheme.bodyText1.copyWith(
                         color: (Provider.of<ThemeState>(context).isDarkTheme)
                             ? subtleWhiteTextColor
                             : subtleBlackTextColor,
@@ -154,7 +154,7 @@ class _CreditsState extends State<Credits> {
               padding: EdgeInsets.symmetric(vertical: appWidth(context) * 0.03),
               child: Text(
                 'MEMBERS AND CONTRIBUTORS',
-                style: Theme.of(context).textTheme.headline.copyWith(
+                style: Theme.of(context).textTheme.headline5.copyWith(
                       fontSize: appWidth(context) * 0.05,
                     ),
               ),
@@ -169,7 +169,7 @@ class _CreditsState extends State<Credits> {
               padding: EdgeInsets.symmetric(vertical: appWidth(context) * 0.03),
               child: Text(
                 'VIEW SOURCES',
-                style: Theme.of(context).textTheme.headline.copyWith(
+                style: Theme.of(context).textTheme.headline5.copyWith(
                       fontSize: appWidth(context) * 0.05,
                     ),
               ),
@@ -179,7 +179,7 @@ class _CreditsState extends State<Credits> {
                 leading: Icon(FontAwesomeIcons.codeBranch),
                 title: Text(
                   'Fork the project on GitHub',
-                  style: Theme.of(context).textTheme.subhead,
+                  style: Theme.of(context).textTheme.subtitle1,
                 ),
                 subtitle: Text(
                   'Show your appreciation by 🌟ing the repository!',
@@ -195,7 +195,7 @@ class _CreditsState extends State<Credits> {
                 leading: Icon(FontAwesomeIcons.server),
                 title: Text(
                   'View API implementation',
-                  style: Theme.of(context).textTheme.subhead,
+                  style: Theme.of(context).textTheme.subtitle1,
                 ),
                 subtitle: Text(
                   'The other side of this project.',

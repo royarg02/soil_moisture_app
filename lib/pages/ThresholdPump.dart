@@ -49,7 +49,7 @@ class _ThresholdPumpState extends State<ThresholdPump> {
               leading: BackButton(),
               title: Text(
                 'Pump threshold Control',
-                style: Theme.of(context).textTheme.title,
+                style: Theme.of(context).textTheme.headline6,
               ),
               centerTitle: true,
             ),
@@ -87,7 +87,7 @@ class _PageState extends State<Page> {
         leading: BackButton(),
         title: Text(
           'Pump threshold Control',
-          style: Theme.of(context).textTheme.title.copyWith(
+          style: Theme.of(context).textTheme.headline6.copyWith(
                 fontSize: appWidth(context) * 0.055,
               ),
         ),
@@ -212,7 +212,7 @@ class Skeleton extends StatelessWidget {
         leading: BackButton(),
         title: Text(
           'Pump threshold Control',
-          style: Theme.of(context).textTheme.title.copyWith(
+          style: Theme.of(context).textTheme.headline6.copyWith(
                 fontSize: appWidth(context) * 0.055,
               ),
         ),

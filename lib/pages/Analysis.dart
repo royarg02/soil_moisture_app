@@ -157,7 +157,7 @@ class _AnalysisState extends State<Analysis> {
                                               .toStringAsFixed(1),
                                           style: Theme.of(context)
                                               .textTheme
-                                              .display2
+                                              .headline3
                                               .copyWith(
                                                 color: (Provider.of<ThemeState>(
                                                             context)
@@ -173,7 +173,7 @@ class _AnalysisState extends State<Analysis> {
                                           '${_chartObj.getUnit}',
                                           style: Theme.of(context)
                                               .textTheme
-                                              .body1
+                                              .bodyText2
                                               .copyWith(
                                                 fontSize:
                                                     appWidth(context) * 0.06,
@@ -185,7 +185,7 @@ class _AnalysisState extends State<Analysis> {
                                       'On $fetchDateEEEMMMd',
                                       style: Theme.of(context)
                                           .textTheme
-                                          .body2
+                                          .bodyText1
                                           .copyWith(
                                             fontSize: appWidth(context) * 0.025,
                                           ),
@@ -235,7 +235,7 @@ class _AnalysisState extends State<Analysis> {
                                   option,
                                   style: Theme.of(context)
                                       .textTheme
-                                      .body2
+                                      .bodyText1
                                       .copyWith(
                                           fontSize: appWidth(context) * 0.035),
                                   textAlign: TextAlign.center,
@@ -298,7 +298,7 @@ class _AnalysisState extends State<Analysis> {
                     onPressed: () => _pickDate(context),
                     child: Text(
                       '$fetchDateEEEMMMd',
-                      style: Theme.of(context).textTheme.body2.copyWith(
+                      style: Theme.of(context).textTheme.bodyText1.copyWith(
                             fontSize: appWidth(context) * 0.05,
                           ),
                     ),

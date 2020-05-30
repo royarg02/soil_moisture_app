@@ -21,19 +21,19 @@ SystemUiOverlayStyle appSystemUiTheme(bool isDarkTheme) {
 
 // * Text theme to be used throughout the app
 TextTheme appTextTheme = TextTheme(
-  display4: TextStyle(fontFamily: 'Ocrb'),
-  display3: TextStyle(fontFamily: 'Ocrb'),
-  display2: TextStyle(fontFamily: 'Ocrb'),
-  display1: TextStyle(fontFamily: 'Ocrb'),
-  body1: TextStyle(fontFamily: 'Ocrb'),
-  body2: TextStyle(fontFamily: 'Ocrb'),
-  headline: TextStyle(fontFamily: 'Ocrb'),
-  subtitle: TextStyle(fontFamily: 'Ocrb'),
+  headline1: TextStyle(fontFamily: 'Ocrb'),
+  headline2: TextStyle(fontFamily: 'Ocrb'),
+  headline3: TextStyle(fontFamily: 'Ocrb'),
+  headline4: TextStyle(fontFamily: 'Ocrb'),
+  bodyText2: TextStyle(fontFamily: 'Ocrb'),
+  bodyText1: TextStyle(fontFamily: 'Ocrb'),
+  headline5: TextStyle(fontFamily: 'Ocrb'),
+  subtitle2: TextStyle(fontFamily: 'Ocrb'),
   button: TextStyle(fontFamily: 'Ocrb'),
   caption: TextStyle(fontFamily: 'Ocrb'),
-  subhead: TextStyle(fontFamily: 'Ocrb'),
+  subtitle1: TextStyle(fontFamily: 'Ocrb'),
   overline: TextStyle(fontFamily: 'Ocrb'),
-  title: TextStyle(fontFamily: 'Ocrb'),
+  headline6: TextStyle(fontFamily: 'Ocrb'),
 );
 
 // * Light Theme

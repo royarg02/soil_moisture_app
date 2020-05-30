@@ -178,14 +178,14 @@ class MoistureRadialIndicator extends StatelessWidget {
         children: <Widget>[
           Text(
             '${nowPlantList[_selCard].getLabel}',
-            style: Theme.of(context).textTheme.body2.copyWith(
+            style: Theme.of(context).textTheme.bodyText1.copyWith(
                   fontSize: appWidth(context) * 0.03,
                 ),
             textAlign: TextAlign.center,
           ),
           Text(
             '${(nowPlantList[_selCard].getLastValue * 100).toStringAsFixed(0)}${nowPlantList[_selCard].getUnit}',
-            style: Theme.of(context).textTheme.display4.copyWith(
+            style: Theme.of(context).textTheme.headline1.copyWith(
                   fontSize: appWidth(context) * 0.2,
                 ),
           ),
@@ -264,7 +264,7 @@ class AvatarData extends StatelessWidget {
             '${(this._value > 1000) ? (this._value ~/ 1000).toString() + 'K' : this._value} ${this._unit}',
             style: Theme.of(context)
                 .textTheme
-                .body2
+                .bodyText1
                 .copyWith(fontSize: appWidth(context) * 0.03),
           )
         ],
