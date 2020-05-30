@@ -8,6 +8,12 @@ Color Theme: [Material.io](https://material.io/resources/color/#!/?view.left=0&v
 
 Font: [OCRB](https://github.com/opensourcedesign/fonts/tree/master/OCR)
 
+### IMPORTANT: Read this first
+
+The codebase hosted in this branch _will not build_ on **Flutter v1.17+** due to [outdated dependencies](https://github.com/RoyARG02/soil_moisture_app/issues/23).
+
+If you are still interested in this version, consider using any of the pre-built binaries on the [releases](https://github.com/RoyARG02/soil_moisture_app/releases) page.
+
 ### Screenshots
 
 <p align = "middle">
