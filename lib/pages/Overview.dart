@@ -252,7 +252,7 @@ class AvatarData extends StatelessWidget {
             padding: EdgeInsets.all(appWidth(context) * 0.01),
             child: CircleAvatar(
               backgroundColor: this._bkgrndColor,
-              child: Icon(
+              child: FaIcon(
                 this._icon,
                 size: appWidth(context) * 0.05,
                 color: Theme.of(context).scaffoldBackgroundColor,

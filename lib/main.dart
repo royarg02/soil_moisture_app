@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 // * External Packages import
 import 'package:provider/provider.dart';
 
+// * Data providers import
+import 'package:soil_moisture_app/data_providers/analysis_data_provider.dart';
+
 // * Prefs import
 import 'package:soil_moisture_app/prefs/user_prefs.dart';
 
@@ -60,14 +63,19 @@ class Root extends StatelessWidget {
 class Home extends StatefulWidget {
   final List<Widget> _tabPages = [
     Overview(),
-    Analysis(),
+    ChangeNotifierProxyProvider<SelectedCardState, AnalysisDataProvider>(
+      create: (context) => AnalysisDataProvider(),
+      update: (context, selCard, dataProvider) => dataProvider..update(),
+      child: Analysis(),
+    ),
   ];
   @override
   @override
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
+class _HomeState extends State<Home>
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   TabController _controller;
   void initState() {
     super.initState();
@@ -97,6 +105,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     print(appWidth(context));
     return WillPopScope(
       onWillPop: _popScopeInvoke,
@@ -153,4 +162,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

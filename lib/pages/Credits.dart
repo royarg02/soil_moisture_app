@@ -3,7 +3,7 @@
 
 * A page to acknowledge the developers who created the project.
 * Also provides links to browse the repository of the app and the
-* API server.
+* API server, along with the licenses.
 */
 
 import 'package:flutter/material.dart';
@@ -27,6 +27,9 @@ import 'package:soil_moisture_app/utils/sizes.dart';
 // * data import
 import 'package:soil_moisture_app/data/all_data.dart';
 
+// * pages import
+import 'Licenses.dart';
+
 class Credits extends StatefulWidget {
   @override
   _CreditsState createState() => _CreditsState();
@@ -44,39 +47,27 @@ class _CreditsState extends State<Credits> {
 
   IndexedWidgetBuilder devInfoBuilder = (context, index) {
     return ListTile(
+      dense: true,
       contentPadding: EdgeInsets.symmetric(
-          horizontal: appWidth(context) * 0.03,
-          vertical: appWidth(context) * 0.01),
+        horizontal: appWidth(context) * 0.03,
+      ),
       leading: CircleAvatar(
         backgroundColor: Theme.of(context).accentColor,
         backgroundImage: NetworkImageWithRetry(
           'https://avatars.githubusercontent.com/${devDetails[index]['Github']}',
         ),
       ),
-      title: RichText(
-        text: TextSpan(
-          children: [
-            TextSpan(
-                text: devDetails[index]['Name'],
-                style: Theme.of(context).textTheme.subtitle1),
-            TextSpan(
-              text: ' ${devDetails[index]['Github']}',
-              style: Theme.of(context).textTheme.bodyText1.copyWith(
-                    color: (Provider.of<ThemeState>(context).isDarkTheme)
-                        ? subtleWhiteTextColor
-                        : subtleBlackTextColor,
-                  ),
-            )
-          ],
-        ),
+      title: Text(
+        devDetails[index]['Name'],
+        style: Theme.of(context).textTheme.subtitle1,
       ),
       subtitle: Text(
-        devDetails[index]['Bio'],
-        style: Theme.of(context).textTheme.caption.copyWith(
-              fontSize: appWidth(context) * 0.03,
+        devDetails[index]['Github'],
+        style: Theme.of(context).textTheme.bodyText1.copyWith(
+              color: (Provider.of<ThemeState>(context).isDarkTheme)
+                  ? subtleWhiteTextColor
+                  : subtleBlackTextColor,
             ),
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
       ),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
@@ -85,7 +76,7 @@ class _CreditsState extends State<Credits> {
             tooltip: 'Open GitHub profile',
             onPressed: () =>
                 _launchUrl('http://github.com/${devDetails[index]['Github']}'),
-            icon: Icon(
+            icon: FaIcon(
               FontAwesomeIcons.github,
               color: (Provider.of<ThemeState>(context).isDarkTheme)
                   ? githubWhite
@@ -96,7 +87,7 @@ class _CreditsState extends State<Credits> {
             tooltip: 'Open Twitter profile',
             onPressed: () => _launchUrl(
                 'http://twitter.com/${devDetails[index]['Twitter']}'),
-            icon: Icon(
+            icon: FaIcon(
               FontAwesomeIcons.twitter,
               color: twitterBlue,
             ),
@@ -176,7 +167,8 @@ class _CreditsState extends State<Credits> {
             ),
             Card(
               child: ListTile(
-                leading: Icon(FontAwesomeIcons.codeBranch),
+                dense: true,
+                leading: FaIcon(FontAwesomeIcons.codeBranch),
                 title: Text(
                   'Fork the project on GitHub',
                   style: Theme.of(context).textTheme.subtitle1,
@@ -192,7 +184,8 @@ class _CreditsState extends State<Credits> {
             ),
             Card(
               child: ListTile(
-                leading: Icon(FontAwesomeIcons.server),
+                dense: true,
+                leading: FaIcon(FontAwesomeIcons.server),
                 title: Text(
                   'View API implementation',
                   style: Theme.of(context).textTheme.subtitle1,
@@ -206,6 +199,18 @@ class _CreditsState extends State<Credits> {
                 onTap: () => _launchUrl(apiUrl),
               ),
             ),
+            Container(
+              margin: const EdgeInsets.only(top: 16.0),
+              alignment: Alignment.center,
+              child: FlatButton(
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => Licenses(),
+                  ),
+                ),
+                child: Text('LICENSES'),
+              ),
+            )
           ],
         ),
       ),

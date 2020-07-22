@@ -8,15 +8,31 @@
 * of required data at the REST API server.
 */
 
+/// (RoyARG02): This is legacy code made to be functionally relevant due to some issues.
+/// See: https://github.com/RoyARG02/soil_moisture_app/issues/23
+///
+/// Never in my life I would:
+///  - put the entire view in the single widget.
+///  - skimp on documentation.
+///  - be foolish to unnecessarily use setState() so much that I would have to
+///    use [mounted].
+///
+/// I would NOT recommend to work on this code. Time will be better spent in any newer version
+/// of this app. For instance, see https://github.com/RoyARG02/soil_moisture_app/tree/master.
+/// However, if you would like to annoy me, be my guest.
+
 import 'package:flutter/material.dart';
 
 // * External packages import
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
+// * Data providers import
+import 'package:soil_moisture_app/data_providers/analysis_current_value_provider.dart';
+import 'package:soil_moisture_app/data_providers/analysis_data_provider.dart';
+
 // * State import
 import 'package:soil_moisture_app/states/selected_card_state.dart';
-import 'package:soil_moisture_app/states/theme_state.dart';
 
 // * ui import
 import 'package:soil_moisture_app/ui/analysis_graph.dart';
@@ -42,6 +58,7 @@ class _AnalysisState extends State<Analysis> {
   String _measure;
   dynamic _chartObj;
 
+  @override
   void initState() {
     _measure = 'Moisture';
     super.initState();
@@ -82,11 +99,20 @@ class _AnalysisState extends State<Analysis> {
       initialDate: date,
       firstDate: oldestDate,
       lastDate: now,
+      helpText: 'GO TO DATE',
       builder: (BuildContext context, Widget child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            buttonBarTheme: ButtonBarTheme.of(context)
-                .copyWith(buttonTextTheme: ButtonTextTheme.normal),
+            buttonTheme: Theme.of(context).buttonTheme.copyWith(
+                  colorScheme: Theme.of(context)
+                      .buttonTheme
+                      .colorScheme
+                      .copyWith(
+                        primary: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white
+                            : Colors.black,
+                      ),
+                ),
           ),
           child: child,
         );
@@ -105,6 +131,8 @@ class _AnalysisState extends State<Analysis> {
         setState(() {
           _initChart(_measure);
         });
+        Provider.of<AnalysisDataProvider>(context)
+            .changeData(_chartObj.getAllValues, _chartObj.getUnit);
       }
       if (isNow()) {
         latData = fetchLatestData();
@@ -131,132 +159,64 @@ class _AnalysisState extends State<Analysis> {
           children: [
             Container(
               margin: EdgeInsets.symmetric(vertical: appWidth(context) * 0.03),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  FutureBuilder(
-                    future: totData,
-                    builder: (context, AsyncSnapshot snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        _initChart(this._measure);
-                        return (isDataGot)
-                            ? Container(
-                                height: appWidth(context) * 0.215,
-                                alignment: Alignment.center,
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Row(
-                                      children: <Widget>[
-                                        Text(
-                                          (_chartObj.getLastValue *
-                                                  ((_measure == 'Moisture')
-                                                      ? 100
-                                                      : 1))
-                                              .toStringAsFixed(1),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline3
-                                              .copyWith(
-                                                color: (Provider.of<ThemeState>(
-                                                            context)
-                                                        .isDarkTheme)
-                                                    ? Theme.of(context)
-                                                        .accentColor
-                                                    : appSecondaryDarkColor,
-                                                fontSize:
-                                                    appWidth(context) * 0.09,
-                                              ),
-                                        ),
-                                        Text(
-                                          '${_chartObj.getUnit}',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyText2
-                                              .copyWith(
-                                                fontSize:
-                                                    appWidth(context) * 0.06,
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                    Text(
-                                      'On $fetchDateEEEMMMd',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1
-                                          .copyWith(
-                                            fontSize: appWidth(context) * 0.025,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            : SizedBox(
-                                height: appWidth(context) * 0.215,
-                              );
-                      } else {
-                        return SizedBox(
-                          height: appWidth(context) * 0.215,
-                        );
-                      }
-                    },
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(right: appWidth(context) * 0.02),
-                    height: appWidth(context) * 0.1,
-                    child: Theme(
-                      data: Theme.of(context).copyWith(
-                        canvasColor: Theme.of(context).primaryColor,
-                      ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          icon: Icon(FontAwesomeIcons.chevronDown),
-                          iconSize: appWidth(context) * 0.03,
-                          value: _measure,
-                          onChanged: (String measure) {
-                            setState(() {
-                              _initChart(measure);
-                            });
-                          },
-                          items: <String>[
-                            'Moisture',
-                            'Light',
-                            'Humidity',
-                            'Temperature'
-                          ].map<DropdownMenuItem<String>>((String option) {
-                            return DropdownMenuItem<String>(
-                              value: option,
-                              child: Container(
-                                alignment: Alignment.center,
-                                width: appWidth(context) * 0.31,
-                                child: Text(
-                                  option,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyText1
-                                      .copyWith(
-                                          fontSize: appWidth(context) * 0.035),
-                                  textAlign: TextAlign.center,
-                                ),
+              child: Center(
+                child: Container(
+                  padding: EdgeInsets.only(right: appWidth(context) * 0.02),
+                  height: appWidth(context) * 0.1,
+                  child: Theme(
+                    data: Theme.of(context).copyWith(
+                      canvasColor: Theme.of(context).primaryColor,
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                        icon: FaIcon(FontAwesomeIcons.chevronDown),
+                        iconSize: appWidth(context) * 0.03,
+                        value: _measure,
+                        onChanged: (String measure) {
+                          setState(() {
+                            _initChart(measure);
+                          });
+                          if (isDataGot)
+                            Provider.of<AnalysisDataProvider>(context)
+                                .changeData(
+                                    _chartObj.getAllValues, _chartObj.getUnit);
+                        },
+                        items: <String>[
+                          'Moisture',
+                          'Light',
+                          'Humidity',
+                          'Temperature'
+                        ].map<DropdownMenuItem<String>>((String option) {
+                          return DropdownMenuItem<String>(
+                            value: option,
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: appWidth(context) * 0.31,
+                              child: Text(
+                                option,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    .copyWith(
+                                        fontSize: appWidth(context) * 0.035),
+                                textAlign: TextAlign.center,
                               ),
-                            );
-                          }).toList(),
-                        ),
+                            ),
+                          );
+                        }).toList(),
                       ),
-                    ),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 2.0,
-                        color: appPrimaryDarkColor,
-                      ),
-                      borderRadius:
-                          BorderRadius.circular(appWidth(context) * 0.1),
-                      shape: BoxShape.rectangle,
                     ),
                   ),
-                ],
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 2.0,
+                      color: appPrimaryDarkColor,
+                    ),
+                    borderRadius:
+                        BorderRadius.circular(appWidth(context) * 0.1),
+                    shape: BoxShape.rectangle,
+                  ),
+                ),
               ),
             ),
             Container(
@@ -271,9 +231,26 @@ class _AnalysisState extends State<Analysis> {
                         return NoNowData(isScrollable: false);
                       } else if (snapshot.connectionState ==
                           ConnectionState.done) {
-                        return (isDataGot)
-                            ? displayChart(_chartObj, _measure, context)
-                            : NoData();
+                        if (isDataGot) {
+                          this._initChart(_measure);
+                          Provider.of<AnalysisDataProvider>(context)
+                              .init(_chartObj.getAllValues, _chartObj.getUnit);
+                          return ChangeNotifierProxyProvider<
+                              AnalysisDataProvider,
+                              AnalysisCurrentValueProvider>(
+                            create: (_) => AnalysisCurrentValueProvider.init(
+                                Provider.of<AnalysisDataProvider>(context)
+                                    .data),
+                            update: (context, data, currentData) =>
+                                currentData..update(data.data),
+                            child: AnalysisGraph(
+                              animate: true,
+                              graph: _measure,
+                            ),
+                          );
+                        } else {
+                          return NoData();
+                        }
                       } else {
                         return Center(
                           child: CircularProgressIndicator(),

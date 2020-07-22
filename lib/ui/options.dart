@@ -29,19 +29,16 @@ class Options extends StatelessWidget {
       builder: (context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          ListTile(
-            leading: (_themeState.isDarkTheme)
-                ? Icon(FontAwesomeIcons.solidLightbulb)
-                : Icon(FontAwesomeIcons.lightbulb),
+          SwitchListTile(
+            secondary: (_themeState.isDarkTheme)
+                ? FaIcon(FontAwesomeIcons.solidLightbulb)
+                : FaIcon(FontAwesomeIcons.lightbulb),
             title: Text('Dark Theme'),
-            trailing: Switch(
-              value: _themeState.isDarkTheme,
-              onChanged: (_) => _themeState.toggleTheme(),
-            ),
-            onTap: () => _themeState.toggleTheme(),
+            value: _themeState.isDarkTheme,
+            onChanged: (_) => _themeState.toggleTheme(),
           ),
           ListTile(
-            leading: Icon(FontAwesomeIcons.slidersH),
+            leading: FaIcon(FontAwesomeIcons.slidersH),
             title: Text('Pump Threshold Control'),
             onTap: () {
               Navigator.pop(context);
