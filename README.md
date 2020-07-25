@@ -1,6 +1,6 @@
 # <img src="assets/readme/Soif.png" height=100>
 
-[![GitHub Release](https://img.shields.io/badge/release-v1.0.3-blue)](https://github.com/RoyARG02/soil_moisture_app/releases) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d94e74bd82544d2389ceda65e810ab96)](https://www.codacy.com/manual/RoyARG02/soil_moisture_app?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=RoyARG02/soil_moisture_app&amp;utm_campaign=Badge_Grade) [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/GPL-3.0)  
+[![GitHub Release](https://img.shields.io/badge/old%20release-v1.0.3-inactive)](https://github.com/RoyARG02/soil_moisture_app/releases) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/d94e74bd82544d2389ceda65e810ab96)](https://www.codacy.com/manual/RoyARG02/soil_moisture_app?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=RoyARG02/soil_moisture_app&amp;utm_campaign=Badge_Grade)[![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/GPL-3.0)  
 
 This is a Flutter project, which will serve as the dashboard for the **Soil Moisture** content of a particular area.
 
@@ -8,11 +8,11 @@ Color Theme: [Material.io](https://material.io/resources/color/#!/?view.left=0&v
 
 Font: [OCRB](https://github.com/opensourcedesign/fonts/tree/master/OCR)
 
-### IMPORTANT: Read this first
+### Discontinuation note
 
-The codebase hosted in this branch _will not build_ on **Flutter v1.17+** due to [outdated dependencies](https://github.com/RoyARG02/soil_moisture_app/issues/23).
+The version hosted in this branch **has been discontinued**. It will no longer receive fixes to any issues, such as [this one](https://github.com/RoyARG02/soil_moisture_app/issues/23).
 
-If you are still interested in this version, consider using any of the pre-built binaries on the [releases](https://github.com/RoyARG02/soil_moisture_app/releases) page.
+Consider using the latest version(or above) instead. If you are still interested in this version, use any of the pre-built binaries on the [releases](https://github.com/RoyARG02/soil_moisture_app/releases) page.
 
 ### Screenshots
 
